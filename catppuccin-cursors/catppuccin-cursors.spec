@@ -122,20 +122,31 @@ install -d %{buildroot}%{_datadir}/icons
 for dir in catppuccin-*-cursors; do
     cp -a "${dir}" \
         %{buildroot}%{_datadir}/icons/
+
+    rm -f %{buildroot}%{_datadir}/icons/${dir}/LICENSE
+    rm -f %{buildroot}%{_datadir}/icons/${dir}/AUTHORS
 done
 
 %files
 
 %files -n catppuccin-frappe-cursors
+%license catppuccin-frappe-blue-cursors/LICENSE
+%doc catppuccin-frappe-blue-cursors/AUTHORS
 %{_datadir}/icons/catppuccin-frappe-*-cursors/
 
 %files -n catppuccin-latte-cursors
+%license catppuccin-latte-blue-cursors/LICENSE
+%doc catppuccin-latte-blue-cursors/AUTHORS
 %{_datadir}/icons/catppuccin-latte-*-cursors/
 
 %files -n catppuccin-macchiato-cursors
+%license catppuccin-macchiato-blue-cursors/LICENSE
+%doc catppuccin-macchiato-blue-cursors/AUTHORS
 %{_datadir}/icons/catppuccin-macchiato-*-cursors/
 
 %files -n catppuccin-mocha-cursors
+%license catppuccin-mocha-blue-cursors/LICENSE
+%doc catppuccin-mocha-blue-cursors/AUTHORS
 %{_datadir}/icons/catppuccin-mocha-*-cursors/
 
 %changelog
