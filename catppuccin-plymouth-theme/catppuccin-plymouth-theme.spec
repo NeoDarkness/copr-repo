@@ -5,7 +5,7 @@
 %global debug_package %{nil}
 
 Name:           catppuccin-plymouth-theme
-Version:        0git%{shortcommit}
+Version:        %{date}git%{shortcommit}
 Release:        %autorelease
 Summary:        Catppuccin themes for Plymouth boot splash
 
