@@ -25,25 +25,21 @@ Meta package for Catppuccin GRUB themes.
 
 %package mocha
 Summary:        Catppuccin Mocha theme for GRUB
-
 %description mocha
 Catppuccin Mocha theme for GRUB.
 
 %package macchiato
 Summary:        Catppuccin Macchiato theme for GRUB
-
 %description macchiato
 Catppuccin Macchiato theme for GRUB.
 
 %package frappe
 Summary:        Catppuccin Frappé theme for GRUB
-
 %description frappe
 Catppuccin Frappé theme for GRUB.
 
 %package latte
 Summary:        Catppuccin Latte theme for GRUB
-
 %description latte
 Catppuccin Latte theme for GRUB.
 
@@ -51,26 +47,27 @@ Catppuccin Latte theme for GRUB.
 %autosetup -n grub-%{commit}
 
 %install
-install -dm755 %{buildroot}%{_datadir}/grub/themes
+# Membuat direktori tujuan langsung di /boot/grub2/themes
+install -dm755 %{buildroot}/boot/grub2/themes
 
-cp -a src/. \
-  %{buildroot}%{_datadir}/grub/themes/
+# Menyalin folder tema dari repo upstream (folder src berisi subfolder mocha, latte, dll)
+cp -a src/. %{buildroot}/boot/grub2/themes/
 
 %files
 %license LICENSE
 %doc README.md
 
 %files mocha
-%{_datadir}/grub/themes/catppuccin-mocha-grub-theme
+/boot/grub2/themes/catppuccin-mocha-grub-theme
 
 %files macchiato
-%{_datadir}/grub/themes/catppuccin-macchiato-grub-theme
+/boot/grub2/themes/catppuccin-macchiato-grub-theme
 
 %files frappe
-%{_datadir}/grub/themes/catppuccin-frappe-grub-theme
+/boot/grub2/themes/catppuccin-frappe-grub-theme
 
 %files latte
-%{_datadir}/grub/themes/catppuccin-latte-grub-theme
+/boot/grub2/themes/catppuccin-latte-grub-theme
 
 %changelog
 %autochangelog
