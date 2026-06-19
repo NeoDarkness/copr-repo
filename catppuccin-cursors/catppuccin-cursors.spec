@@ -92,105 +92,38 @@ Meta package for all Catppuccin cursor themes.
 %package frappe
 Summary:        Catppuccin Frappé cursor themes
 %description frappe
-Meta package for Catppuccin Frappé cursor themes.
+Catppuccin Frappé cursor themes in all accent colors.
 %files frappe
+%{_iconsdir}/catppuccin-frappe-*-cursors
+%{_licensedir}/catppuccin-frappe-*-cursors
+%{_docdir}/catppuccin-frappe-*-cursors
 
 %package latte
 Summary:        Catppuccin Latte cursor themes
 %description latte
-Meta package for Catppuccin Latte cursor themes.
+Catppuccin Latte cursor themes in all accent colors.
 %files latte
+%{_iconsdir}/catppuccin-latte-*-cursors
+%{_licensedir}/catppuccin-latte-*-cursors
+%{_docdir}/catppuccin-latte-*-cursors
 
 %package macchiato
 Summary:        Catppuccin Macchiato cursor themes
 %description macchiato
-Meta package for Catppuccin Macchiato cursor themes.
+Catppuccin Macchiato cursor themes in all accent colors.
 %files macchiato
+%{_iconsdir}/catppuccin-macchiato-*-cursors
+%{_licensedir}/catppuccin-macchiato-*-cursors
+%{_docdir}/catppuccin-macchiato-*-cursors
 
 %package mocha
 Summary:        Catppuccin Mocha cursor themes
 %description mocha
-Meta package for Catppuccin Mocha cursor themes.
+Catppuccin Mocha cursor themes in all accent colors.
 %files mocha
-
-%define cursor_package(v:a:V:A:) \
-%package -n catppuccin-%{v}-%{a}-cursors \
-Summary:        Catppuccin %{V} %{A} cursor theme \
-Requires:       catppuccin-%{v} = %{version}-%{release} \
-%description -n catppuccin-%{v}-%{a}-cursors \
-Catppuccin %{V} %{A} cursor theme. \
-%files -n catppuccin-%{v}-%{a}-cursors \
-%license %{_licensedir}/catppuccin-%{v}-%{a}-cursors \
-%doc %{_docdir}/catppuccin-%{v}-%{a}-cursors \
-%{_iconsdir}/catppuccin-%{v}-%{a}-cursors
-
-%cursor_package -v frappe -a blue      -V Frappé -A Blue
-%cursor_package -v frappe -a dark      -V Frappé -A Dark
-%cursor_package -v frappe -a flamingo  -V Frappé -A Flamingo
-%cursor_package -v frappe -a green     -V Frappé -A Green
-%cursor_package -v frappe -a lavender  -V Frappé -A Lavender
-%cursor_package -v frappe -a light     -V Frappé -A Light
-%cursor_package -v frappe -a maroon    -V Frappé -A Maroon
-%cursor_package -v frappe -a mauve     -V Frappé -A Mauve
-%cursor_package -v frappe -a peach     -V Frappé -A Peach
-%cursor_package -v frappe -a pink      -V Frappé -A Pink
-%cursor_package -v frappe -a red       -V Frappé -A Red
-%cursor_package -v frappe -a rosewater -V Frappé -A Rosewater
-%cursor_package -v frappe -a sapphire  -V Frappé -A Sapphire
-%cursor_package -v frappe -a sky       -V Frappé -A Sky
-%cursor_package -v frappe -a teal      -V Frappé -A Teal
-%cursor_package -v frappe -a yellow    -V Frappé -A Yellow
-
-%cursor_package -v latte -a blue      -V Latte -A Blue
-%cursor_package -v latte -a dark      -V Latte -A Dark
-%cursor_package -v latte -a flamingo  -V Latte -A Flamingo
-%cursor_package -v latte -a green     -V Latte -A Green
-%cursor_package -v latte -a lavender  -V Latte -A Lavender
-%cursor_package -v latte -a light     -V Latte -A Light
-%cursor_package -v latte -a maroon    -V Latte -A Maroon
-%cursor_package -v latte -a mauve     -V Latte -A Mauve
-%cursor_package -v latte -a peach     -V Latte -A Peach
-%cursor_package -v latte -a pink      -V Latte -A Pink
-%cursor_package -v latte -a red       -V Latte -A Red
-%cursor_package -v latte -a rosewater -V Latte -A Rosewater
-%cursor_package -v latte -a sapphire  -V Latte -A Sapphire
-%cursor_package -v latte -a sky       -V Latte -A Sky
-%cursor_package -v latte -a teal      -V Latte -A Teal
-%cursor_package -v latte -a yellow    -V Latte -A Yellow
-
-%cursor_package -v macchiato -a blue      -V Macchiato -A Blue
-%cursor_package -v macchiato -a dark      -V Macchiato -A Dark
-%cursor_package -v macchiato -a flamingo  -V Macchiato -A Flamingo
-%cursor_package -v macchiato -a green     -V Macchiato -A Green
-%cursor_package -v macchiato -a lavender  -V Macchiato -A Lavender
-%cursor_package -v macchiato -a light     -V Macchiato -A Light
-%cursor_package -v macchiato -a maroon    -V Macchiato -A Maroon
-%cursor_package -v macchiato -a mauve     -V Macchiato -A Mauve
-%cursor_package -v macchiato -a peach     -V Macchiato -A Peach
-%cursor_package -v macchiato -a pink      -V Macchiato -A Pink
-%cursor_package -v macchiato -a red       -V Macchiato -A Red
-%cursor_package -v macchiato -a rosewater -V Macchiato -A Rosewater
-%cursor_package -v macchiato -a sapphire  -V Macchiato -A Sapphire
-%cursor_package -v macchiato -a sky       -V Macchiato -A Sky
-%cursor_package -v macchiato -a teal      -V Macchiato -A Teal
-%cursor_package -v macchiato -a yellow    -V Macchiato -A Yellow
-
-%cursor_package -v mocha -a blue      -V Mocha -A Blue
-%cursor_package -v mocha -a dark      -V Mocha -A Dark
-%cursor_package -v mocha -a flamingo  -V Mocha -A Flamingo
-%cursor_package -v mocha -a green     -V Mocha -A Green
-%cursor_package -v mocha -a lavender  -V Mocha -A Lavender
-%cursor_package -v mocha -a light     -V Mocha -A Light
-%cursor_package -v mocha -a maroon    -V Mocha -A Maroon
-%cursor_package -v mocha -a mauve     -V Mocha -A Mauve
-%cursor_package -v mocha -a peach     -V Mocha -A Peach
-%cursor_package -v mocha -a pink      -V Mocha -A Pink
-%cursor_package -v mocha -a red       -V Mocha -A Red
-%cursor_package -v mocha -a rosewater -V Mocha -A Rosewater
-%cursor_package -v mocha -a sapphire  -V Mocha -A Sapphire
-%cursor_package -v mocha -a sky       -V Mocha -A Sky
-%cursor_package -v mocha -a teal      -V Mocha -A Teal
-%cursor_package -v mocha -a yellow    -V Mocha -A Yellow
+%{_iconsdir}/catppuccin-mocha-*-cursors
+%{_licensedir}/catppuccin-mocha-*-cursors
+%{_docdir}/catppuccin-mocha-*-cursors
 
 %prep
 %setup -c -T
@@ -218,6 +151,9 @@ for i in {0..63}; do
     [ -f "${pkg}/LICENSE" ] && mv %{buildroot}%{_iconsdir}/"${pkg}"/LICENSE %{buildroot}%{_licensedir}/"${pkg}"/LICENSE
     [ -f "${pkg}/AUTHORS" ] && mv %{buildroot}%{_iconsdir}/"${pkg}"/AUTHORS %{buildroot}%{_docdir}/"${pkg}"/AUTHORS
 done
+
+%files
+%doc
 
 %changelog
 %autochangelog
