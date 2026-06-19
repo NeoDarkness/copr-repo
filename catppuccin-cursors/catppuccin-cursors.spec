@@ -114,7 +114,7 @@ Catppuccin Mocha cursor themes in all accent colors.
 %prep
 %setup -q -T -c
 
-for archive in %{SOURCES}; do
+for archive in %{_sourcedir}/*.zip; do
     dir="$(basename "${archive}" .zip)"
     unzip -q "${archive}" -d "${dir}"
 done
