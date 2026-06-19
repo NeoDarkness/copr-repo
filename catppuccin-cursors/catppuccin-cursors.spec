@@ -7,7 +7,6 @@ License:        GPL-3.0-or-later
 URL:            https://github.com/catppuccin/cursors
 
 BuildArch:      noarch
-
 BuildRequires:  unzip
 
 %global base_url https://github.com/catppuccin/cursors/releases/download/v%{version}
@@ -84,10 +83,10 @@ Source61:       %{base_url}/catppuccin-mocha-sky-cursors.zip
 Source62:       %{base_url}/catppuccin-mocha-teal-cursors.zip
 Source63:       %{base_url}/catppuccin-mocha-yellow-cursors.zip
 
-Requires:       catppuccin-frappe-cursors     = %{version}-%{release}
-Requires:       catppuccin-latte-cursors      = %{version}-%{release}
-Requires:       catppuccin-macchiato-cursors  = %{version}-%{release}
-Requires:       catppuccin-mocha-cursors      = %{version}-%{release}
+Requires:       catppuccin-frappe-cursors = %{version}-%{release}
+Requires:       catppuccin-latte-cursors = %{version}-%{release}
+Requires:       catppuccin-macchiato-cursors = %{version}-%{release}
+Requires:       catppuccin-mocha-cursors = %{version}-%{release}
 
 %description
 Meta package for all Catppuccin cursor themes.
@@ -117,7 +116,7 @@ Summary:        Catppuccin Mocha cursor themes
 Catppuccin Mocha cursor themes in all accent colors.
 
 %prep
-%setup -q -T -c -n %{name}-%{version}
+%autosetup -T -c
 
 for archive in %{_sourcedir}/catppuccin-*-cursors.zip; do
     unzip -q "${archive}"
@@ -126,12 +125,13 @@ done
 %install
 install -d %{buildroot}%{_datadir}/icons
 
-for dir in catppuccin-*-cursors; do
-    cp -a "${dir}" %{buildroot}%{_datadir}/icons/
-done
+cp -a catppuccin-*-cursors \
+    %{buildroot}%{_datadir}/icons/
 
 find %{buildroot}%{_datadir}/icons/catppuccin-*-cursors \
-    -maxdepth 1 \( -name LICENSE -o -name AUTHORS \) -delete
+    -maxdepth 1 \
+    \( -name LICENSE -o -name AUTHORS \) \
+    -delete
 
 %files
 

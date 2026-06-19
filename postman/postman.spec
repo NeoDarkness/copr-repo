@@ -1,4 +1,4 @@
-# Disable debug package because we are repackaging a prebuilt binary
+# Disable debug package because this package repackages prebuilt binaries
 %global debug_package %{nil}
 
 Name:           postman
@@ -6,7 +6,7 @@ Version:        12.15.6
 Release:        %autorelease
 Summary:        API platform for building and using APIs
 
-License:        Proprietary
+License:        LicenseRef-Postman
 URL:            https://www.postman.com/
 Source0:        https://dl.pstmn.io/download/version/%{version}/linux64
 
@@ -20,11 +20,10 @@ Postman is an API platform for building and using APIs.
 %prep
 %autosetup -c -n Postman
 
-%build
 cat > postman.desktop <<'EOF'
 [Desktop Entry]
 Name=Postman
-Comment=API Platform for building and using APIs
+Comment=API platform for building and using APIs
 Exec=postman %U
 Terminal=false
 Type=Application
@@ -36,26 +35,34 @@ MimeType=x-scheme-handler/postman;
 EOF
 
 %install
-install -dm755 %{buildroot}/opt/postman
-cp -a Postman/. %{buildroot}/opt/postman/
+install -d %{buildroot}/opt/postman
 
-install -dm755 %{buildroot}%{_bindir}
-ln -s ../../opt/postman/Postman %{buildroot}%{_bindir}/postman
+cp -a Postman/* \
+    %{buildroot}/opt/postman/
+
+install -d %{buildroot}%{_bindir}
+
+ln -sr \
+    %{buildroot}/opt/postman/Postman \
+    %{buildroot}%{_bindir}/postman
 
 desktop-file-install \
     --dir=%{buildroot}%{_datadir}/applications \
     postman.desktop
 
-desktop-file-validate %{buildroot}%{_datadir}/applications/postman.desktop
+install -d %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
 
-install -dm755 %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
-ln -s /opt/postman/app/resources/app/assets/icon.png \
+ln -sr \
+    %{buildroot}/opt/postman/app/resources/app/assets/icon.png \
     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %files
-/opt/postman
+/opt/postman/
+
 %{_bindir}/postman
+
 %{_datadir}/applications/postman.desktop
+
 %{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %changelog

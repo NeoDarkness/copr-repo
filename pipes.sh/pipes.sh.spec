@@ -10,14 +10,15 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  make
-Requires:       bash >= 4.0.0
+
+Requires:       bash >= 4.0
 
 %description
-pipes.sh is an animated terminal screensaver inspired by the classic
-pipes screensaver.
+pipes.sh is an animated terminal screensaver inspired by the
+classic pipes screensaver.
 
 %prep
-%autosetup
+%autosetup -n %{name}-%{version}
 
 %install
 %make_install PREFIX=%{_prefix}

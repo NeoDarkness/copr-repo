@@ -9,8 +9,7 @@ Summary:        Catppuccin folder colors for Papirus
 
 License:        MIT
 URL:            https://github.com/catppuccin/papirus-folders
-
-Source0:        https://github.com/catppuccin/papirus-folders/archive/%{commit}/%{name}-%{commit}.tar.gz
+Source0:        https://github.com/catppuccin/papirus-folders/archive/%{commit}/papirus-folders-%{commit}.tar.gz
 
 BuildArch:      noarch
 
@@ -18,22 +17,23 @@ Requires:       papirus-folders
 Requires:       papirus-icon-theme
 
 %description
-Catppuccin folder color themes for Papirus folders. This package
-provides Catppuccin folder color variants for use with the
-papirus-folders utility.
+Catppuccin folder color themes for Papirus icon themes.
+
+This package provides Catppuccin folder color variants for use
+with the papirus-folders utility.
 
 %prep
 %autosetup -n papirus-folders-%{commit}
 
 %install
-install -dm755 \
-    %{buildroot}%{_datadir}/icons/Papirus
+install -d %{buildroot}%{_datadir}/icons/Papirus
 
-cp -a src/. \
+cp -a src/* \
     %{buildroot}%{_datadir}/icons/Papirus/
 
 find %{buildroot}%{_datadir}/icons/Papirus \
-    -type f -exec chmod 0644 {} +
+    -type f \
+    -exec chmod 0644 {} +
 
 %files
 %license LICENSE
