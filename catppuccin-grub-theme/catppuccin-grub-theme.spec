@@ -13,58 +13,60 @@ Source0:        https://github.com/catppuccin/grub/archive/%{commit}/grub-%{comm
 
 BuildArch:      noarch
 
-Requires:       %{name}-mocha = %{version}-%{release}
-Requires:       %{name}-macchiato = %{version}-%{release}
-Requires:       %{name}-frappe = %{version}-%{release}
-Requires:       %{name}-latte = %{version}-%{release}
+Requires:       catppuccin-mocha-grub-theme = %{version}-%{release}
+Requires:       catppuccin-macchiato-grub-theme = %{version}-%{release}
+Requires:       catppuccin-frappe-grub-theme = %{version}-%{release}
+Requires:       catppuccin-latte-grub-theme = %{version}-%{release}
 
 %description
 Meta package for Catppuccin GRUB themes.
 
-%package mocha
+%package -n catppuccin-mocha-grub-theme
 Summary:        Catppuccin Mocha theme for GRUB
-%description mocha
+
+%description -n catppuccin-mocha-grub-theme
 Catppuccin Mocha theme for GRUB.
 
-%package macchiato
+%package -n catppuccin-macchiato-grub-theme
 Summary:        Catppuccin Macchiato theme for GRUB
-%description macchiato
+
+%description -n catppuccin-macchiato-grub-theme
 Catppuccin Macchiato theme for GRUB.
 
-%package frappe
+%package -n catppuccin-frappe-grub-theme
 Summary:        Catppuccin Frappé theme for GRUB
-%description frappe
+
+%description -n catppuccin-frappe-grub-theme
 Catppuccin Frappé theme for GRUB.
 
-%package latte
+%package -n catppuccin-latte-grub-theme
 Summary:        Catppuccin Latte theme for GRUB
-%description latte
+
+%description -n catppuccin-latte-grub-theme
 Catppuccin Latte theme for GRUB.
 
 %prep
 %autosetup -n grub-%{commit}
 
 %install
-# Create the destination directory directly in /boot/grub2/themes
 install -dm755 %{buildroot}/boot/grub2/themes
 
-# Copy theme folders from upstream (the src directory contains subdirectories mocha, latte, etc.)
 cp -a src/. %{buildroot}/boot/grub2/themes/
 
 %files
 %license LICENSE
 %doc README.md
 
-%files mocha
+%files -n catppuccin-mocha-grub-theme
 /boot/grub2/themes/catppuccin-mocha-grub-theme
 
-%files macchiato
+%files -n catppuccin-macchiato-grub-theme
 /boot/grub2/themes/catppuccin-macchiato-grub-theme
 
-%files frappe
+%files -n catppuccin-frappe-grub-theme
 /boot/grub2/themes/catppuccin-frappe-grub-theme
 
-%files latte
+%files -n catppuccin-latte-grub-theme
 /boot/grub2/themes/catppuccin-latte-grub-theme
 
 %changelog
