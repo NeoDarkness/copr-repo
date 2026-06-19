@@ -11,6 +11,25 @@ URL:            https://github.com/catppuccin/cursors
 BuildArch:      noarch
 BuildRequires:  unzip
 
+Source0:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-blue-cursors.zip
+Source1:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-dark-cursors.zip
+Source2:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-flamingo-cursors.zip
+Source3:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-green-cursors.zip
+Source4:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-lavender-cursors.zip
+Source5:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-light-cursors.zip
+Source6:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-maroon-cursors.zip
+Source7:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-mauve-cursors.zip
+Source8:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-peach-cursors.zip
+Source9:        https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-pink-cursors.zip
+Source10:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-red-cursors.zip
+Source11:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-rosewater-cursors.zip
+Source12:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-sapphire-cursors.zip
+Source13:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-sky-cursors.zip
+Source14:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-teal-cursors.zip
+Source15:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-yellow-cursors.zip
+
+# lanjut sampai Source63 ...
+
 %global flavors \
     frappe \
     latte \
@@ -34,24 +53,6 @@ BuildRequires:  unzip
     sky \
     teal \
     yellow
-
-%{lua:
-local source = 0
-local version = rpm.expand("%{version}")
-
-for flavor in rpm.expand("%{flavors}"):gmatch("%S+") do
-    for accent in rpm.expand("%{accents}"):gmatch("%S+") do
-        print(string.format(
-            "Source%d: https://github.com/catppuccin/cursors/releases/download/v%s/catppuccin-%s-%s-cursors.zip\n",
-            source,
-            version,
-            flavor,
-            accent
-        ))
-        source = source + 1
-    end
-end
-}
 
 Requires:       %{name}-frappe = %{version}-%{release}
 Requires:       %{name}-latte = %{version}-%{release}
@@ -88,27 +89,30 @@ Catppuccin Mocha cursor themes in all accent colors.
 %prep
 %setup -q -T -c
 
-%{lua:
-local source = 0
+sources=(
+catppuccin-frappe-blue-cursors
+catppuccin-frappe-dark-cursors
+catppuccin-frappe-flamingo-cursors
+catppuccin-frappe-green-cursors
+catppuccin-frappe-lavender-cursors
+catppuccin-frappe-light-cursors
+catppuccin-frappe-maroon-cursors
+catppuccin-frappe-mauve-cursors
+catppuccin-frappe-peach-cursors
+catppuccin-frappe-pink-cursors
+catppuccin-frappe-red-cursors
+catppuccin-frappe-rosewater-cursors
+catppuccin-frappe-sapphire-cursors
+catppuccin-frappe-sky-cursors
+catppuccin-frappe-teal-cursors
+catppuccin-frappe-yellow-cursors
+)
 
-for flavor in rpm.expand("%{flavors}"):gmatch("%S+") do
-    for accent in rpm.expand("%{accents}"):gmatch("%S+") do
-        local dirname = string.format(
-            "catppuccin-%s-%s-cursors",
-            flavor,
-            accent
-        )
-
-        print(string.format(
-            "unzip -q %%{SOURCE%d} -d %s\n",
-            source,
-            dirname
-        ))
-
-        source = source + 1
-    end
-end
-}
+i=0
+for dir in "${sources[@]}"; do
+    unzip -q "%{SOURCE${i}}" -d "${dir}"
+    ((i+=1))
+done
 
 %install
 install -d %{buildroot}%{_datadir}/icons
