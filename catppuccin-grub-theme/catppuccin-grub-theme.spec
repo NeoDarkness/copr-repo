@@ -55,19 +55,25 @@ cp -a src/* \
     %{buildroot}/boot/grub2/themes/
 
 %files
-%license LICENSE
-%doc README.md
 
 %files -n catppuccin-frappe-grub-theme
+%license LICENSE
+%doc README.md
 /boot/grub2/themes/catppuccin-frappe-grub-theme/
 
 %files -n catppuccin-latte-grub-theme
+%license LICENSE
+%doc README.md
 /boot/grub2/themes/catppuccin-latte-grub-theme/
 
 %files -n catppuccin-macchiato-grub-theme
+%license LICENSE
+%doc README.md
 /boot/grub2/themes/catppuccin-macchiato-grub-theme/
 
 %files -n catppuccin-mocha-grub-theme
+%license LICENSE
+%doc README.md
 /boot/grub2/themes/catppuccin-mocha-grub-theme/
 
 %changelog

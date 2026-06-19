@@ -71,19 +71,25 @@ find %{buildroot}%{_datadir}/plymouth/themes \
     -exec chmod 0644 {} +
 
 %files
-%license LICENSE
-%doc README.md
 
 %files -n catppuccin-frappe-plymouth-theme
+%license LICENSE
+%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-frappe/
 
 %files -n catppuccin-latte-plymouth-theme
+%license LICENSE
+%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-latte/
 
 %files -n catppuccin-macchiato-plymouth-theme
+%license LICENSE
+%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-macchiato/
 
 %files -n catppuccin-mocha-plymouth-theme
+%license LICENSE
+%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-mocha/
 
 %changelog
