@@ -130,7 +130,10 @@ Catppuccin Mocha cursor themes in all accent colors.
 for i in {0..63}; do
     eval zipfile=\%{SOURCE$i}
     [ -f "$zipfile" ] || continue
-    unzip -q "$zipfile"
+
+    pkg=$(basename "$zipfile" .zip)
+    mkdir -p "$pkg"
+    unzip -q "$zipfile" -d "$pkg"
 done
 
 %install
