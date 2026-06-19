@@ -77,68 +77,65 @@ Source61:       https://github.com/catppuccin/cursors/releases/download/v%{versi
 Source62:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-teal-cursors.zip
 Source63:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-yellow-cursors.zip
 
-Requires:       %{name}-frappe = %{version}-%{release}
-Requires:       %{name}-latte = %{version}-%{release}
-Requires:       %{name}-macchiato = %{version}-%{release}
-Requires:       %{name}-mocha = %{version}-%{release}
+Requires:       catppuccin-frappe-cursors = %{version}-%{release}
+Requires:       catppuccin-latte-cursors = %{version}-%{release}
+Requires:       catppuccin-macchiato-cursors = %{version}-%{release}
+Requires:       catppuccin-mocha-cursors = %{version}-%{release}
 
 %description
 Meta package for all Catppuccin cursor themes.
 
-%package frappe
+%package -n catppuccin-frappe-cursors
 Summary:        Catppuccin Frappé cursor themes
 
-%description frappe
+%description -n catppuccin-frappe-cursors
 Catppuccin Frappé cursor themes in all accent colors.
 
-%package latte
+%package -n catppuccin-latte-cursors
 Summary:        Catppuccin Latte cursor themes
 
-%description latte
+%description -n catppuccin-latte-cursors
 Catppuccin Latte cursor themes in all accent colors.
 
-%package macchiato
+%package -n catppuccin-macchiato-cursors
 Summary:        Catppuccin Macchiato cursor themes
 
-%description macchiato
+%description -n catppuccin-macchiato-cursors
 Catppuccin Macchiato cursor themes in all accent colors.
 
-%package mocha
+%package -n catppuccin-mocha-cursors
 Summary:        Catppuccin Mocha cursor themes
 
-%description mocha
+%description -n catppuccin-mocha-cursors
 Catppuccin Mocha cursor themes in all accent colors.
 
 %prep
 %setup -q -T -c
 
 for archive in %{_sourcedir}/*.zip; do
-    dir="$(basename "${archive}" .zip)"
-    unzip -q "${archive}" -d "${dir}"
+    unzip -q "${archive}"
 done
 
 %install
 install -d %{buildroot}%{_datadir}/icons
 
 for dir in catppuccin-*-cursors; do
-    install -d %{buildroot}%{_datadir}/icons/${dir}
-
-    cp -a "${dir}"/* \
-        %{buildroot}%{_datadir}/icons/${dir}/
+    cp -a "${dir}" \
+        %{buildroot}%{_datadir}/icons/
 done
 
 %files
 
-%files frappe
+%files -n catppuccin-frappe-cursors
 %{_datadir}/icons/catppuccin-frappe-*-cursors/
 
-%files latte
+%files -n catppuccin-latte-cursors
 %{_datadir}/icons/catppuccin-latte-*-cursors/
 
-%files macchiato
+%files -n catppuccin-macchiato-cursors
 %{_datadir}/icons/catppuccin-macchiato-*-cursors/
 
-%files mocha
+%files -n catppuccin-mocha-cursors
 %{_datadir}/icons/catppuccin-mocha-*-cursors/
 
 %changelog
