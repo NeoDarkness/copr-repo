@@ -1,5 +1,3 @@
-%global debug_package %{nil}
-
 Name:           catppuccin-cursors
 Version:        2.0.0
 Release:        %autorelease

@@ -2,10 +2,8 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global date        20260619
 
-%global debug_package %{nil}
-
 Name:           catppuccin-grub-theme
-Version:        %{date}git%{shortcommit}
+Version:        0^%{date}git%{shortcommit}
 Release:        %autorelease
 Summary:        Catppuccin themes for GRUB
 
@@ -47,10 +45,10 @@ Catppuccin Latte theme for GRUB.
 %autosetup -n grub-%{commit}
 
 %install
-# Membuat direktori tujuan langsung di /boot/grub2/themes
+# Create the destination directory directly in /boot/grub2/themes
 install -dm755 %{buildroot}/boot/grub2/themes
 
-# Menyalin folder tema dari repo upstream (folder src berisi subfolder mocha, latte, dll)
+# Copy theme folders from upstream (the src directory contains subdirectories mocha, latte, etc.)
 cp -a src/. %{buildroot}/boot/grub2/themes/
 
 %files

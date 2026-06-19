@@ -4,11 +4,9 @@
 %global shortcommit     %(c=%{main_commit}; echo ${c:0:7})
 %global date            20260619
 
-%global debug_package   %{nil}
-
 Name:           papirus-folders-catppuccin
-Version:        %{date}git%{shortcommit}
-Release:        1%{?dist}
+Version:        0^%{date}git%{shortcommit}
+Release:        %autorelease
 Summary:        Catppuccin folder colors for Papirus
 
 License:        GPL-3.0-only
@@ -24,18 +22,18 @@ Requires:       papirus-icon-theme
 Papirus folders utility bundled with Catppuccin folder colors.
 
 %prep
-# Ekstrak Source0 (Catppuccin) sebagai direktori utama build
+# Extract Source0 (Catppuccin) as the main build directory
 %autosetup -n papirus-folders-%{main_commit}
 
-# Ekstrak Source1 (Upstream) ke dalam sub-direktori 'upstream'
+# Extract Source1 (Upstream) into the 'upstream' subdirectory
 mkdir upstream
 tar -xzf %{SOURCE1} -C upstream --strip-components=1
 
 %install
-# Install executable script dari folder upstream
+# Install executable script from the upstream folder
 install -Dm755 upstream/papirus-folders %{buildroot}%{_bindir}/papirus-folders
 
-# Install folder icon Catppuccin ke direktori system
+# Install Catppuccin folder icons to the system directory
 install -dm755 %{buildroot}%{_datadir}/icons/Papirus
 cp -a src/. %{buildroot}%{_datadir}/icons/Papirus/
 

@@ -1,8 +1,9 @@
+# Disable debug package because we are repackaging a prebuilt binary
 %global debug_package %{nil}
 
 Name:           postman
 Version:        12.15.6
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        API platform for building and using APIs
 
 License:        Proprietary
@@ -44,6 +45,8 @@ ln -s ../../opt/postman/Postman %{buildroot}%{_bindir}/postman
 desktop-file-install \
     --dir=%{buildroot}%{_datadir}/applications \
     postman.desktop
+
+desktop-file-validate %{buildroot}%{_datadir}/applications/postman.desktop
 
 install -dm755 %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
 ln -s /opt/postman/app/resources/app/assets/icon.png \
