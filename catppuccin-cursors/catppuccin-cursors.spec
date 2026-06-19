@@ -7,6 +7,7 @@ License:        GPL-3.0-or-later
 URL:            https://github.com/catppuccin/cursors
 
 BuildArch:      noarch
+
 BuildRequires:  unzip
 
 %global base_url https://github.com/catppuccin/cursors/releases/download/v%{version}
