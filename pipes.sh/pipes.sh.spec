@@ -8,6 +8,7 @@ URL:            https://github.com/pipeseroni/pipes.sh
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildArch:      noarch
+
 BuildRequires:  make
 Requires:       bash >= 4.0.0
 
