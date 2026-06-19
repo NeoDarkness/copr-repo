@@ -130,23 +130,15 @@ done
 %files
 
 %files frappe
-%license catppuccin-frappe-blue-cursors/LICENSE
-%doc catppuccin-frappe-blue-cursors/AUTHORS
 %{_datadir}/icons/catppuccin-frappe-*-cursors/
 
 %files latte
-%license catppuccin-latte-blue-cursors/LICENSE
-%doc catppuccin-latte-blue-cursors/AUTHORS
 %{_datadir}/icons/catppuccin-latte-*-cursors/
 
 %files macchiato
-%license catppuccin-macchiato-blue-cursors/LICENSE
-%doc catppuccin-macchiato-blue-cursors/AUTHORS
 %{_datadir}/icons/catppuccin-macchiato-*-cursors/
 
 %files mocha
-%license catppuccin-mocha-blue-cursors/LICENSE
-%doc catppuccin-mocha-blue-cursors/AUTHORS
 %{_datadir}/icons/catppuccin-mocha-*-cursors/
 
 %changelog
