@@ -1,9 +1,9 @@
 %global commit      198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global date        20260619
+%global commitdate  20250428
 
 Name:           catppuccin-plymouth-theme
-Version:        0^%{date}git%{shortcommit}
+Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
 Summary:        Catppuccin themes for Plymouth boot splash
 

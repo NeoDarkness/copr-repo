@@ -1,47 +1,44 @@
-%global main_commit     f83671d17ea67e335b34f8028a7e6d78bca735d7
-%global upstream_commit 0f838ee5679229e3a3e97e3b333c222c9e9615b4
-
-%global shortcommit     %(c=%{main_commit}; echo ${c:0:7})
-%global date            20260619
+%global commit      f83671d17ea67e335b34f8028a7e6d78bca735d7
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
+%global commitdate  20240608
 
 Name:           papirus-folders-catppuccin
-Version:        0^%{date}git%{shortcommit}
+Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
 Summary:        Catppuccin folder colors for Papirus
 
-License:        GPL-3.0-only
+License:        MIT
 URL:            https://github.com/catppuccin/papirus-folders
 
-Source0:        https://github.com/catppuccin/papirus-folders/archive/%{main_commit}.tar.gz#/papirus-folders-catppuccin-%{main_commit}.tar.gz
-Source1:        https://github.com/PapirusDevelopmentTeam/papirus-folders/archive/%{upstream_commit}.tar.gz#/papirus-folders-upstream-%{upstream_commit}.tar.gz
+Source0:        https://github.com/catppuccin/papirus-folders/archive/%{commit}/%{name}-%{commit}.tar.gz
 
 BuildArch:      noarch
+
+Requires:       papirus-folders
 Requires:       papirus-icon-theme
 
 %description
-Papirus folders utility bundled with Catppuccin folder colors.
+Catppuccin folder color themes for Papirus folders. This package
+provides Catppuccin folder color variants for use with the
+papirus-folders utility.
 
 %prep
-# Extract Source0 (Catppuccin) as the main build directory
-%autosetup -n papirus-folders-%{main_commit}
-
-# Extract Source1 (Upstream) into the 'upstream' subdirectory
-mkdir upstream
-tar -xzf %{SOURCE1} -C upstream --strip-components=1
+%autosetup -n papirus-folders-%{commit}
 
 %install
-# Install executable script from the upstream folder
-install -Dm755 upstream/papirus-folders %{buildroot}%{_bindir}/papirus-folders
+install -dm755 \
+    %{buildroot}%{_datadir}/icons/Papirus
 
-# Install Catppuccin folder icons to the system directory
-install -dm755 %{buildroot}%{_datadir}/icons/Papirus
-cp -a src/. %{buildroot}%{_datadir}/icons/Papirus/
+cp -a src/. \
+    %{buildroot}%{_datadir}/icons/Papirus/
+
+find %{buildroot}%{_datadir}/icons/Papirus \
+    -type f -exec chmod 0644 {} +
 
 %files
 %license LICENSE
 %doc README.md
 
-%{_bindir}/papirus-folders
 %{_datadir}/icons/Papirus/
 
 %changelog

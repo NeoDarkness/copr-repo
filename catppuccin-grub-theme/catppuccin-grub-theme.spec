@@ -1,9 +1,9 @@
 %global commit      0a37ab19f654e77129b409fed371891c01ffd0b9
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-%global date        20260619
+%global commitdate  20250711
 
 Name:           catppuccin-grub-theme
-Version:        0^%{date}git%{shortcommit}
+Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
 Summary:        Catppuccin themes for GRUB
 
