@@ -28,31 +28,56 @@ Source13:       https://github.com/catppuccin/cursors/releases/download/v%{versi
 Source14:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-teal-cursors.zip
 Source15:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-frappe-yellow-cursors.zip
 
-# lanjut sampai Source63 ...
+Source16:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-blue-cursors.zip
+Source17:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-dark-cursors.zip
+Source18:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-flamingo-cursors.zip
+Source19:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-green-cursors.zip
+Source20:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-lavender-cursors.zip
+Source21:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-light-cursors.zip
+Source22:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-maroon-cursors.zip
+Source23:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-mauve-cursors.zip
+Source24:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-peach-cursors.zip
+Source25:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-pink-cursors.zip
+Source26:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-red-cursors.zip
+Source27:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-rosewater-cursors.zip
+Source28:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-sapphire-cursors.zip
+Source29:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-sky-cursors.zip
+Source30:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-teal-cursors.zip
+Source31:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-latte-yellow-cursors.zip
 
-%global flavors \
-    frappe \
-    latte \
-    macchiato \
-    mocha
+Source32:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-blue-cursors.zip
+Source33:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-dark-cursors.zip
+Source34:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-flamingo-cursors.zip
+Source35:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-green-cursors.zip
+Source36:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-lavender-cursors.zip
+Source37:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-light-cursors.zip
+Source38:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-maroon-cursors.zip
+Source39:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-mauve-cursors.zip
+Source40:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-peach-cursors.zip
+Source41:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-pink-cursors.zip
+Source42:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-red-cursors.zip
+Source43:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-rosewater-cursors.zip
+Source44:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-sapphire-cursors.zip
+Source45:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-sky-cursors.zip
+Source46:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-teal-cursors.zip
+Source47:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-macchiato-yellow-cursors.zip
 
-%global accents \
-    blue \
-    dark \
-    flamingo \
-    green \
-    lavender \
-    light \
-    maroon \
-    mauve \
-    peach \
-    pink \
-    red \
-    rosewater \
-    sapphire \
-    sky \
-    teal \
-    yellow
+Source48:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-blue-cursors.zip
+Source49:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-dark-cursors.zip
+Source50:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-flamingo-cursors.zip
+Source51:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-green-cursors.zip
+Source52:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-lavender-cursors.zip
+Source53:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-light-cursors.zip
+Source54:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-maroon-cursors.zip
+Source55:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-mauve-cursors.zip
+Source56:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-peach-cursors.zip
+Source57:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-pink-cursors.zip
+Source58:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-red-cursors.zip
+Source59:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-rosewater-cursors.zip
+Source60:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-sapphire-cursors.zip
+Source61:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-sky-cursors.zip
+Source62:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-teal-cursors.zip
+Source63:       https://github.com/catppuccin/cursors/releases/download/v%{version}/catppuccin-mocha-yellow-cursors.zip
 
 Requires:       %{name}-frappe = %{version}-%{release}
 Requires:       %{name}-latte = %{version}-%{release}
@@ -89,29 +114,9 @@ Catppuccin Mocha cursor themes in all accent colors.
 %prep
 %setup -q -T -c
 
-sources=(
-catppuccin-frappe-blue-cursors
-catppuccin-frappe-dark-cursors
-catppuccin-frappe-flamingo-cursors
-catppuccin-frappe-green-cursors
-catppuccin-frappe-lavender-cursors
-catppuccin-frappe-light-cursors
-catppuccin-frappe-maroon-cursors
-catppuccin-frappe-mauve-cursors
-catppuccin-frappe-peach-cursors
-catppuccin-frappe-pink-cursors
-catppuccin-frappe-red-cursors
-catppuccin-frappe-rosewater-cursors
-catppuccin-frappe-sapphire-cursors
-catppuccin-frappe-sky-cursors
-catppuccin-frappe-teal-cursors
-catppuccin-frappe-yellow-cursors
-)
-
-i=0
-for dir in "${sources[@]}"; do
-    unzip -q "%{SOURCE${i}}" -d "${dir}"
-    ((i+=1))
+for archive in %{SOURCES}; do
+    dir="$(basename "${archive}" .zip)"
+    unzip -q "${archive}" -d "${dir}"
 done
 
 %install
