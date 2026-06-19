@@ -127,9 +127,6 @@ for dir in catppuccin-*-cursors; do
 
     cp -a "${dir}"/* \
         %{buildroot}%{_datadir}/icons/${dir}/
-
-    rm -f %{buildroot}%{_datadir}/icons/${dir}/LICENSE
-    rm -f %{buildroot}%{_datadir}/icons/${dir}/AUTHORS
 done
 
 %files
