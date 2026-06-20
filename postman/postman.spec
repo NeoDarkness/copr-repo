@@ -58,11 +58,8 @@ ln -sr \
 
 %files
 /opt/postman/
-
 %{_bindir}/postman
-
 %{_datadir}/applications/postman.desktop
-
 %{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %changelog

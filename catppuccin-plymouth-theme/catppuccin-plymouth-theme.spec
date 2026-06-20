@@ -9,88 +9,27 @@ Summary:        Catppuccin themes for Plymouth boot splash
 
 License:        MIT
 URL:            https://github.com/catppuccin/plymouth
-Source0:        https://github.com/catppuccin/plymouth/archive/%{commit}/plymouth-%{commit}.tar.gz
+Source0:        %{url}/archive/%{commit}/plymouth-%{commit}.tar.gz
 
 BuildArch:      noarch
 
-Requires:       catppuccin-frappe-plymouth-theme = %{version}-%{release}
-Requires:       catppuccin-latte-plymouth-theme = %{version}-%{release}
-Requires:       catppuccin-macchiato-plymouth-theme = %{version}-%{release}
-Requires:       catppuccin-mocha-plymouth-theme = %{version}-%{release}
+Requires:       plymouth-plugin-two-step
+Requires:       plymouth-system-theme
 
 %description
-Meta package for all Catppuccin Plymouth themes.
-
-%package -n catppuccin-frappe-plymouth-theme
-Summary:        Catppuccin Frappé theme for Plymouth
-
-Requires:       plymouth-plugin-two-step
-Requires:       plymouth-system-theme
-
-%description -n catppuccin-frappe-plymouth-theme
-Catppuccin Frappé theme for Plymouth.
-
-%package -n catppuccin-latte-plymouth-theme
-Summary:        Catppuccin Latte theme for Plymouth
-
-Requires:       plymouth-plugin-two-step
-Requires:       plymouth-system-theme
-
-%description -n catppuccin-latte-plymouth-theme
-Catppuccin Latte theme for Plymouth.
-
-%package -n catppuccin-macchiato-plymouth-theme
-Summary:        Catppuccin Macchiato theme for Plymouth
-
-Requires:       plymouth-plugin-two-step
-Requires:       plymouth-system-theme
-
-%description -n catppuccin-macchiato-plymouth-theme
-Catppuccin Macchiato theme for Plymouth.
-
-%package -n catppuccin-mocha-plymouth-theme
-Summary:        Catppuccin Mocha theme for Plymouth
-
-Requires:       plymouth-plugin-two-step
-Requires:       plymouth-system-theme
-
-%description -n catppuccin-mocha-plymouth-theme
-Catppuccin Mocha theme for Plymouth.
+Catppuccin Plymouth themes (Frappé, Latte, Macchiato, Mocha).
 
 %prep
 %autosetup -n plymouth-%{commit}
 
 %install
 install -d %{buildroot}%{_datadir}/plymouth/themes
-
-cp -a themes/* \
-    %{buildroot}%{_datadir}/plymouth/themes/
-
-find %{buildroot}%{_datadir}/plymouth/themes \
-    -type f \
-    -exec chmod 0644 {} +
+cp -pr themes/. %{buildroot}%{_datadir}/plymouth/themes/
 
 %files
-
-%files -n catppuccin-frappe-plymouth-theme
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-frappe/
-
-%files -n catppuccin-latte-plymouth-theme
-%license LICENSE
-%doc README.md
-%{_datadir}/plymouth/themes/catppuccin-latte/
-
-%files -n catppuccin-macchiato-plymouth-theme
-%license LICENSE
-%doc README.md
-%{_datadir}/plymouth/themes/catppuccin-macchiato/
-
-%files -n catppuccin-mocha-plymouth-theme
-%license LICENSE
-%doc README.md
-%{_datadir}/plymouth/themes/catppuccin-mocha/
+%{_datadir}/plymouth/themes/
 
 %changelog
 %autochangelog

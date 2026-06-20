@@ -3,15 +3,17 @@
 %global commitdate  20250711
 
 Name:           catppuccin-grub-theme
-Version:        0^%{commitdate}git%{shortcommit}
+Version:        0^%{commitdate}^git%{shortcommit}
 Release:        %autorelease
 Summary:        Catppuccin themes for GRUB
 
 License:        MIT
 URL:            https://github.com/catppuccin/grub
-Source0:        https://github.com/catppuccin/grub/archive/%{commit}/grub-%{commit}.tar.gz
+Source0:        %{url}/archive/%{commit}/grub-%{commit}.tar.gz
 
 BuildArch:      noarch
+
+%global themedir /boot/grub2/themes
 
 Requires:       catppuccin-frappe-grub-theme = %{version}-%{release}
 Requires:       catppuccin-latte-grub-theme = %{version}-%{release}
@@ -22,59 +24,55 @@ Requires:       catppuccin-mocha-grub-theme = %{version}-%{release}
 Meta package for Catppuccin GRUB themes.
 
 %package -n catppuccin-frappe-grub-theme
-Summary:        Catppuccin Frappé theme for GRUB
+Summary:        Catppuccin Frappé GRUB theme
 
 %description -n catppuccin-frappe-grub-theme
-Catppuccin Frappé theme for GRUB.
+Catppuccin Frappé GRUB theme.
 
 %package -n catppuccin-latte-grub-theme
-Summary:        Catppuccin Latte theme for GRUB
+Summary:        Catppuccin Latte GRUB theme
 
 %description -n catppuccin-latte-grub-theme
-Catppuccin Latte theme for GRUB.
+Catppuccin Latte GRUB theme.
 
 %package -n catppuccin-macchiato-grub-theme
-Summary:        Catppuccin Macchiato theme for GRUB
+Summary:        Catppuccin Macchiato GRUB theme
 
 %description -n catppuccin-macchiato-grub-theme
-Catppuccin Macchiato theme for GRUB.
+Catppuccin Macchiato GRUB theme.
 
 %package -n catppuccin-mocha-grub-theme
-Summary:        Catppuccin Mocha theme for GRUB
+Summary:        Catppuccin Mocha GRUB theme
 
 %description -n catppuccin-mocha-grub-theme
-Catppuccin Mocha theme for GRUB.
+Catppuccin Mocha GRUB theme.
 
 %prep
 %autosetup -n grub-%{commit}
 
 %install
-install -d %{buildroot}/boot/grub2/themes
-
-cp -a src/* \
-    %{buildroot}/boot/grub2/themes/
-
-%files
+install -d %{buildroot}%{themedir}
+cp -a src/* %{buildroot}%{themedir}/
 
 %files -n catppuccin-frappe-grub-theme
 %license LICENSE
 %doc README.md
-/boot/grub2/themes/catppuccin-frappe-grub-theme/
+%{themedir}/catppuccin-frappe-*/
 
 %files -n catppuccin-latte-grub-theme
 %license LICENSE
 %doc README.md
-/boot/grub2/themes/catppuccin-latte-grub-theme/
+%{themedir}/catppuccin-latte-*/
 
 %files -n catppuccin-macchiato-grub-theme
 %license LICENSE
 %doc README.md
-/boot/grub2/themes/catppuccin-macchiato-grub-theme/
+%{themedir}/catppuccin-macchiato-*/
 
 %files -n catppuccin-mocha-grub-theme
 %license LICENSE
 %doc README.md
-/boot/grub2/themes/catppuccin-mocha-grub-theme/
+%{themedir}/catppuccin-mocha-*/
 
 %changelog
 %autochangelog
