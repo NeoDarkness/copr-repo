@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Check and update package versions (GitHub + Postman + git snapshot)
-# NO packages.yml version
+# Auto sync RPM spec versions (GitHub + Postman + git snapshot)
+# COPR-ready
 
 set -euo pipefail
 
@@ -8,7 +8,6 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 UPDATED=0
 TIMEOUT=10
 
-# Colors
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
@@ -40,7 +39,7 @@ get_spec_url() {
 
 get_spec_commit() {
     awk '
-        /^%global commit[[:space:]]+/ {
+        /^%global[[:space:]]+commit[[:space:]]+/ {
             print $3
             exit
         }
@@ -56,13 +55,13 @@ is_git_snapshot() {
 }
 
 # -------------------------
-# HTTP helpers
+# HTTP
 # -------------------------
 
 github_api() {
     timeout "$TIMEOUT" curl -fsSL \
         -H "Accept: application/vnd.github+json" \
-        -H "User-Agent: copr-version-checker" \
+        -H "User-Agent: copr-sync" \
         "$1"
 }
 
@@ -88,8 +87,7 @@ get_github_version() {
 
     github_api "https://api.github.com/repos/$repo/releases/latest" \
         | jq -r '.tag_name // empty' \
-        | sed 's/^v//' \
-        && return 0
+        | sed 's/^v//' && return 0
 
     github_api "https://api.github.com/repos/$repo/tags?per_page=1" \
         | jq -r '.[0].name // empty' \
@@ -105,7 +103,7 @@ get_github_commit() {
 }
 
 # -------------------------
-# Postman
+# Postman (official API)
 # -------------------------
 
 get_postman_version() {
@@ -119,13 +117,17 @@ get_postman_version() {
 # -------------------------
 
 update_version() {
-    sed -i \
-        -E "s|^Version:[[:space:]]+.*|Version:        $2|" \
-        "$1"
+    local spec="$1"
+    local version="$2"
 
-    sed -i \
-        -E "s|^Release:[[:space:]]+.*|Release:        1%{?dist}|" \
-        "$1"
+    sed -i -E \
+        "s|^Version:[[:space:]]+.*|Version:        $version|" \
+        "$spec"
+
+    # IMPORTANT: sync with %autorelease
+    sed -i -E \
+        "s|^Release:[[:space:]]+.*|Release:        %autorelease|" \
+        "$spec"
 }
 
 update_git_snapshot() {
@@ -136,19 +138,19 @@ update_git_snapshot() {
     date=$(date +%Y%m%d)
 
     sed -i -E \
-        "s|^%global commit[[:space:]]+.*|%global commit      $commit|" \
+        "s|^%global[[:space:]]+commit[[:space:]]+.*|%global commit      $commit|" \
         "$spec"
 
     sed -i -E \
-        "s|^%global commitdate[[:space:]]+.*|%global commitdate  $date|" \
+        "s|^%global[[:space:]]+commitdate[[:space:]]+.*|%global commitdate  $date|" \
         "$spec"
 }
 
 # -------------------------
-# Main loop
+# Main
 # -------------------------
 
-echo -e "${BLUE}🔍 Checking packages...${NC}\n"
+echo -e "${BLUE}🔍 Syncing package versions...${NC}\n"
 
 for dir in "$REPO_ROOT"/*; do
     [[ -d "$dir" ]] || continue
@@ -172,13 +174,10 @@ for dir in "$REPO_ROOT"/*; do
     echo "  Current: $version"
 
     # -------------------------
-    # Git snapshot packages
+    # Git snapshot
     # -------------------------
     if is_git_snapshot "$version"; then
         commit=$(get_spec_commit "$spec")
-
-        echo "  Current commit: ${commit:0:7}"
-
         latest=$(get_github_commit "$url" || true)
 
         [[ -z "$latest" ]] && {
@@ -186,7 +185,7 @@ for dir in "$REPO_ROOT"/*; do
             continue
         }
 
-        echo "  Latest commit:  ${latest:0:7}"
+        echo "  Commit: ${commit:0:7} → ${latest:0:7}"
 
         [[ "$commit" == "$latest" ]] && {
             echo "  ℹ️  Up to date"
@@ -202,7 +201,7 @@ for dir in "$REPO_ROOT"/*; do
     fi
 
     # -------------------------
-    # Postman special case
+    # Version fetch
     # -------------------------
     if [[ "$pkg" == "postman" ]]; then
         latest=$(get_postman_version || true)
@@ -241,7 +240,7 @@ done
 if [[ "$UPDATED" -gt 0 ]]; then
     cd "$REPO_ROOT"
     git add ./*/*.spec
-    git commit -m "chore: update package versions ($UPDATED)"
+    git commit -m "chore: sync package versions ($UPDATED)"
     echo -e "${GREEN}✅ Updated $UPDATED package(s)${NC}"
 else
     echo -e "${GREEN}✅ No updates needed${NC}"
