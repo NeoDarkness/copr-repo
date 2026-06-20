@@ -9,6 +9,8 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildArch:      noarch
 
+BuildRequires:  make
+
 %description
 pipes.sh is an animated terminal screensaver inspired by the classic pipes screensaver.
 
