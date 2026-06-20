@@ -92,7 +92,7 @@ done
 
 %install
 install -d %{buildroot}%{iconsdir}
-cp -pr catppuccin-*-cursors %{buildroot}%{iconsdir}/
+cp -a catppuccin-*-cursors %{buildroot}%{iconsdir}/
 
 %files
 %{iconsdir}/catppuccin-*-cursors/
