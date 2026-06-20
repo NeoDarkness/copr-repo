@@ -3,7 +3,7 @@
 %global commitdate  20250711
 
 Name:           catppuccin-grub-theme
-Version:        0^%{commitdate}^git%{shortcommit}
+Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
 Summary:        Catppuccin themes for GRUB
 
