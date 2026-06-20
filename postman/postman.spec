@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 
 Name:           postman
-Version:        12.15.6
-Release:        %autorelease
+Version:        12.15.8
+Release:        1%{?dist}
 Summary:        API platform for building and using APIs
 
 License:        LicenseRef-Postman
