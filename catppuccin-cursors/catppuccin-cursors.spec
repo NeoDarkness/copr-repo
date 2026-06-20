@@ -1,7 +1,7 @@
 Name:           catppuccin-cursors
 Version:        2.0.0
 Release:        %autorelease
-Summary:        Catppuccin cursor themes
+Summary:        Catppuccin cursor themes (Frappé, Latte, Macchiato, Mocha)
 
 License:        GPL-3.0-or-later
 URL:            https://github.com/catppuccin/cursors
@@ -92,7 +92,6 @@ done
 
 %install
 install -d %{buildroot}%{iconsdir}
-
 cp -pr catppuccin-*-cursors %{buildroot}%{iconsdir}/
 
 %files

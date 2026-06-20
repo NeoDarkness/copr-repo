@@ -5,7 +5,7 @@
 Name:           papirus-folders-catppuccin
 Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
-Summary:        Catppuccin folder colors for Papirus
+Summary:        Catppuccin folder colors for Papirus icon themes
 
 License:        MIT
 URL:            https://github.com/catppuccin/papirus-folders
@@ -17,7 +17,9 @@ Requires:       papirus-folders
 Requires:       papirus-icon-theme
 
 %description
-Catppuccin folder color variants for Papirus icon themes using papirus-folders utility.
+Catppuccin folder colors for Papirus icon themes.
+
+This package provides Catppuccin folder color variants for use with the papirus-folders utility.
 
 %prep
 %autosetup -n papirus-folders-%{commit}

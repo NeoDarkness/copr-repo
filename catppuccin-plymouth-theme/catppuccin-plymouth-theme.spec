@@ -5,7 +5,7 @@
 Name:           catppuccin-plymouth-theme
 Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
-Summary:        Catppuccin themes for Plymouth boot splash
+Summary:        Catppuccin Plymouth themes (Frappé, Latte, Macchiato, Mocha)
 
 License:        MIT
 URL:            https://github.com/catppuccin/plymouth
@@ -17,7 +17,7 @@ Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description
-Catppuccin Plymouth themes (Frappé, Latte, Macchiato, Mocha).
+Catppuccin Plymouth themes for all variants (Frappé, Latte, Macchiato, Mocha).
 
 %prep
 %autosetup -n plymouth-%{commit}
