@@ -2,7 +2,7 @@
 
 Name:           postman
 Version:        12.15.8
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        API platform for building and using APIs
 
 License:        LicenseRef-Postman
