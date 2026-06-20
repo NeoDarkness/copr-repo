@@ -1,4 +1,3 @@
-# Disable debug package because this package repackages prebuilt binaries
 %global debug_package %{nil}
 
 Name:           postman
