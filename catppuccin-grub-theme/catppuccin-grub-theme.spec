@@ -19,7 +19,7 @@ BuildArch:      noarch
 Catppuccin GRUB themes (Frappé, Latte, Macchiato, Mocha).
 
 %prep
-%autosetup
+%autosetup -n grub-%{commit}
 
 %install
 install -d %{buildroot}%{themedir}

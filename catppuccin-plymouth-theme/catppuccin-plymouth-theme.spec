@@ -20,7 +20,7 @@ Requires:       plymouth-system-theme
 Catppuccin Plymouth themes for all variants (Frappé, Latte, Macchiato, Mocha).
 
 %prep
-%autosetup
+%autosetup -n plymouth-%{commit}
 
 %install
 install -d %{buildroot}%{_datadir}/plymouth/themes

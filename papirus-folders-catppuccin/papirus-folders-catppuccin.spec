@@ -23,7 +23,7 @@ Catppuccin folder colors for Papirus icon themes.
 This package provides Catppuccin folder color variants for use with the papirus-folders utility.
 
 %prep
-%autosetup
+%autosetup -n papirus-folders-%{commit}
 
 %install
 install -d %{buildroot}%{_datadir}/icons/Papirus
