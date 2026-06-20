@@ -5,6 +5,7 @@ Summary:        Animated pipes terminal screensaver
 
 License:        MIT
 URL:            https://github.com/pipeseroni/pipes.sh
+
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildArch:      noarch
@@ -15,13 +16,12 @@ BuildRequires:  make
 pipes.sh is an animated pipes terminal screensaver inspired by the classic pipes screensaver.
 
 %prep
-%autosetup -n pipes.sh-%{version}
+%autosetup
 
 %build
-# no build step required
 
 %install
-make install PREFIX=%{_prefix} DESTDIR=%{buildroot}
+%make_install PREFIX=%{_prefix}
 
 %files
 %license LICENSE

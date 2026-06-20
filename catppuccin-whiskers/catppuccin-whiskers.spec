@@ -18,7 +18,8 @@ Provides:       whiskers = %{version}-%{release}
 Soothing port creation tool for the high-spirited!
 
 %prep
-# binary package, no build required
+
+%build
 
 %install
 install -D -m 0755 %{SOURCE0} %{buildroot}%{_bindir}/whiskers
