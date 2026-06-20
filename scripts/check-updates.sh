@@ -1,0 +1,248 @@
+#!/usr/bin/env bash
+# Check and update package versions (GitHub + Postman + git snapshot)
+# NO packages.yml version
+
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+UPDATED=0
+TIMEOUT=10
+
+# Colors
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+# -------------------------
+# Spec helpers
+# -------------------------
+
+get_spec_version() {
+    awk '
+        /^Version:/ {
+            sub(/^Version:[[:space:]]*/, "")
+            print
+            exit
+        }
+    ' "$1"
+}
+
+get_spec_url() {
+    awk '
+        /^URL:/ {
+            sub(/^URL:[[:space:]]*/, "")
+            print
+            exit
+        }
+    ' "$1"
+}
+
+get_spec_commit() {
+    awk '
+        /^%global commit[[:space:]]+/ {
+            print $3
+            exit
+        }
+    ' "$1"
+}
+
+is_git_snapshot() {
+    local v="$1"
+
+    [[ "$v" == *"%{commitdate}"* ]] || \
+    [[ "$v" == *"git%{shortcommit}"* ]] || \
+    [[ "$v" =~ ^0\^ ]]
+}
+
+# -------------------------
+# HTTP helpers
+# -------------------------
+
+github_api() {
+    timeout "$TIMEOUT" curl -fsSL \
+        -H "Accept: application/vnd.github+json" \
+        -H "User-Agent: copr-version-checker" \
+        "$1"
+}
+
+# -------------------------
+# GitHub
+# -------------------------
+
+extract_github_repo() {
+    local url="$1"
+
+    url="${url#https://github.com/}"
+    url="${url#http://github.com/}"
+    url="${url%.git}"
+
+    echo "$url" | cut -d/ -f1-2
+}
+
+get_github_version() {
+    local repo
+    repo=$(extract_github_repo "$1")
+
+    [[ "$repo" =~ .+/.+ ]] || return 1
+
+    github_api "https://api.github.com/repos/$repo/releases/latest" \
+        | jq -r '.tag_name // empty' \
+        | sed 's/^v//' \
+        && return 0
+
+    github_api "https://api.github.com/repos/$repo/tags?per_page=1" \
+        | jq -r '.[0].name // empty' \
+        | sed 's/^v//'
+}
+
+get_github_commit() {
+    local repo
+    repo=$(extract_github_repo "$1")
+
+    github_api "https://api.github.com/repos/$repo/commits?per_page=1" \
+        | jq -r '.[0].sha // empty'
+}
+
+# -------------------------
+# Postman
+# -------------------------
+
+get_postman_version() {
+    timeout "$TIMEOUT" curl -fsSL \
+        "https://www.postman.com/mkapi/release.json" \
+        | jq -r '.notes[0].version // empty'
+}
+
+# -------------------------
+# Updaters
+# -------------------------
+
+update_version() {
+    sed -i \
+        -E "s|^Version:[[:space:]]+.*|Version:        $2|" \
+        "$1"
+
+    sed -i \
+        -E "s|^Release:[[:space:]]+.*|Release:        1%{?dist}|" \
+        "$1"
+}
+
+update_git_snapshot() {
+    local spec="$1"
+    local commit="$2"
+
+    local date
+    date=$(date +%Y%m%d)
+
+    sed -i -E \
+        "s|^%global commit[[:space:]]+.*|%global commit      $commit|" \
+        "$spec"
+
+    sed -i -E \
+        "s|^%global commitdate[[:space:]]+.*|%global commitdate  $date|" \
+        "$spec"
+}
+
+# -------------------------
+# Main loop
+# -------------------------
+
+echo -e "${BLUE}🔍 Checking packages...${NC}\n"
+
+for dir in "$REPO_ROOT"/*; do
+    [[ -d "$dir" ]] || continue
+
+    pkg=$(basename "$dir")
+
+    case "$pkg" in
+        .git|scripts|.github)
+            continue
+            ;;
+    esac
+
+    spec="$dir/$pkg.spec"
+    [[ -f "$spec" ]] || continue
+
+    echo -e "${YELLOW}Checking $pkg...${NC}"
+
+    version=$(get_spec_version "$spec")
+    url=$(get_spec_url "$spec")
+
+    echo "  Current: $version"
+
+    # -------------------------
+    # Git snapshot packages
+    # -------------------------
+    if is_git_snapshot "$version"; then
+        commit=$(get_spec_commit "$spec")
+
+        echo "  Current commit: ${commit:0:7}"
+
+        latest=$(get_github_commit "$url" || true)
+
+        [[ -z "$latest" ]] && {
+            echo "  ⚠️  Failed to fetch commit"
+            continue
+        }
+
+        echo "  Latest commit:  ${latest:0:7}"
+
+        [[ "$commit" == "$latest" ]] && {
+            echo "  ℹ️  Up to date"
+            continue
+        }
+
+        echo -e "  ${GREEN}✨ Updating git snapshot${NC}"
+        update_git_snapshot "$spec" "$latest"
+
+        UPDATED=$((UPDATED+1))
+        echo
+        continue
+    fi
+
+    # -------------------------
+    # Postman special case
+    # -------------------------
+    if [[ "$pkg" == "postman" ]]; then
+        latest=$(get_postman_version || true)
+    else
+        [[ ! "$url" =~ github\.com ]] && {
+            echo "  ⚠️  Unsupported source"
+            continue
+        }
+
+        latest=$(get_github_version "$url" || true)
+    fi
+
+    [[ -z "$latest" ]] && {
+        echo "  ⚠️  No latest version found"
+        continue
+    }
+
+    echo "  Latest: $latest"
+
+    [[ "$version" == "$latest" ]] && {
+        echo "  ℹ️  Up to date"
+        continue
+    }
+
+    echo -e "  ${GREEN}✨ Updating: $version → $latest${NC}"
+    update_version "$spec" "$latest"
+
+    UPDATED=$((UPDATED+1))
+    echo
+done
+
+# -------------------------
+# Commit
+# -------------------------
+
+if [[ "$UPDATED" -gt 0 ]]; then
+    cd "$REPO_ROOT"
+    git add ./*/*.spec
+    git commit -m "chore: update package versions ($UPDATED)"
+    echo -e "${GREEN}✅ Updated $UPDATED package(s)${NC}"
+else
+    echo -e "${GREEN}✅ No updates needed${NC}"
+fi
