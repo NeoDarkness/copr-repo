@@ -1,5 +1,3 @@
-%global __cargo_common_opts --target-dir %{_target_platform}/cargo-target
-
 Name:           whiskers
 Version:        2.9.0
 Release:        %autorelease
@@ -11,7 +9,7 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 ExclusiveArch:  %{rust_arches}
 
-BuildRequires:  cargo-rpm-macros
+BuildRequires:  cargo
 
 %description
 Whiskers CLI tool used to generate Catppuccin ports.
@@ -20,13 +18,15 @@ Whiskers CLI tool used to generate Catppuccin ports.
 %autosetup
 
 %build
-%cargo_build
+export RUSTFLAGS="%{build_rustflags}"
+cargo build --release --locked
 
 %install
-%cargo_install
+install -Dm0755 target/release/whiskers %{buildroot}%{_bindir}/whiskers
 
 %check
-%cargo_test
+export RUSTFLAGS="%{build_rustflags}"
+cargo test --release --locked
 
 %files
 %license LICENSE
