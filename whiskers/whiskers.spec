@@ -1,8 +1,9 @@
 %bcond_without check
 
 %global cargo_install_lib 0
-
 %global __cargo_common_opts %{?_smp_mflags} --locked
+
+%global debug_package %{nil}
 
 Name:           whiskers
 Version:        2.9.0
@@ -11,7 +12,7 @@ Summary:        Soothing port creation tool
 
 License:        MIT
 URL:            https://github.com/catppuccin/whiskers
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
+Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 ExclusiveArch:  %{rust_arches}
 

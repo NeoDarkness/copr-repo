@@ -5,7 +5,7 @@ Summary:        Folder color switching utility for Papirus icon themes
 
 License:        MIT
 URL:            https://github.com/PapirusDevelopmentTeam/papirus-folders
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
+Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
 
