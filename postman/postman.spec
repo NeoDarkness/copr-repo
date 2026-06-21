@@ -37,7 +37,6 @@ install -Dm0644 \
     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %files
-%dir /opt/postman
 /opt/postman/*
 %{_bindir}/postman
 %{_datadir}/applications/postman.desktop

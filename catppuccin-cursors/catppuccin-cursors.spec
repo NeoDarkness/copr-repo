@@ -32,7 +32,6 @@ cp -a dist/. %{buildroot}%{_datadir}/icons/
 %files
 %license LICENSE
 %doc README.md AUTHORS
-%dir %{_datadir}/icons
 %{_datadir}/icons/*
 
 %changelog
