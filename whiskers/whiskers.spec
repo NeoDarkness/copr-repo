@@ -7,27 +7,22 @@ License:        MIT
 URL:            https://github.com/catppuccin/whiskers
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
-BuildRequires:  cargo-rpm-macros
-BuildRequires:  rust
-
-%undefine __cargo_generate_buildrequires
+BuildRequires:  cargo
 
 %description
-Whiskers CLI tool
+Whiskers CLI tool used to generate Catppuccin ports.
 
 %prep
 %autosetup
 
-%cargo_prep_online
-
 %build
-%cargo_build
+cargo build --release --locked
 
 %install
-%cargo_install
+install -Dm0755 target/release/whiskers %{buildroot}%{_bindir}/whiskers
 
 %check
-%cargo_test
+cargo test --release --locked
 
 %files
 %license LICENSE
