@@ -21,13 +21,13 @@ Whiskers is a CLI tool used to generate Catppuccin ports.
 %cargo_prep
 
 %build
-%cargo_build --locked
+%cargo_build
 
 %install
-%cargo_install --locked
+%cargo_install
 
 %check
-%cargo_test --locked
+%cargo_test
 
 %files
 %license LICENSE
