@@ -1,3 +1,5 @@
+%global __cargo_common_opts --target-dir %{_target_platform}/cargo-target
+
 Name:           pipes-rs
 Version:        1.6.4
 Release:        %autorelease
@@ -9,7 +11,7 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 ExclusiveArch:  %{rust_arches}
 
-BuildRequires:  cargo
+BuildRequires:  cargo-rpm-macros
 
 %description
 pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
@@ -18,15 +20,13 @@ pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
 %autosetup
 
 %build
-export RUSTFLAGS="%{build_rustflags}"
-cargo build --release --locked
+%cargo_build
 
 %install
-install -Dm0755 target/release/pipes-rs %{buildroot}%{_bindir}/pipes-rs
+%cargo_install
 
 %check
-export RUSTFLAGS="%{build_rustflags}"
-cargo test --release --locked
+%cargo_test
 
 %files
 %license LICENSE.md
