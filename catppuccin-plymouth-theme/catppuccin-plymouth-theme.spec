@@ -29,6 +29,8 @@ cp -a themes/. %{buildroot}%{_datadir}/plymouth/themes/
 %files
 %license LICENSE
 %doc README.md
+%dir %{_datadir}/plymouth
+%dir %{_datadir}/plymouth/themes
 %{_datadir}/plymouth/themes/*
 
 %changelog

@@ -32,6 +32,8 @@ cp -a src/. %{buildroot}%{_datadir}/icons/Papirus/
 %files
 %license LICENSE
 %doc README.md
+%dir %{_datadir}/icons
+%dir %{_datadir}/icons/Papirus
 %{_datadir}/icons/Papirus/*
 
 %changelog

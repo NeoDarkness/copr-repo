@@ -20,14 +20,14 @@ Papirus Folders is a utility for changing folder colors in Papirus icon themes.
 %autosetup
 
 %install
-%make_install PREFIX=%{_prefix} ZSHCOMPDIR=%{_datadir}/zsh/site-functions
+%make_install PREFIX=%{_prefix} ZSHCOMPDIR=%{zsh_completions_dir}
 
 %files
 %license LICENSE
 %doc README.md
 %{_bindir}/papirus-folders
-%{_datadir}/bash-completion/completions/papirus-folders
-%{_datadir}/zsh/site-functions/_papirus-folders
+%{bash_completions_dir}/papirus-folders
+%{zsh_completions_dir}/_papirus-folders
 
 %changelog
 %autochangelog
