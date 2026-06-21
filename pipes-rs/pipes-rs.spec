@@ -7,24 +7,23 @@ License:        BlueOak-1.0.0
 URL:            https://github.com/lhvy/pipes-rs
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
-BuildRequires:  cargo-rpm-macros >= 24
+BuildRequires:  cargo
+BuildRequires:  rust
 
 %description
 pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
 
 %prep
 %autosetup
-%cargo_prep
-sed -i 's/^offline = true$/offline = false/' .cargo/config.toml
 
 %build
-%cargo_build
+cargo build --release --locked
 
 %install
-%cargo_install
+install -Dpm0755 target/release/pipes-rs %{buildroot}%{_bindir}/pipes-rs
 
 %check
-%cargo_test
+cargo test --release --locked
 
 %files
 %license LICENSE.md

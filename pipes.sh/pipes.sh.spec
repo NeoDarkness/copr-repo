@@ -5,7 +5,6 @@ Summary:        Animated pipes terminal screensaver
 
 License:        MIT
 URL:            https://github.com/pipeseroni/pipes.sh
-
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildArch:      noarch

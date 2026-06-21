@@ -8,7 +8,7 @@ Release:        %autorelease
 Summary:        Catppuccin folder colors for Papirus icon themes
 
 License:        MIT
-URL:            https://github.com
+URL:            https://github.com/catppuccin/papirus-folders
 Source0:        %{url}/archive/%{commit}/papirus-folders-%{commit}.tar.gz
 
 BuildArch:      noarch

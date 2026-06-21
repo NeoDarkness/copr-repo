@@ -8,7 +8,7 @@ Release:        %autorelease
 Summary:        Catppuccin themes for GRUB
 
 License:        MIT
-URL:            https://github.com
+URL:            https://github.com/catppuccin/grub
 Source0:        %{url}/archive/%{commit}/grub-%{commit}.tar.gz
 
 BuildArch:      noarch
