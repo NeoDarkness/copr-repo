@@ -23,7 +23,7 @@ Catppuccin Plymouth themes for all variants (Frappé, Latte, Macchiato, Mocha).
 %autosetup -n plymouth-%{commit}
 
 %install
-install -dm0755 %{buildroot}%{_datadir}/plymouth/themes
+install -d %{buildroot}%{_datadir}/plymouth/themes
 cp -a themes/. %{buildroot}%{_datadir}/plymouth/themes/
 
 %files

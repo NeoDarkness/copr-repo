@@ -20,7 +20,7 @@ Catppuccin GRUB themes (Frappé, Latte, Macchiato, Mocha).
 %autosetup -n grub-%{commit}
 
 %install
-install -dm0755 %{buildroot}/boot/grub2/themes
+install -d %{buildroot}/boot/grub2/themes
 cp -a src/. %{buildroot}/boot/grub2/themes/
 
 %files

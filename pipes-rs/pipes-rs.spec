@@ -19,7 +19,7 @@ pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
 cargo build --release --locked
 
 %install
-install -Dpm0755 target/release/pipes-rs %{buildroot}%{_bindir}/pipes-rs
+install -Dm0755 target/release/pipes-rs %{buildroot}%{_bindir}/pipes-rs
 
 %check
 cargo test --release --locked

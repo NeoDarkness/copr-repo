@@ -45,7 +45,7 @@ desktop-file-install \
     --dir=%{buildroot}%{_datadir}/applications \
     postman.desktop
 
-install -Dpm0644 \
+install -Dm0644 \
     Postman/app/resources/app/assets/icon.png \
     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 

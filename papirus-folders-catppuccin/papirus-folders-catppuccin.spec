@@ -26,7 +26,7 @@ papirus-folders utility.
 %autosetup -n papirus-folders-%{commit}
 
 %install
-install -dm0755 %{buildroot}%{_datadir}/icons/Papirus
+install -d %{buildroot}%{_datadir}/icons/Papirus
 cp -a src/. %{buildroot}%{_datadir}/icons/Papirus/
 
 %files

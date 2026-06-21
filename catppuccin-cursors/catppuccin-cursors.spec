@@ -25,7 +25,7 @@ Catppuccin cursor themes generated using whiskers.
 just all
 
 %install
-install -dm0755 %{buildroot}%{_datadir}/icons
+install -d %{buildroot}%{_datadir}/icons
 cp -a dist/. %{buildroot}%{_datadir}/icons/
 
 %files
