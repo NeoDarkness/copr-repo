@@ -20,7 +20,7 @@ BuildRequires:  cargo-rpm-macros >= 26
 Whiskers CLI tool used to generate Catppuccin ports.
 
 %prep
-%autosetup -p1
+%autosetup
 
 %cargo_prep -N
 
