@@ -36,11 +36,11 @@ EOF
 %build
 
 %install
-install -d %{buildroot}%{_prefix}/opt/postman
-cp -a Postman/. %{buildroot}%{_prefix}/opt/postman/
+install -d %{buildroot}/opt/postman
+cp -a Postman/. %{buildroot}/opt/postman/
 
 install -d %{buildroot}%{_bindir}
-ln -s %{_prefix}/opt/postman/Postman %{buildroot}%{_bindir}/postman
+ln -s /opt/postman/Postman %{buildroot}%{_bindir}/postman
 
 install -d %{buildroot}%{_datadir}/applications
 desktop-file-install \
@@ -52,7 +52,7 @@ install -Dpm0644 \
     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %files
-%{_prefix}/opt/postman/
+/opt/postman
 %{_bindir}/postman
 %{_datadir}/applications/postman.desktop
 %{_datadir}/icons/hicolor/128x128/apps/postman.png
