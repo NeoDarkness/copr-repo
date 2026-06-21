@@ -20,8 +20,7 @@ Whiskers is a CLI tool used to generate Catppuccin ports.
 cargo build --release --locked
 
 %install
-install -Dpm0755 target/release/whiskers \
-    %{buildroot}%{_bindir}/whiskers
+install -Dpm0755 target/release/whiskers %{buildroot}%{_bindir}/whiskers
 
 %check
 cargo test --release --locked
