@@ -26,7 +26,6 @@ cp -a src/. %{buildroot}/boot/grub2/themes/
 %files
 %license LICENSE
 %doc README.md
-%dir /boot/grub2/themes
 /boot/grub2/themes/*
 
 %changelog
