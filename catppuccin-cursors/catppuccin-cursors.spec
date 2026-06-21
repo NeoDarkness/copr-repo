@@ -5,15 +5,15 @@ Summary:        Catppuccin cursor themes (Frappé, Latte, Macchiato, Mocha)
 
 License:        GPL-3.0-or-later
 URL:            https://github.com/catppuccin/cursors
-
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildArch:      noarch
 
 BuildRequires:  python3
-BuildRequires:  whiskers
-BuildRequires:  xcursorgen
+BuildRequires:  python3-pyside6
+BuildRequires:  qt6-qtsvg
 BuildRequires:  inkscape
+BuildRequires:  xcursorgen
 BuildRequires:  just
 
 %description
@@ -28,10 +28,12 @@ just all
 %install
 install -d %{buildroot}%{_datadir}/icons
 
-cp -a dist/* %{buildroot}%{_datadir}/icons/
+cp -a dist/. %{buildroot}%{_datadir}/icons/
 
 %files
-%{_datadir}/icons/*
+%license LICENSE
+%doc README.md AUTHORS
+%{_datadir}/icons/
 
 %changelog
 %autochangelog
