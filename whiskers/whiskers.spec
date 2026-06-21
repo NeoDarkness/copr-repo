@@ -1,4 +1,4 @@
-Name:           catppuccin-whiskers
+Name:           whiskers
 Version:        2.9.0
 Release:        %autorelease
 Summary:        Soothing port creation tool for the high-spirited!
@@ -14,7 +14,7 @@ BuildRequires:  rust
 Whiskers is a CLI tool used to generate Catppuccin ports.
 
 %prep
-%autosetup -n whiskers-%{version}
+%autosetup
 
 %build
 cargo build --release --locked
