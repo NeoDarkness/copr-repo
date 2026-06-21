@@ -8,7 +8,6 @@ URL:            https://github.com/lhvy/pipes-rs
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildRequires:  cargo
-BuildRequires:  rust
 
 %description
 pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.

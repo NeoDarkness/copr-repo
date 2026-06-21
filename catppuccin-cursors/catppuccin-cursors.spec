@@ -9,7 +9,6 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildArch:      noarch
 
-BuildRequires:  python3
 BuildRequires:  python3-pyside6
 BuildRequires:  whiskers
 BuildRequires:  xcursorgen
