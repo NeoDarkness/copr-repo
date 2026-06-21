@@ -5,7 +5,7 @@ Summary:        Catppuccin cursor themes (Frappé, Latte, Macchiato, Mocha)
 
 License:        GPL-2.0-only
 URL:            https://github.com/catppuccin/cursors
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -20,7 +20,7 @@ BuildRequires:  just
 Catppuccin cursor themes generated using whiskers.
 
 %prep
-%autosetup
+%autosetup -n cursors-%{version}
 
 %build
 just all

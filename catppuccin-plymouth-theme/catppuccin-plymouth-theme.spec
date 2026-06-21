@@ -9,7 +9,7 @@ Summary:        Catppuccin Plymouth themes (Frappé, Latte, Macchiato, Mocha)
 
 License:        MIT
 URL:            https://github.com/catppuccin/plymouth
-Source0:        %{url}/archive/%{commit}/plymouth-%{commit}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/%{commit}/plymouth-%{commit}.tar.gz
 
 BuildArch:      noarch
 
@@ -20,7 +20,7 @@ Requires:       plymouth-system-theme
 Catppuccin Plymouth themes for all variants (Frappé, Latte, Macchiato, Mocha).
 
 %prep
-%autosetup
+%autosetup -n plymouth-%{commit}
 
 %install
 install -d %{buildroot}%{_datadir}/plymouth/themes

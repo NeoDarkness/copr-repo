@@ -1,9 +1,10 @@
 %bcond_without check
 
 %global cargo_install_lib 0
-%global __cargo_common_opts %{?_smp_mflags} --locked
+%global __cargo_common_opts %{?_smp_mflags} --workspace --locked
 
 %global debug_package %{nil}
+%global __strip /bin/true
 
 Name:           pipes-rs
 Version:        1.6.4
@@ -31,7 +32,7 @@ sed -i 's/^offline = true$//' .cargo/config.toml
 %cargo_build
 
 %install
-%cargo_install
+%cargo_install --package pipes-rs
 
 %if %{with check}
 %check

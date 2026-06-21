@@ -4,6 +4,7 @@
 %global __cargo_common_opts %{?_smp_mflags} --locked
 
 %global debug_package %{nil}
+%global __strip /bin/true
 
 Name:           whiskers
 Version:        2.9.0
