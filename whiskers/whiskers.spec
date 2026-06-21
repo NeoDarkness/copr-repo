@@ -1,5 +1,6 @@
 %bcond_without check
 
+%global debug_package %{nil}
 %global cargo_install_lib 0
 %global __cargo_common_opts %{?_smp_mflags} --locked
 
@@ -21,16 +22,15 @@ Whiskers CLI tool used to generate Catppuccin ports.
 
 %prep
 %autosetup
-
 %cargo_prep -N
 
-sed -i 's/^offline = true$//' .cargo/config.toml
+sed -i 's/^offline = true$//' .cargo/config.toml || true
 
 %build
 %cargo_build
 
 %install
-%cargo_install
+%cargo_install -p whiskers
 
 %if %{with check}
 %check

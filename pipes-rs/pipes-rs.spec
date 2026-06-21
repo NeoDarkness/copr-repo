@@ -1,8 +1,6 @@
 %bcond_without check
 
-%global cargo_install_lib 0
-%global __cargo_common_opts %{?_smp_mflags} --locked
-%global cargo_install_args -p pipes-rs
+%global debug_package %{nil}
 
 Name:           pipes-rs
 Version:        1.6.4
@@ -22,7 +20,6 @@ pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
 
 %prep
 %autosetup
-
 %cargo_prep -N
 
 sed -i 's/^offline = true$//' .cargo/config.toml
@@ -31,7 +28,7 @@ sed -i 's/^offline = true$//' .cargo/config.toml
 %cargo_build
 
 %install
-%cargo_install
+%cargo_install_crate
 
 %if %{with check}
 %check
