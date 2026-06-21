@@ -1,5 +1,3 @@
-%global debug_package %{nil}
-
 Name:           pipes-rs
 Version:        1.6.4
 Release:        %autorelease

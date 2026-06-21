@@ -1,5 +1,3 @@
-%global debug_package %{nil}
-
 Name:           whiskers
 Version:        2.9.0
 Release:        %autorelease
