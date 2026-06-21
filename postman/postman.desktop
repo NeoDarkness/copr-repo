@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Postman
+Comment=API platform for building and using APIs
+Exec=postman %U
+Terminal=false
+Type=Application
+Icon=postman
+Categories=Development;Network;
+StartupNotify=true
+StartupWMClass=Postman
+MimeType=x-scheme-handler/postman;
