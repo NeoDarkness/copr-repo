@@ -9,6 +9,7 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildRequires:  rust-packaging
 BuildRequires:  cargo-rpm-macros
+
 %description
 Whiskers is a CLI tool used to generate Catppuccin ports.
 
