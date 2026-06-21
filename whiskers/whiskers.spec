@@ -1,10 +1,4 @@
-%bcond_without check
-
-%global cargo_install_lib 0
-%global __cargo_common_opts %{?_smp_mflags} --locked
-
 %global debug_package %{nil}
-%global __strip /bin/true
 
 Name:           whiskers
 Version:        2.9.0
@@ -17,27 +11,24 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 ExclusiveArch:  %{rust_arches}
 
-BuildRequires:  cargo-rpm-macros >= 26
+BuildRequires:  cargo
 
 %description
 Whiskers CLI tool used to generate Catppuccin ports.
 
 %prep
 %autosetup
-%cargo_prep -N
-
-sed -i 's/^offline = true$//' .cargo/config.toml
 
 %build
-%cargo_build
+export RUSTFLAGS="%{build_rustflags}"
+cargo build --release --locked
 
 %install
-%cargo_install
+install -Dm0755 target/release/whiskers %{buildroot}%{_bindir}/whiskers
 
-%if %{with check}
 %check
-%cargo_test
-%endif
+export RUSTFLAGS="%{build_rustflags}"
+cargo test --release --locked
 
 %files
 %license LICENSE
