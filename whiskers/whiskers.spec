@@ -13,7 +13,7 @@ Summary:        Soothing port creation tool
 
 License:        MIT
 URL:            https://github.com/catppuccin/whiskers
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 ExclusiveArch:  %{rust_arches}
 

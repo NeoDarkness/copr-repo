@@ -13,7 +13,7 @@ Summary:        Animated terminal screensaver inspired by pipes.sh
 
 License:        BlueOak-1.0.0
 URL:            https://github.com/lhvy/pipes-rs
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 ExclusiveArch:  %{rust_arches}
 
