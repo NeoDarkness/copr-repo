@@ -12,8 +12,9 @@ BuildArch:      noarch
 BuildRequires:  python3
 BuildRequires:  python3-pyside6
 BuildRequires:  qt6-qtsvg
-BuildRequires:  inkscape
+BuildRequires:  whiskers
 BuildRequires:  xcursorgen
+BuildRequires:  inkscape
 BuildRequires:  just
 
 %description
