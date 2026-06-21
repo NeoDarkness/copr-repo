@@ -11,7 +11,6 @@ BuildArch:      noarch
 
 BuildRequires:  python3
 BuildRequires:  python3-pyside6
-BuildRequires:  qt6-qtsvg
 BuildRequires:  whiskers
 BuildRequires:  xcursorgen
 BuildRequires:  inkscape
@@ -28,13 +27,12 @@ just all
 
 %install
 install -d %{buildroot}%{_datadir}/icons
-
 cp -a dist/. %{buildroot}%{_datadir}/icons/
 
 %files
 %license LICENSE
 %doc README.md AUTHORS
-%{_datadir}/icons/
+%{_datadir}/icons/catppuccin-*/
 
 %changelog
 %autochangelog
