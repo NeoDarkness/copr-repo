@@ -2,6 +2,7 @@
 
 %global cargo_install_lib 0
 %global __cargo_common_opts %{?_smp_mflags} --locked
+%global cargo_install_args -p pipes-rs
 
 Name:           pipes-rs
 Version:        1.6.4
