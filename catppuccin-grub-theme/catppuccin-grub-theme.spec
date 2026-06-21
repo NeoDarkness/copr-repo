@@ -8,12 +8,10 @@ Release:        %autorelease
 Summary:        Catppuccin themes for GRUB
 
 License:        MIT
-URL:            https://github.com/catppuccin/grub
+URL:            https://github.com
 Source0:        %{url}/archive/%{commit}/grub-%{commit}.tar.gz
 
 BuildArch:      noarch
-
-%global themedir /boot/grub2/themes
 
 %description
 Catppuccin GRUB themes (Frappé, Latte, Macchiato, Mocha).
@@ -22,13 +20,13 @@ Catppuccin GRUB themes (Frappé, Latte, Macchiato, Mocha).
 %autosetup -n grub-%{commit}
 
 %install
-install -d %{buildroot}%{themedir}
-cp -a src/. %{buildroot}%{themedir}/
+install -dm0755 %{buildroot}/boot/grub2/themes
+cp -a src/. %{buildroot}/boot/grub2/themes/
 
 %files
 %license LICENSE
 %doc README.md
-%{themedir}/catppuccin-*-grub-theme/
+/boot/grub2/themes/
 
 %changelog
 %autochangelog

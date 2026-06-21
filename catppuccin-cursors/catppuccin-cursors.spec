@@ -26,13 +26,13 @@ Catppuccin cursor themes generated using whiskers.
 just all
 
 %install
-install -d %{buildroot}%{_datadir}/icons
+install -dm0755 %{buildroot}%{_datadir}/icons
 cp -a dist/. %{buildroot}%{_datadir}/icons/
 
 %files
 %license LICENSE
 %doc README.md AUTHORS
-%{_datadir}/icons/catppuccin-*/
+%{_datadir}/icons/
 
 %changelog
 %autochangelog

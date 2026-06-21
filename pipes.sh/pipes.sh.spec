@@ -18,8 +18,6 @@ pipes.sh is an animated pipes terminal screensaver inspired by the classic pipes
 %prep
 %autosetup
 
-%build
-
 %install
 %make_install PREFIX=%{_prefix}
 

@@ -4,7 +4,7 @@ Release:        %autorelease
 Summary:        Soothing port creation tool for the high-spirited
 
 License:        MIT
-URL:            https://github.com/catppuccin/whiskers
+URL:            https://github.com
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
 BuildRequires:  cargo-rpm-macros >= 24
@@ -15,9 +15,7 @@ Whiskers is a CLI tool used to generate Catppuccin ports.
 %prep
 %autosetup
 %cargo_prep
-
-%generate_buildrequires
-%cargo_generate_buildrequires
+sed -i 's/^offline = true$/offline = false/' .cargo/config.toml
 
 %build
 %cargo_build

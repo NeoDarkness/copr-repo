@@ -33,8 +33,6 @@ StartupWMClass=Postman
 MimeType=x-scheme-handler/postman;
 EOF
 
-%build
-
 %install
 install -d %{buildroot}/opt/postman
 cp -a Postman/. %{buildroot}/opt/postman/
