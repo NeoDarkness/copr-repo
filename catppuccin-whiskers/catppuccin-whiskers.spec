@@ -14,7 +14,7 @@ BuildRequires:  rust
 Whiskers is a CLI tool used to generate Catppuccin ports.
 
 %prep
-%autosetup
+%autosetup -n whiskers-%{version}
 
 %build
 cargo build --release --locked

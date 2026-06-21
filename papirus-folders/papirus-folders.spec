@@ -20,7 +20,7 @@ Papirus Folders is a utility for changing folder colors in Papirus icon themes.
 %build
 
 %install
-install -D -m 0755 papirus-folders %{buildroot}%{_bindir}/papirus-folders
+install -Dpm0755 papirus-folders %{buildroot}%{_bindir}/papirus-folders
 
 %files
 %license LICENSE

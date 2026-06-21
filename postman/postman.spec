@@ -33,25 +33,27 @@ StartupWMClass=Postman
 MimeType=x-scheme-handler/postman;
 EOF
 
+%build
+
 %install
-install -d %{buildroot}/opt/postman
-cp -a Postman/. %{buildroot}/opt/postman/
+install -d %{buildroot}%{_prefix}/opt/postman
+cp -a Postman/. %{buildroot}%{_prefix}/opt/postman/
 
 install -d %{buildroot}%{_bindir}
-ln -s /opt/postman/Postman %{buildroot}%{_bindir}/postman
+ln -s %{_prefix}/opt/postman/Postman %{buildroot}%{_bindir}/postman
 
+install -d %{buildroot}%{_datadir}/applications
 desktop-file-install \
     --dir=%{buildroot}%{_datadir}/applications \
     postman.desktop
 
-install -d %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
-install -m 0644 \
+install -Dpm0644 \
     Postman/app/resources/app/assets/icon.png \
     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %files
-/opt/postman/
-/usr/bin/postman
+%{_prefix}/opt/postman/
+%{_bindir}/postman
 %{_datadir}/applications/postman.desktop
 %{_datadir}/icons/hicolor/128x128/apps/postman.png
 
