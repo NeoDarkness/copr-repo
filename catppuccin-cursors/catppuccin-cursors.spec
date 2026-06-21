@@ -3,7 +3,7 @@ Version:        2.0.0
 Release:        %autorelease
 Summary:        Catppuccin cursor themes (Frappé, Latte, Macchiato, Mocha)
 
-License:        GPL-3.0-or-later
+License:        GPL-2.0-only
 URL:            https://github.com/catppuccin/cursors
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 

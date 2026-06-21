@@ -3,7 +3,7 @@ Version:        1.14.0
 Release:        %autorelease
 Summary:        Folder color switching utility for Papirus icon themes
 
-License:        GPL-3.0-only
+License:        MIT
 URL:            https://github.com/PapirusDevelopmentTeam/papirus-folders
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
