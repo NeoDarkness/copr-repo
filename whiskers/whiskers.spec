@@ -7,6 +7,8 @@ License:        MIT
 URL:            https://github.com/catppuccin/whiskers
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
+ExclusiveArch:  %{rust_arches}
+
 BuildRequires:  cargo
 
 %description
@@ -16,12 +18,14 @@ Whiskers CLI tool used to generate Catppuccin ports.
 %autosetup
 
 %build
+export RUSTFLAGS="%{build_rustflags}"
 cargo build --release --locked
 
 %install
 install -Dm0755 target/release/whiskers %{buildroot}%{_bindir}/whiskers
 
 %check
+export RUSTFLAGS="%{build_rustflags}"
 cargo test --release --locked
 
 %files
