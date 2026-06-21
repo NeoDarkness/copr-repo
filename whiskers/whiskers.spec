@@ -7,22 +7,23 @@ License:        MIT
 URL:            https://github.com/catppuccin/whiskers
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 
-BuildRequires:  cargo
-
+BuildRequires:  rust-packaging
+BuildRequires:  cargo-rpm-macros
 %description
 Whiskers is a CLI tool used to generate Catppuccin ports.
 
 %prep
 %autosetup
+%cargo_prep
 
 %build
-cargo build --release --locked
+%cargo_build
 
 %install
-install -Dm0755 target/release/whiskers %{buildroot}%{_bindir}/whiskers
+%cargo_install
 
 %check
-cargo test --release --locked
+%cargo_test
 
 %files
 %license LICENSE
