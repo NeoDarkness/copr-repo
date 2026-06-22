@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Postman
+GenericName=API Client
 Comment=API platform for building and using APIs
 Exec=postman %U
 Terminal=false

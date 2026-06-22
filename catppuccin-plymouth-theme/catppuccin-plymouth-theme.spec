@@ -13,7 +13,9 @@ Source0:        %{url}/archive/%{commit}/plymouth-%{commit}.tar.gz
 
 BuildArch:      noarch
 
-Description:
+Requires:       plymouth
+
+%description
 Catppuccin Plymouth themes for all variants (Frappé, Latte, Macchiato, Mocha).
 
 %package latte

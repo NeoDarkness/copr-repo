@@ -16,7 +16,7 @@ BuildArch:      noarch
 Requires:       papirus-folders
 Requires:       papirus-icon-theme
 
-Description:
+%description
 Catppuccin folder colors for Papirus icon themes.
 
 This package provides Catppuccin folder color variants for use with the

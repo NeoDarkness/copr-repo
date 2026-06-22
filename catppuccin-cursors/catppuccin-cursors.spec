@@ -15,7 +15,9 @@ BuildRequires:  xcursorgen
 BuildRequires:  inkscape
 BuildRequires:  just
 
-Description:
+Requires:       hicolor-icon-theme
+
+%description
 Catppuccin cursor themes generated using whiskers.
 
 %package latte
@@ -61,16 +63,16 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 %doc README.md CHANGELOG.md
 
 %files latte
-%{_datadir}/icons/catppuccin-latte-*-cursors
+%{_datadir}/icons/catppuccin-latte-*
 
 %files frappe
-%{_datadir}/icons/catppuccin-frappe-*-cursors
+%{_datadir}/icons/catppuccin-frappe-*
 
 %files macchiato
-%{_datadir}/icons/catppuccin-macchiato-*-cursors
+%{_datadir}/icons/catppuccin-macchiato-*
 
 %files mocha
-%{_datadir}/icons/catppuccin-mocha-*-cursors
+%{_datadir}/icons/catppuccin-mocha-*
 
 %changelog
 %autochangelog

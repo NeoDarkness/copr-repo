@@ -13,7 +13,9 @@ Source0:        %{url}/archive/%{commit}/grub-%{commit}.tar.gz
 
 BuildArch:      noarch
 
-Description:
+Requires:       grub2-common
+
+%description
 Catppuccin themes for GRUB2 (Frappé, Latte, Macchiato, Mocha).
 
 %package latte
@@ -56,16 +58,16 @@ cp -a src/* %{buildroot}/boot/grub2/themes/
 %doc README.md
 
 %files latte
-/boot/grub2/themes/catppuccin-latte-grub-theme
+/boot/grub2/themes/catppuccin-latte-*
 
 %files frappe
-/boot/grub2/themes/catppuccin-frappe-grub-theme
+/boot/grub2/themes/catppuccin-frappe-*
 
 %files macchiato
-/boot/grub2/themes/catppuccin-macchiato-grub-theme
+/boot/grub2/themes/catppuccin-macchiato-*
 
 %files mocha
-/boot/grub2/themes/catppuccin-mocha-grub-theme
+/boot/grub2/themes/catppuccin-mocha-*
 
 %changelog
 %autochangelog
