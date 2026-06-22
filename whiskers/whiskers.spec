@@ -45,9 +45,7 @@ Whiskers CLI tool used to generate Catppuccin ports.
 
 %build
 %cargo_vendor_manifest
-%cargo_build -a
-%{cargo_license_summary}
-%{cargo_license} > LICENSE.dependencies
+%cargo_build_crate -a
 
 %check
 %cargo_test -a
