@@ -29,7 +29,7 @@ cp -a themes/. %{buildroot}%{_datadir}/plymouth/themes/
 %files
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/*
+%{_datadir}/plymouth/themes/catppuccin-*
 
 %changelog
 %autochangelog

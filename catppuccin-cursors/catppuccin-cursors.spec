@@ -32,7 +32,7 @@ cp -a dist/. %{buildroot}%{_datadir}/icons/
 %files
 %license LICENSE
 %doc README.md AUTHORS
-%{_datadir}/icons/*
+%{_datadir}/icons/catppuccin-*-cursors
 
 %changelog
 %autochangelog
