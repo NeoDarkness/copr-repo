@@ -5,7 +5,14 @@ Version:        1.6.4
 Release:        %autorelease
 Summary:        Animated terminal screensaver inspired by pipes.sh
 
-License:        BlueOak-1.0.0
+License:        %{shrink:
+    BlueOak-1.0.0 AND
+    MIT AND
+    Apache-2.0 AND
+    (MIT OR Apache-2.0) AND
+    (Apache-2.0 OR MIT) AND
+    (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT)
+}
 
 %forgemeta
 
