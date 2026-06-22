@@ -13,14 +13,17 @@ Source0:        %{url}/archive/%{commit}/plymouth-%{commit}.tar.gz
 
 BuildArch:      noarch
 
-Requires:       plymouth
+Recommends:     %{name}-latte = %{?epoch:%{epoch}:}%{version}-%{release}
+Recommends:     %{name}-frappe = %{?epoch:%{epoch}:}%{version}-%{release}
+Recommends:     %{name}-macchiato = %{?epoch:%{epoch}:}%{version}-%{release}
+Recommends:     %{name}-mocha = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description
 Catppuccin Plymouth themes for all variants (Frappé, Latte, Macchiato, Mocha).
 
 %package latte
 Summary:        Catppuccin Latte Plymouth theme
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
@@ -29,7 +32,7 @@ Catppuccin Latte flavor theme for Plymouth.
 
 %package frappe
 Summary:        Catppuccin Frappé Plymouth theme
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
@@ -38,7 +41,7 @@ Catppuccin Frappé flavor theme for Plymouth.
 
 %package macchiato
 Summary:        Catppuccin Macchiato Plymouth theme
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
@@ -47,7 +50,7 @@ Catppuccin Macchiato flavor theme for Plymouth.
 
 %package mocha
 Summary:        Catppuccin Mocha Plymouth theme
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
@@ -66,16 +69,16 @@ cp -a themes/* %{buildroot}%{_datadir}/plymouth/themes/
 %doc README.md
 
 %files latte
-%{_datadir}/plymouth/themes/catppuccin-latte*
+%{_datadir}/plymouth/themes/catppuccin-latte/*
 
 %files frappe
-%{_datadir}/plymouth/themes/catppuccin-frappe*
+%{_datadir}/plymouth/themes/catppuccin-frappe/*
 
 %files macchiato
-%{_datadir}/plymouth/themes/catppuccin-macchiato*
+%{_datadir}/plymouth/themes/catppuccin-macchiato/*
 
 %files mocha
-%{_datadir}/plymouth/themes/catppuccin-mocha*
+%{_datadir}/plymouth/themes/catppuccin-mocha/*
 
 %changelog
 %autochangelog

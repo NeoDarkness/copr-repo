@@ -13,35 +13,38 @@ Source0:        %{url}/archive/%{commit}/grub-%{commit}.tar.gz
 
 BuildArch:      noarch
 
-Requires:       grub2-common
+Recommends:     %{name}-latte = %{?epoch:%{epoch}:}%{version}-%{release}
+Recommends:     %{name}-frappe = %{?epoch:%{epoch}:}%{version}-%{release}
+Recommends:     %{name}-macchiato = %{?epoch:%{epoch}:}%{version}-%{release}
+Recommends:     %{name}-mocha = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description
 Catppuccin themes for GRUB2 (Frappé, Latte, Macchiato, Mocha).
 
 %package latte
 Summary:        Catppuccin Latte GRUB2 theme
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description latte
 Catppuccin Latte flavor theme for GRUB2.
 
 %package frappe
 Summary:        Catppuccin Frappé GRUB2 theme
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description frappe
 Catppuccin Frappé flavor theme for GRUB2.
 
 %package macchiato
 Summary:        Catppuccin Macchiato GRUB2 theme
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description macchiato
 Catppuccin Macchiato flavor theme for GRUB2.
 
 %package mocha
 Summary:        Catppuccin Mocha GRUB2 theme
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description mocha
 Catppuccin Mocha flavor theme for GRUB2.
@@ -58,16 +61,16 @@ cp -a src/* %{buildroot}/boot/grub2/themes/
 %doc README.md
 
 %files latte
-/boot/grub2/themes/catppuccin-latte-*
+/boot/grub2/themes/catppuccin-latte-grub-theme/*
 
 %files frappe
-/boot/grub2/themes/catppuccin-frappe-*
+/boot/grub2/themes/catppuccin-frappe-grub-theme/*
 
 %files macchiato
-/boot/grub2/themes/catppuccin-macchiato-*
+/boot/grub2/themes/catppuccin-macchiato-grub-theme/*
 
 %files mocha
-/boot/grub2/themes/catppuccin-mocha-*
+/boot/grub2/themes/catppuccin-mocha-grub-theme/*
 
 %changelog
 %autochangelog
