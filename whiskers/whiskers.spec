@@ -57,8 +57,11 @@ install -Dm0755 target/rpm/whiskers \
     %{buildroot}%{_bindir}/whiskers
 
 %files
-%license LICENSE LICENSE.dependencies cargo-vendor.txt
-%doc README.md CHANGELOG.md
+%license LICENSE
+%license LICENSE.dependencies
+%license cargo-vendor.txt
+%doc README.md
+%doc CHANGELOG.md
 %{_bindir}/whiskers
 
 %changelog

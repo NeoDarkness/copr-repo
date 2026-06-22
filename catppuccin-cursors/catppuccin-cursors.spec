@@ -63,7 +63,9 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 
 %files latte
 %license LICENSE
-%doc README.md CHANGELOG.md AUTHORS
+%doc README.md
+%doc CHANGELOG.md
+%doc AUTHORS
 %{_datadir}/icons/catppuccin-latte-*-cursors
 %exclude %{_datadir}/icons/catppuccin-latte-*-cursors/LICENSE
 %exclude %{_datadir}/icons/catppuccin-latte-*-cursors/AUTHORS
@@ -71,7 +73,9 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 
 %files frappe
 %license LICENSE
-%doc README.md CHANGELOG.md AUTHORS
+%doc README.md
+%doc CHANGELOG.md
+%doc AUTHORS
 %{_datadir}/icons/catppuccin-frappe-*-cursors
 %exclude %{_datadir}/icons/catppuccin-frappe-*-cursors/LICENSE
 %exclude %{_datadir}/icons/catppuccin-frappe-*-cursors/AUTHORS
@@ -79,7 +83,9 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 
 %files macchiato
 %license LICENSE
-%doc README.md CHANGELOG.md AUTHORS
+%doc README.md
+%doc CHANGELOG.md
+%doc AUTHORS
 %{_datadir}/icons/catppuccin-macchiato-*-cursors
 %exclude %{_datadir}/icons/catppuccin-macchiato-*-cursors/LICENSE
 %exclude %{_datadir}/icons/catppuccin-macchiato-*-cursors/AUTHORS
@@ -87,7 +93,9 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 
 %files mocha
 %license LICENSE
-%doc README.md CHANGELOG.md AUTHORS
+%doc README.md
+%doc CHANGELOG.md
+%doc AUTHORS
 %{_datadir}/icons/catppuccin-mocha-*-cursors
 %exclude %{_datadir}/icons/catppuccin-mocha-*-cursors/LICENSE
 %exclude %{_datadir}/icons/catppuccin-mocha-*-cursors/AUTHORS
