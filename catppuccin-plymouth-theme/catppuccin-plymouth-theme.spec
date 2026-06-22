@@ -1,3 +1,4 @@
+%global forgeurl https://github.com/catppuccin/plymouth
 %global commit   198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 
 Name:           catppuccin-plymouth-theme

@@ -1,3 +1,5 @@
+%global forgeurl https://github.com/lhvy/pipes-rs
+
 Name:           pipes-rs
 Version:        1.6.4
 Release:        %autorelease

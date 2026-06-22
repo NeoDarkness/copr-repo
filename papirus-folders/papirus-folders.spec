@@ -1,3 +1,5 @@
+%global forgeurl https://github.com/PapirusDevelopmentTeam/papirus-folders
+
 Name:           papirus-folders
 Version:        1.14.0
 Release:        %autorelease

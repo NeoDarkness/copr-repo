@@ -1,3 +1,5 @@
+%global forgeurl https://github.com/catppuccin/cursors
+
 Name:           catppuccin-cursors
 Version:        2.0.0
 Release:        %autorelease

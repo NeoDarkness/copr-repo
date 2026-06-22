@@ -1,3 +1,5 @@
+%global forgeurl https://github.com/catppuccin/whiskers
+
 Name:           whiskers
 Version:        2.9.0
 Release:        %autorelease
