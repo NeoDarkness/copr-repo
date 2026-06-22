@@ -22,8 +22,6 @@ Whiskers CLI tool used to generate Catppuccin ports.
 %prep
 %forgeautosetup
 %cargo_prep
-%generate_buildrequires
-%cargo_generate_buildrequires -a
 
 %build
 %cargo_build -a
