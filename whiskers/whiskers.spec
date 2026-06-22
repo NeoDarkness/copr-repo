@@ -6,6 +6,9 @@ Release:        %autorelease
 Summary:        Soothing port creation tool
 
 License:        MIT
+
+%forgemeta
+
 URL:            https://github.com/catppuccin/whiskers
 Source0:        %forgesource
 

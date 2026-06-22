@@ -6,6 +6,9 @@ Release:        %autorelease
 Summary:        Animated terminal screensaver inspired by pipes.sh
 
 License:        BlueOak-1.0.0
+
+%forgemeta
+
 URL:            https://github.com/lhvy/pipes-rs
 Source0:        %forgesource
 
