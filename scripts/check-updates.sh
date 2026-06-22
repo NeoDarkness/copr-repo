@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Auto sync RPM spec versions (GitHub + Postman + git snapshot)
-# COPR-ready
+# Auto sync RPM spec versions (GitHub + Postman + Forge snapshot commit only)
 
 set -euo pipefail
 
@@ -39,19 +38,15 @@ get_spec_url() {
 
 get_spec_commit() {
     awk '
-        /^%global[[:space:]]+commit[[:space:]]+/ {
+        /^%global[[:space:]]+commit/ {
             print $3
             exit
         }
     ' "$1"
 }
 
-is_git_snapshot() {
-    local v="$1"
-
-    [[ "$v" == *"%{commitdate}"* ]] || \
-    [[ "$v" == *"git%{shortcommit}"* ]] || \
-    [[ "$v" =~ ^0\^ ]]
+is_forge_snapshot() {
+    grep -q "^%global[[:space:]]\+commit" "$1"
 }
 
 # -------------------------
@@ -66,7 +61,7 @@ github_api() {
 }
 
 # -------------------------
-# GitHub
+# GitHub helpers
 # -------------------------
 
 extract_github_repo() {
@@ -103,7 +98,7 @@ get_github_commit() {
 }
 
 # -------------------------
-# Postman (official API)
+# Postman
 # -------------------------
 
 get_postman_version() {
@@ -124,7 +119,6 @@ update_version() {
         "s|^Version:[[:space:]]+.*|Version:        $version|" \
         "$spec"
 
-    # IMPORTANT: sync with %autorelease
     sed -i -E \
         "s|^Release:[[:space:]]+.*|Release:        %autorelease|" \
         "$spec"
@@ -134,15 +128,8 @@ update_git_snapshot() {
     local spec="$1"
     local commit="$2"
 
-    local date
-    date=$(date +%Y%m%d)
-
     sed -i -E \
         "s|^%global[[:space:]]+commit[[:space:]]+.*|%global commit      $commit|" \
-        "$spec"
-
-    sed -i -E \
-        "s|^%global[[:space:]]+commitdate[[:space:]]+.*|%global commitdate  $date|" \
         "$spec"
 }
 
@@ -174,9 +161,9 @@ for dir in "$REPO_ROOT"/*; do
     echo "  Current: $version"
 
     # -------------------------
-    # Git snapshot
+    # Forge snapshot (commit-only)
     # -------------------------
-    if is_git_snapshot "$version"; then
+    if is_forge_snapshot "$spec"; then
         commit=$(get_spec_commit "$spec")
         latest=$(get_github_commit "$url" || true)
 
@@ -201,7 +188,7 @@ for dir in "$REPO_ROOT"/*; do
     fi
 
     # -------------------------
-    # Version fetch
+    # Versioned packages (GitHub / Postman)
     # -------------------------
     if [[ "$pkg" == "postman" ]]; then
         latest=$(get_postman_version || true)
