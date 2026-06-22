@@ -1,32 +1,40 @@
-Name:           papirus-folders
-Version:        1.14.0
+%global forgeurl https://github.com/lhvy/pipes-rs
+
+Name:           pipes-rs
+Version:        1.6.4
 Release:        %autorelease
-Summary:        Folder color switching utility for Papirus icon themes
+Summary:        Animated terminal screensaver inspired by pipes.sh
 
-License:        MIT
-URL:            https://github.com/PapirusDevelopmentTeam/papirus-folders
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
+License:        BlueOak-1.0.0
+URL:            https://github.com/lhvy/pipes-rs
+Source0:        %forgesource
 
-BuildArch:      noarch
-BuildRequires:  make
+ExclusiveArch:  %{rust_arches}
 
-Requires:       papirus-icon-theme
+BuildRequires:  cargo
 
 %description
-Papirus Folders is a utility for changing folder colors in Papirus icon themes.
+pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
 
 %prep
-%autosetup
+%forgeautosetup
+
+%build
+export RUSTFLAGS="%{build_rustflags}"
+cargo build --release --locked
 
 %install
-%make_install PREFIX=%{_prefix} ZSHCOMPDIR=%{zsh_completions_dir}
+install -Dm0755 target/release/pipes-rs \
+    %{buildroot}%{_bindir}/pipes-rs
+
+%check
+export RUSTFLAGS="%{build_rustflags}"
+cargo test --release --locked
 
 %files
-%license LICENSE
+%license LICENSE.md
 %doc README.md
-%{_bindir}/papirus-folders
-%{bash_completions_dir}/papirus-folders
-%{zsh_completions_dir}/_papirus-folders
+%{_bindir}/pipes-rs
 
 %changelog
 %autochangelog
