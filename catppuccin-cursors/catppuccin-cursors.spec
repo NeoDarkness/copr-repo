@@ -1,11 +1,16 @@
+%global forgeurl https://github.com/catppuccin/cursors
+
 Name:           catppuccin-cursors
 Version:        2.0.0
 Release:        %autorelease
 Summary:        Catppuccin cursor themes
 
 License:        GPL-2.0-only
+
+%forgemeta
+
 URL:            https://github.com/catppuccin/cursors
-Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
+Source0:        %forgesource
 
 BuildArch:      noarch
 BuildRequires:  python3-pyside6
@@ -47,7 +52,7 @@ Summary:        Catppuccin Mocha cursor theme
 Catppuccin Mocha flavor cursor theme.
 
 %prep
-%autosetup -n cursors-%{version}
+%forgeautosetup
 
 %build
 just all
@@ -56,34 +61,33 @@ just all
 install -d %{buildroot}%{_datadir}/icons
 cp -a dist/* %{buildroot}%{_datadir}/icons/
 
-
 %files latte
-%license LICENSE AUTHORS
-%doc README.md CHANGELOG.md
+%license LICENSE
+%doc README.md CHANGELOG.md AUTHORS
 %{_datadir}/icons/catppuccin-latte-*-cursors
 %exclude %{_datadir}/icons/catppuccin-latte-*-cursors/LICENSE
 %exclude %{_datadir}/icons/catppuccin-latte-*-cursors/AUTHORS
 %exclude %{_datadir}/icons/catppuccin-latte-*-cursors/manifest.hl
 
 %files frappe
-%license LICENSE AUTHORS
-%doc README.md CHANGELOG.md
+%license LICENSE
+%doc README.md CHANGELOG.md AUTHORS
 %{_datadir}/icons/catppuccin-frappe-*-cursors
 %exclude %{_datadir}/icons/catppuccin-frappe-*-cursors/LICENSE
 %exclude %{_datadir}/icons/catppuccin-frappe-*-cursors/AUTHORS
 %exclude %{_datadir}/icons/catppuccin-frappe-*-cursors/manifest.hl
 
 %files macchiato
-%license LICENSE AUTHORS
-%doc README.md CHANGELOG.md
+%license LICENSE
+%doc README.md CHANGELOG.md AUTHORS
 %{_datadir}/icons/catppuccin-macchiato-*-cursors
 %exclude %{_datadir}/icons/catppuccin-macchiato-*-cursors/LICENSE
 %exclude %{_datadir}/icons/catppuccin-macchiato-*-cursors/AUTHORS
 %exclude %{_datadir}/icons/catppuccin-macchiato-*-cursors/manifest.hl
 
 %files mocha
-%license LICENSE AUTHORS
-%doc README.md CHANGELOG.md
+%license LICENSE
+%doc README.md CHANGELOG.md AUTHORS
 %{_datadir}/icons/catppuccin-mocha-*-cursors
 %exclude %{_datadir}/icons/catppuccin-mocha-*-cursors/LICENSE
 %exclude %{_datadir}/icons/catppuccin-mocha-*-cursors/AUTHORS
