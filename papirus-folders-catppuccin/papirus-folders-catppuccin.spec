@@ -32,7 +32,7 @@ cp -a src/* %{buildroot}%{_datadir}/icons/Papirus/
 %files
 %license LICENSE
 %doc README.md
-%{_datadir}/icons/Papirus/*x*/places/folder-cat-*.svg
+%{_datadir}/icons/Papirus/*x*
 
 %changelog
 %autochangelog
