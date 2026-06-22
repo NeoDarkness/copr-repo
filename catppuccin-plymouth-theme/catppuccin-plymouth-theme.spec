@@ -1,3 +1,4 @@
+%global forgeurl    https://github.com/catppuccin/plymouth
 %global commit      198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global commitdate  20250428
@@ -8,8 +9,11 @@ Release:        %autorelease
 Summary:        Soothing pastel themes for Plymouth
 
 License:        MIT
+
+%forgemeta
+
 URL:            https://github.com/catppuccin/plymouth
-Source0:        %{url}/archive/%{commit}/plymouth-%{commit}.tar.gz
+Source0:        %forgesource
 
 BuildArch:      noarch
 
@@ -54,7 +58,7 @@ Requires:       plymouth-system-theme
 Catppuccin Mocha flavor theme for Plymouth.
 
 %prep
-%autosetup -n plymouth-%{commit}
+%forgeautosetup
 
 %install
 install -d %{buildroot}%{_datadir}/plymouth/themes

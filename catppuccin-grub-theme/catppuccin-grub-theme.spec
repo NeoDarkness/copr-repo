@@ -1,3 +1,4 @@
+%global forgeurl    https://github.com/catppuccin/grub
 %global commit      0a37ab19f654e77129b409fed371891c01ffd0b9
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global commitdate  20250711
@@ -8,8 +9,11 @@ Release:        %autorelease
 Summary:        Soothing pastel themes for GRUB2
 
 License:        MIT
+
+%forgemeta
+
 URL:            https://github.com/catppuccin/grub
-Source0:        %{url}/archive/%{commit}/grub-%{commit}.tar.gz
+Source0:        %forgesource
 
 BuildArch:      noarch
 
@@ -46,7 +50,7 @@ Summary:        Catppuccin Mocha GRUB2 theme
 Catppuccin Mocha flavor theme for GRUB2.
 
 %prep
-%autosetup -n grub-%{commit}
+%forgeautosetup
 
 %install
 install -d %{buildroot}/boot/grub2/themes
