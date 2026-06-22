@@ -18,6 +18,7 @@ License:        %{shrink:
 
 URL:            https://github.com/lhvy/pipes-rs
 Source0:        %forgesource
+Source1:        %{name}-%{version}-vendor.tar.gz
 
 ExclusiveArch:  %{rust_arches}
 
@@ -28,6 +29,7 @@ pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
 
 %prep
 %forgeautosetup
+%setup -q -T -D -a 1
 %cargo_prep -v vendor
 
 %build
