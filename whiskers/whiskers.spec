@@ -9,30 +9,31 @@ License:        MIT
 
 %forgemeta
 
-URL:            https://github.com/catppuccin/whiskers
+URL:            %{forgeurl}
 Source0:        %forgesource
 
 ExclusiveArch:  %{rust_arches}
 
-BuildRequires:  cargo
+BuildRequires:  cargo-rpm-macros >= 24
 
 %description
 Whiskers CLI tool used to generate Catppuccin ports.
 
 %prep
 %forgeautosetup
+%cargo_prep
+%generate_buildrequires
+%cargo_generate_buildrequires -a
 
 %build
-export RUSTFLAGS="%{build_rustflags}"
-cargo build --release --locked
-
-%install
-install -Dm0755 target/release/whiskers \
-    %{buildroot}%{_bindir}/whiskers
+%cargo_build -a
 
 %check
-export RUSTFLAGS="%{build_rustflags}"
-cargo test --release --locked
+%cargo_test -a
+
+%install
+install -Dm0755 target/rpm/whiskers \
+    %{buildroot}%{_bindir}/whiskers
 
 %files
 %license LICENSE
