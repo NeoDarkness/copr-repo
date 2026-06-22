@@ -1,4 +1,3 @@
-%global forgeurl https://github.com/catppuccin/papirus-folders
 %global commit   f83671d17ea67e335b34f8028a7e6d78bca735d7
 
 Name:           papirus-folders-catppuccin

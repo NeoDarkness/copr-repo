@@ -1,4 +1,3 @@
-%global forgeurl https://github.com/catppuccin/grub
 %global commit   0a37ab19f654e77129b409fed371891c01ffd0b9
 
 Name:           catppuccin-grub-theme

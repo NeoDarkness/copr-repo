@@ -1,5 +1,3 @@
-%global forgeurl https://github.com/catppuccin/whiskers
-
 Name:           whiskers
 Version:        2.9.0
 Release:        %autorelease
@@ -9,7 +7,7 @@ License:        MIT
 
 %forgemeta
 
-URL:            %{forgeurl}
+URL:            https://github.com/catppuccin/whiskers
 Source0:        %forgesource
 
 ExclusiveArch:  %{rust_arches}
