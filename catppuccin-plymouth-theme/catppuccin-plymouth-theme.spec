@@ -13,11 +13,6 @@ Source0:        %{url}/archive/%{commit}/plymouth-%{commit}.tar.gz
 
 BuildArch:      noarch
 
-Recommends:     %{name}-latte = %{?epoch:%{epoch}:}%{version}-%{release}
-Recommends:     %{name}-frappe = %{?epoch:%{epoch}:}%{version}-%{release}
-Recommends:     %{name}-macchiato = %{?epoch:%{epoch}:}%{version}-%{release}
-Recommends:     %{name}-mocha = %{?epoch:%{epoch}:}%{version}-%{release}
-
 %description
 Catppuccin Plymouth themes for all variants (Frappé, Latte, Macchiato, Mocha).
 

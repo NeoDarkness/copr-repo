@@ -14,11 +14,6 @@ BuildRequires:  xcursorgen
 BuildRequires:  inkscape
 BuildRequires:  just
 
-Recommends:     %{name}-latte = %{?epoch:%{epoch}:}%{version}-%{release}
-Recommends:     %{name}-frappe = %{?epoch:%{epoch}:}%{version}-%{release}
-Recommends:     %{name}-macchiato = %{?epoch:%{epoch}:}%{version}-%{release}
-Recommends:     %{name}-mocha = %{?epoch:%{epoch}:}%{version}-%{release}
-
 %description
 Catppuccin cursor themes generated using whiskers.
 
