@@ -11,7 +11,7 @@ License:        MIT AND (MIT OR Apache-2.0) AND BSD-3-Clause AND GPL-3.0-only
 
 URL:            https://github.com/catppuccin/whiskers
 Source0:        %forgesource
-Source1:        whiskers-%{version}-vendor.tar.gz
+Source1:        %{name}-%{version}-vendor.tar.gz
 
 ExclusiveArch:  %{rust_arches}
 
@@ -39,8 +39,7 @@ install -Dm0755 target/rpm/whiskers \
     %{buildroot}%{_bindir}/whiskers
 
 %files
-%license LICENSE LICENSE.dependencies
-%license cargo-vendor.txt
+%license LICENSE LICENSE.dependencies cargo-vendor.txt
 %doc README.md CHANGELOG.md
 %{_bindir}/whiskers
 
