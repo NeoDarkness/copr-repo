@@ -15,10 +15,10 @@ Source0:        %forgesource
 
 BuildArch:      noarch
 
-Requires:       %{name}-latte = %{?epoch:%{epoch}:}%{version}-%{release}
-Requires:       %{name}-frappe = %{?epoch:%{epoch}:}%{version}-%{release}
-Requires:       %{name}-macchiato = %{?epoch:%{epoch}:}%{version}-%{release}
-Requires:       %{name}-mocha = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       %{name}-latte = %{version}-%{release}
+Requires:       %{name}-frappe = %{version}-%{release}
+Requires:       %{name}-macchiato = %{version}-%{release}
+Requires:       %{name}-mocha = %{version}-%{release}
 
 %description
 Meta package that installs Catppuccin GRUB2 themes (Frappé, Latte, Macchiato, Mocha).
@@ -53,6 +53,10 @@ Catppuccin Mocha flavor theme for GRUB2.
 %install
 install -d %{buildroot}/boot/grub2/themes
 cp -a src/* %{buildroot}/boot/grub2/themes/
+
+%files
+%license LICENSE
+%doc README.md
 
 %files latte
 %license LICENSE

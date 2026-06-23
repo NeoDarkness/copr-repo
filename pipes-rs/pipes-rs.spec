@@ -34,10 +34,10 @@ pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
 
 %build
 %cargo_vendor_manifest
-%cargo_build_crate -a
+%cargo_build_crate
 
 %check
-%cargo_test -a
+%cargo_test
 
 %install
 install -Dm0755 target/rpm/pipes-rs \

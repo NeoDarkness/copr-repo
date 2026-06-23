@@ -19,10 +19,10 @@ BuildRequires:  xcursorgen
 BuildRequires:  inkscape
 BuildRequires:  just
 
-Requires:       %{name}-latte = %{?epoch:%{epoch}:}%{version}-%{release}
-Requires:       %{name}-frappe = %{?epoch:%{epoch}:}%{version}-%{release}
-Requires:       %{name}-macchiato = %{?epoch:%{epoch}:}%{version}-%{release}
-Requires:       %{name}-mocha = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       %{name}-latte = %{version}-%{release}
+Requires:       %{name}-frappe = %{version}-%{release}
+Requires:       %{name}-macchiato = %{version}-%{release}
+Requires:       %{name}-mocha = %{version}-%{release}
 
 %description
 Meta package that installs all Catppuccin cursor themes (Latte, Frappé, Macchiato, Mocha).
@@ -61,9 +61,15 @@ just all
 install -d %{buildroot}%{_datadir}/icons
 cp -a dist/* %{buildroot}%{_datadir}/icons/
 
+%files
+%license LICENSE
+%doc README.md 
+%doc CHANGELOG.md
+%doc AUTHORS
+
 %files latte
 %license LICENSE
-%doc README.md
+%doc README.md 
 %doc CHANGELOG.md
 %doc AUTHORS
 %{_datadir}/icons/catppuccin-latte-*-cursors
@@ -73,7 +79,7 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 
 %files frappe
 %license LICENSE
-%doc README.md
+%doc README.md 
 %doc CHANGELOG.md
 %doc AUTHORS
 %{_datadir}/icons/catppuccin-frappe-*-cursors
@@ -83,7 +89,7 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 
 %files macchiato
 %license LICENSE
-%doc README.md
+%doc README.md 
 %doc CHANGELOG.md
 %doc AUTHORS
 %{_datadir}/icons/catppuccin-macchiato-*-cursors
@@ -93,7 +99,7 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 
 %files mocha
 %license LICENSE
-%doc README.md
+%doc README.md 
 %doc CHANGELOG.md
 %doc AUTHORS
 %{_datadir}/icons/catppuccin-mocha-*-cursors
