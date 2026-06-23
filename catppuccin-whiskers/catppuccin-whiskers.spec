@@ -1,4 +1,4 @@
-%bcond_without check
+%bcond check 1
 
 %global forgeurl https://github.com/catppuccin/whiskers
 
@@ -51,8 +51,8 @@ Whiskers CLI tool used to generate Catppuccin ports.
 %cargo_vendor_manifest
 %cargo_build_crate
 
-%check
 %if %{with check}
+%check
 %cargo_test
 %endif
 

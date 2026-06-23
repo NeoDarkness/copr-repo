@@ -1,4 +1,4 @@
-%bcond_without check
+%bcond check 1
 
 %global forgeurl https://github.com/lhvy/pipes-rs
 
@@ -38,8 +38,8 @@ pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
 %cargo_vendor_manifest
 %cargo_build_crate
 
-%check
 %if %{with check}
+%check
 %cargo_test
 %endif
 
