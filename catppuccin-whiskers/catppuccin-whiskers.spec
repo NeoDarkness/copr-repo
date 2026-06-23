@@ -1,3 +1,5 @@
+%bcond_without check
+
 %global forgeurl https://github.com/catppuccin/whiskers
 
 Name:           catppuccin-whiskers
@@ -50,7 +52,9 @@ Whiskers CLI tool used to generate Catppuccin ports.
 %cargo_build_crate
 
 %check
+%if %{with check}
 %cargo_test
+%endif
 
 %install
 install -Dm0755 target/rpm/whiskers \

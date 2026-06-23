@@ -1,3 +1,5 @@
+%bcond_without check
+
 %global forgeurl https://github.com/lhvy/pipes-rs
 
 Name:           pipes-rs
@@ -37,7 +39,9 @@ pipes-rs is a Rust-based animated terminal screensaver inspired by pipes.sh.
 %cargo_build_crate
 
 %check
+%if %{with check}
 %cargo_test
+%endif
 
 %install
 install -Dm0755 target/rpm/pipes-rs \
