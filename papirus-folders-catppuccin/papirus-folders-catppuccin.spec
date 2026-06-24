@@ -27,9 +27,15 @@ papirus-folders utility.
 %prep
 %forgeautosetup
 
+%build
+# Nothing to build
+
 %install
 install -d %{buildroot}%{_datadir}/icons/Papirus
 cp -a src/* %{buildroot}%{_datadir}/icons/Papirus/
+
+%check
+# No test suite available
 
 %files
 %license LICENSE

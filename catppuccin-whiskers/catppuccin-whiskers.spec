@@ -36,6 +36,7 @@ Source0:        %forgesource
 Source1:        vendor.tar.gz
 
 BuildRequires:  cargo-rpm-macros >= 24
+BuildRequires:  gcc
 
 %description
 Whiskers CLI tool used to generate Catppuccin ports.

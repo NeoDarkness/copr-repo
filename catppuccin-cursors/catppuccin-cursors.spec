@@ -25,7 +25,8 @@ Requires:       %{name}-macchiato = %{version}-%{release}
 Requires:       %{name}-mocha = %{version}-%{release}
 
 %description
-Meta package that installs all Catppuccin cursor themes (Latte, Frappé, Macchiato, Mocha).
+Meta package that installs all Catppuccin cursor themes:
+Latte, Frappe, Macchiato, and Mocha.
 
 %package latte
 Summary:        Catppuccin Latte cursor theme
@@ -34,10 +35,10 @@ Summary:        Catppuccin Latte cursor theme
 Catppuccin Latte flavor cursor theme.
 
 %package frappe
-Summary:        Catppuccin Frappé cursor theme
+Summary:        Catppuccin Frappe cursor theme
 
 %description frappe
-Catppuccin Frappé flavor cursor theme.
+Catppuccin Frappe flavor cursor theme.
 
 %package macchiato
 Summary:        Catppuccin Macchiato cursor theme
@@ -60,6 +61,9 @@ just all
 %install
 install -d %{buildroot}%{_datadir}/icons
 cp -a dist/* %{buildroot}%{_datadir}/icons/
+
+%check
+# No test suite available
 
 %files
 %license LICENSE

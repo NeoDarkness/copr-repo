@@ -16,13 +16,22 @@ BuildArch:      noarch
 BuildRequires:  make
 
 %description
-pipes.sh is an animated pipes terminal screensaver inspired by the classic pipes screensaver.
+pipes.sh is an animated terminal screensaver inspired by
+the classic pipes screensaver.
+
+It renders colorful animated pipes directly in the terminal.
+
+%build
+# Nothing to build
 
 %prep
 %forgeautosetup
 
 %install
-%make_install PREFIX=%{_prefix}
+%make_install PREFIX=%{_prefix} DESTDIR=%{buildroot}
+
+%check
+# No test suite available
 
 %files
 %license LICENSE

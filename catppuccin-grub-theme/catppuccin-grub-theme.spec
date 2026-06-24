@@ -21,7 +21,8 @@ Requires:       %{name}-macchiato = %{version}-%{release}
 Requires:       %{name}-mocha = %{version}-%{release}
 
 %description
-Meta package that installs Catppuccin GRUB2 themes (Frappé, Latte, Macchiato, Mocha).
+Meta package that installs Catppuccin GRUB2 themes:
+Frappe, Latte, Macchiato, and Mocha.
 
 %package latte
 Summary:        Catppuccin Latte GRUB2 theme
@@ -30,10 +31,10 @@ Summary:        Catppuccin Latte GRUB2 theme
 Catppuccin Latte flavor theme for GRUB2.
 
 %package frappe
-Summary:        Catppuccin Frappé GRUB2 theme
+Summary:        Catppuccin Frappe GRUB2 theme
 
 %description frappe
-Catppuccin Frappé flavor theme for GRUB2.
+Catppuccin Frappe flavor theme for GRUB2.
 
 %package macchiato
 Summary:        Catppuccin Macchiato GRUB2 theme
@@ -50,9 +51,15 @@ Catppuccin Mocha flavor theme for GRUB2.
 %prep
 %forgeautosetup
 
+%build
+# Nothing to build
+
 %install
 install -d %{buildroot}/boot/grub2/themes
 cp -a src/* %{buildroot}/boot/grub2/themes/
+
+%check
+# No test suite available
 
 %files
 %license LICENSE

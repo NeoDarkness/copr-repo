@@ -21,6 +21,9 @@ Postman is an API platform for building and using APIs.
 %prep
 %autosetup -n Postman
 
+%build
+# Nothing to build
+
 %install
 install -d %{buildroot}/opt/postman
 cp -a . %{buildroot}/opt/postman/
@@ -36,6 +39,9 @@ desktop-file-install \
 install -Dm0644 \
     app/resources/app/assets/icon.png \
     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
+
+%check
+# No test suite available
 
 %files
 /opt/postman

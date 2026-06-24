@@ -21,7 +21,8 @@ Requires:       %{name}-macchiato = %{version}-%{release}
 Requires:       %{name}-mocha = %{version}-%{release}
 
 %description
-Meta package that installs all Catppuccin Plymouth themes (Frappé, Latte, Macchiato, Mocha).
+Meta package that installs all Catppuccin Plymouth themes:
+Frappe, Latte, Macchiato, and Mocha.
 
 %package latte
 Summary:        Catppuccin Latte Plymouth theme
@@ -32,12 +33,12 @@ Requires:       plymouth-system-theme
 Catppuccin Latte flavor theme for Plymouth.
 
 %package frappe
-Summary:        Catppuccin Frappé Plymouth theme
+Summary:        Catppuccin Frappe Plymouth theme
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description frappe
-Catppuccin Frappé flavor theme for Plymouth.
+Catppuccin Frappe flavor theme for Plymouth.
 
 %package macchiato
 Summary:        Catppuccin Macchiato Plymouth theme
@@ -58,9 +59,15 @@ Catppuccin Mocha flavor theme for Plymouth.
 %prep
 %forgeautosetup
 
+%build
+# Nothing to build
+
 %install
 install -d %{buildroot}%{_datadir}/plymouth/themes
 cp -a themes/* %{buildroot}%{_datadir}/plymouth/themes/
+
+%check
+# No test suite available
 
 %files
 %license LICENSE
