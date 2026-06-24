@@ -17,8 +17,6 @@ Source0:        %{forgesource}
 
 BuildArch:      noarch
 
-ExcludeArch:    s390 s390x %{arm}
-
 Requires:       grub2-catppuccin-latte-theme = %{version}-%{release}
 Requires:       grub2-catppuccin-frappe-theme = %{version}-%{release}
 Requires:       grub2-catppuccin-macchiato-theme = %{version}-%{release}
@@ -30,44 +28,24 @@ Latte, Frappe, Macchiato, and Mocha.
 
 %package -n grub2-catppuccin-latte-theme
 Summary:        Catppuccin Latte theme for GRUB2
-%ifnarch aarch64
-Requires:       grub2
-%else
-Requires:       grub2-efi
-%endif
 
 %description -n grub2-catppuccin-latte-theme
 Catppuccin Latte flavor theme for GRUB2.
 
 %package -n grub2-catppuccin-frappe-theme
 Summary:        Catppuccin Frappe theme for GRUB2
-%ifnarch aarch64
-Requires:       grub2
-%else
-Requires:       grub2-efi
-%endif
 
 %description -n grub2-catppuccin-frappe-theme
 Catppuccin Frappe flavor theme for GRUB2.
 
 %package -n grub2-catppuccin-macchiato-theme
 Summary:        Catppuccin Macchiato theme for GRUB2
-%ifnarch aarch64
-Requires:       grub2
-%else
-Requires:       grub2-efi
-%endif
 
 %description -n grub2-catppuccin-macchiato-theme
 Catppuccin Macchiato flavor theme for GRUB2.
 
 %package -n grub2-catppuccin-mocha-theme
 Summary:        Catppuccin Mocha theme for GRUB2
-%ifnarch aarch64
-Requires:       grub2
-%else
-Requires:       grub2-efi
-%endif
 
 %description -n grub2-catppuccin-mocha-theme
 Catppuccin Mocha flavor theme for GRUB2.
