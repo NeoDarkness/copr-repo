@@ -10,29 +10,29 @@ Summary:        Soothing port creation tool
 SourceLicense:  MIT
 
 License:        %{shrink:
-    (Apache-2.0 OR MIT) AND 
-    BSD-3-Clause AND
-    (MIT OR Apache-2.0) AND 
-    Unicode-3.0 AND
-    (0BSD OR MIT OR Apache-2.0) AND
+    MIT AND
     Apache-2.0 AND
-    (Apache-2.0 OR BSL-1.0) AND
     (Apache-2.0 OR MIT) AND
+    (Apache-2.0 OR BSL-1.0) AND
     (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND
     (BSD-2-Clause OR Apache-2.0 OR MIT) AND
     BSD-3-Clause AND
     ISC AND
-    MIT AND
-    (MIT OR Apache-2.0) AND
     (MIT OR Apache-2.0 OR LGPL-2.1-or-later) AND
     (MIT OR Zlib OR Apache-2.0) AND
-    (Unlicense OR MIT)
+    Unicode-3.0 AND
+    (Unlicense OR MIT) AND
+    0BSD
 }
 
 %forgemeta
 
 URL:            https://github.com/catppuccin/whiskers
 Source0:        %forgesource
+# To generate vendor tarball:
+# spectool -g catppuccin-whiskers.spec
+# cargo vendor
+# tar czf vendor.tar.gz vendor/
 Source1:        vendor.tar.gz
 
 BuildRequires:  cargo-rpm-macros >= 24
@@ -51,13 +51,13 @@ Whiskers CLI tool used to generate Catppuccin ports.
 %{cargo_license} > LICENSE.dependencies
 %{cargo_vendor_manifest}
 
+%install
+install -Dpm 0755 target/rpm/whiskers -t %{buildroot}%{_bindir}
+
 %if %{with check}
 %check
 %cargo_test
 %endif
-
-%install
-install -Dpm 0755 target/rpm/whiskers -t %{buildroot}%{_bindir}
 
 %files
 %license LICENSE
