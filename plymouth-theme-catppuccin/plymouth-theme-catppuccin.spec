@@ -10,8 +10,8 @@ License:        MIT
 
 %forgemeta
 
-URL:            https://github.com/catppuccin/plymouth
-Source0:        %forgesource
+URL:            %{forgeurl}
+Source0:        %{forgesource}
 
 BuildArch:      noarch
 

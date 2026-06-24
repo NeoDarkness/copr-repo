@@ -27,8 +27,8 @@ License:        %{shrink:
 
 %forgemeta
 
-URL:            https://github.com/catppuccin/whiskers
-Source0:        %forgesource
+URL:            %{forgeurl}
+Source0:        %{forgesource}
 # To generate vendor tarball:
 # spectool -g catppuccin-whiskers.spec
 # cargo vendor

@@ -9,10 +9,11 @@ Release:        %autorelease
 Summary:        Soothing pastel themes for GRUB2
 
 License:        MIT
-URL:            %{forgeurl}
 
 %forgemeta
-Source0:        %forgesource
+
+URL:            %{forgeurl}
+Source0:        %{forgesource}
 
 BuildArch:      noarch
 

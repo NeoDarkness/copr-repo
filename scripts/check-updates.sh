@@ -28,6 +28,11 @@ get_spec_version() {
 
 get_spec_url() {
     awk '
+        /^%global[[:space:]]+forgeurl/ {
+            print $3
+            exit
+        }
+
         /^URL:/ {
             sub(/^URL:[[:space:]]*/, "")
             print

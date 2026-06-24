@@ -9,8 +9,8 @@ License:        MIT
 
 %forgemeta
 
-URL:            https://github.com/pipeseroni/pipes.sh
-Source0:        %forgesource
+URL:            %{forgeurl}
+Source0:        %{forgesource}
 
 BuildArch:      noarch
 BuildRequires:  make

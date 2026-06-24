@@ -9,8 +9,8 @@ License:        GPL-2.0-only
 
 %forgemeta
 
-URL:            https://github.com/catppuccin/cursors
-Source0:        %forgesource
+URL:            %{forgeurl}
+Source0:        %{forgesource}
 
 BuildArch:      noarch
 BuildRequires:  python3-pyside6
