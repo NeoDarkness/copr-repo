@@ -5,7 +5,7 @@ Version:        12.16.1
 Release:        %autorelease
 Summary:        API platform for building and using APIs
 
-License:        LicenseRef-Postman
+License:        LicenseRef-Proprietary
 URL:            https://www.postman.com/
 Source0:        https://dl.pstmn.io/download/version/%{version}/linux64
 Source1:        postman.desktop
