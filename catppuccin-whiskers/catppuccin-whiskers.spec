@@ -7,6 +7,8 @@ Version:        2.9.0
 Release:        %autorelease
 Summary:        Soothing port creation tool
 
+SourceLicense:  MIT
+
 License:        %{shrink:
     (Apache-2.0 OR MIT) AND 
     BSD-3-Clause AND
@@ -41,8 +43,7 @@ Provides:       whiskers = %{version}-%{release}
 Whiskers CLI tool used to generate Catppuccin ports.
 
 %prep
-%forgeautosetup
-%setup -q -T -D -a 1 -n %{archivename}
+%autosetup -n %{archivename} -p1 -a1
 %cargo_prep -v vendor
 
 %build
