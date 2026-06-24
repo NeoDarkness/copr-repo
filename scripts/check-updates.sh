@@ -131,7 +131,7 @@ generate_cargo_vendor() {
     local pkg_name="$2"
     local version="$3"
     local url="$4"
-    local vendor_tarball="$pkg_dir/$pkg_name-$version-vendor.tar.gz"
+    local vendor_tarball="$pkg_dir/vendor.tar.gz"
 
     # Lewati jika tarball vendor versi ini sudah ada
     if [[ -f "$vendor_tarball" ]]; then
@@ -152,7 +152,7 @@ generate_cargo_vendor() {
     tmp_dir=$(mktemp -d)
 
     # Hapus file sisa tarball versi lama agar folder bersih
-    rm -f "$pkg_dir"/$pkg_name-*-vendor.tar.gz
+    rm -f "$pkg_dir"/vendor.tar.gz
 
     # Unduh arsip kode sumber langsung dari GitHub tarball untuk di-vendor
     if timeout "$TIMEOUT" curl -fsSL "https://github.com/$repo/archive/refs/tags/v$version.tar.gz" -o "$tmp_dir/src.tar.gz"; then

@@ -31,9 +31,9 @@ License:        %{shrink:
 
 URL:            https://github.com/catppuccin/whiskers
 Source0:        %forgesource
-Source1:        %{name}-%{version}-vendor.tar.gz
+Source1:        vendor.tar.gz
 
-BuildRequires:  cargo-rpm-macros
+BuildRequires:  cargo-rpm-macros >= 24
 
 Provides:       whiskers = %{version}-%{release}
 
@@ -41,22 +41,21 @@ Provides:       whiskers = %{version}-%{release}
 Whiskers CLI tool used to generate Catppuccin ports.
 
 %prep
-%forgeautosetup
-%cargo_prep
-
-%generate_buildrequires
-%cargo_generate_buildrequires -a
+%forgeautosetup -a1
+%cargo_prep -v vendor
 
 %build
-%cargo_build_crate -a
+%cargo_vendor_manifest
+%cargo_build_crate
 
 %if %{with check}
 %check
-%cargo_test -a
+%cargo_test
 %endif
 
 %install
-cargo_install_crate -a
+install -Dm0755 target/rpm/whiskers \
+    %{buildroot}%{_bindir}/whiskers
 
 %files
 %license LICENSE

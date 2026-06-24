@@ -24,7 +24,7 @@ Papirus Folders is a utility for changing folder colors in Papirus icon themes.
 %forgeautosetup
 
 %install
-%make_install PREFIX=%{_prefix} ZSHCOMPDIR=%{zsh_completions_dir}
+%make_install ZSHCOMPDIR=%{zsh_completions_dir}
 
 %files
 %license LICENSE
