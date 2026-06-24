@@ -57,7 +57,8 @@ Whiskers CLI tool used to generate Catppuccin ports.
 %endif
 
 %install
-%cargo_install
+install -Dm0755 target/rpm/whiskers \
+    %{buildroot}%{_bindir}/whiskers
 
 %files
 %license LICENSE
