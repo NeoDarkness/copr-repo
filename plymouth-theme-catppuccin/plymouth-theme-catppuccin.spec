@@ -1,7 +1,7 @@
 %global forgeurl https://github.com/catppuccin/plymouth
 %global commit   198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 
-Name:           catppuccin-plymouth-theme
+Name:           plymouth-theme-catppuccin
 Version:        1.0.0
 Release:        %autorelease
 Summary:        Soothing pastel themes for Plymouth
@@ -108,22 +108,22 @@ fi
 %files latte
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-latte/
+%{_datadir}/plymouth/themes/catppuccin-latte
 
 %files frappe
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-frappe/
+%{_datadir}/plymouth/themes/catppuccin-frappe
 
 %files macchiato
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-macchiato/
+%{_datadir}/plymouth/themes/catppuccin-macchiato
 
 %files mocha
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-mocha/
+%{_datadir}/plymouth/themes/catppuccin-mocha
 
 %changelog
 %autochangelog
