@@ -70,25 +70,21 @@ cp -a src/* %{buildroot}%{themedir}/
 %files latte
 %license LICENSE
 %doc README.md
-%dir %{themedir}/catppuccin-latte-grub-theme
 %{themedir}/catppuccin-latte-grub-theme/
 
 %files frappe
 %license LICENSE
 %doc README.md
-%dir %{themedir}/catppuccin-frappe-grub-theme
 %{themedir}/catppuccin-frappe-grub-theme/
 
 %files macchiato
 %license LICENSE
 %doc README.md
-%dir %{themedir}/catppuccin-macchiato-grub-theme
 %{themedir}/catppuccin-macchiato-grub-theme/
 
 %files mocha
 %license LICENSE
 %doc README.md
-%dir %{themedir}/catppuccin-mocha-grub-theme
 %{themedir}/catppuccin-mocha-grub-theme/
 
 %changelog

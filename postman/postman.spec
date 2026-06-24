@@ -46,7 +46,6 @@ install -Dm0644 \
 # No test suite available
 
 %files
-%dir /opt/postman
 /opt/postman/
 %{_bindir}/postman
 %{_datadir}/applications/postman.desktop

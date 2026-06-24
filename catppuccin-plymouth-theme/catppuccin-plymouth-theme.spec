@@ -108,25 +108,21 @@ fi
 %files latte
 %license LICENSE
 %doc README.md
-%dir %{_datadir}/plymouth/themes/catppuccin-latte
 %{_datadir}/plymouth/themes/catppuccin-latte/
 
 %files frappe
 %license LICENSE
 %doc README.md
-%dir %{_datadir}/plymouth/themes/catppuccin-frappe
 %{_datadir}/plymouth/themes/catppuccin-frappe/
 
 %files macchiato
 %license LICENSE
 %doc README.md
-%dir %{_datadir}/plymouth/themes/catppuccin-macchiato
 %{_datadir}/plymouth/themes/catppuccin-macchiato/
 
 %files mocha
 %license LICENSE
 %doc README.md
-%dir %{_datadir}/plymouth/themes/catppuccin-mocha
 %{_datadir}/plymouth/themes/catppuccin-mocha/
 
 %changelog
