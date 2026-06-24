@@ -72,87 +72,31 @@ find %{buildroot}%{_datadir}/icons/ \
 %files
 %license LICENSE
 %doc CHANGELOG.md
-%doc README.md 
+%doc README.md
 
 %files latte
 %license LICENSE
-%doc CHANGELOG.md README.md
-%{_datadir}/icons/catppuccin-latte-rosewater-cursors
-%{_datadir}/icons/catppuccin-latte-flamingo-cursors
-%{_datadir}/icons/catppuccin-latte-pink-cursors
-%{_datadir}/icons/catppuccin-latte-mauve-cursors
-%{_datadir}/icons/catppuccin-latte-red-cursors
-%{_datadir}/icons/catppuccin-latte-maroon-cursors
-%{_datadir}/icons/catppuccin-latte-peach-cursors
-%{_datadir}/icons/catppuccin-latte-yellow-cursors
-%{_datadir}/icons/catppuccin-latte-green-cursors
-%{_datadir}/icons/catppuccin-latte-teal-cursors
-%{_datadir}/icons/catppuccin-latte-sky-cursors
-%{_datadir}/icons/catppuccin-latte-sapphire-cursors
-%{_datadir}/icons/catppuccin-latte-blue-cursors
-%{_datadir}/icons/catppuccin-latte-lavender-cursors
-%{_datadir}/icons/catppuccin-latte-dark-cursors
-%{_datadir}/icons/catppuccin-latte-light-cursors
+%doc CHANGELOG.md
+%doc README.md
+%{_datadir}/icons/catppuccin-latte-*-cursors
 
 %files frappe
 %license LICENSE
-%doc CHANGELOG.md README.md
-%{_datadir}/icons/catppuccin-frappe-rosewater-cursors
-%{_datadir}/icons/catppuccin-frappe-flamingo-cursors
-%{_datadir}/icons/catppuccin-frappe-pink-cursors
-%{_datadir}/icons/catppuccin-frappe-mauve-cursors
-%{_datadir}/icons/catppuccin-frappe-red-cursors
-%{_datadir}/icons/catppuccin-frappe-maroon-cursors
-%{_datadir}/icons/catppuccin-frappe-peach-cursors
-%{_datadir}/icons/catppuccin-frappe-yellow-cursors
-%{_datadir}/icons/catppuccin-frappe-green-cursors
-%{_datadir}/icons/catppuccin-frappe-teal-cursors
-%{_datadir}/icons/catppuccin-frappe-sky-cursors
-%{_datadir}/icons/catppuccin-frappe-sapphire-cursors
-%{_datadir}/icons/catppuccin-frappe-blue-cursors
-%{_datadir}/icons/catppuccin-frappe-lavender-cursors
-%{_datadir}/icons/catppuccin-frappe-dark-cursors
-%{_datadir}/icons/catppuccin-frappe-light-cursors
+%doc CHANGELOG.md
+%doc README.md
+%{_datadir}/icons/catppuccin-frappe-*-cursors
 
 %files macchiato
 %license LICENSE
-%doc CHANGELOG.md README.md
-%{_datadir}/icons/catppuccin-macchiato-rosewater-cursors
-%{_datadir}/icons/catppuccin-macchiato-flamingo-cursors
-%{_datadir}/icons/catppuccin-macchiato-pink-cursors
-%{_datadir}/icons/catppuccin-macchiato-mauve-cursors
-%{_datadir}/icons/catppuccin-macchiato-red-cursors
-%{_datadir}/icons/catppuccin-macchiato-maroon-cursors
-%{_datadir}/icons/catppuccin-macchiato-peach-cursors
-%{_datadir}/icons/catppuccin-macchiato-yellow-cursors
-%{_datadir}/icons/catppuccin-macchiato-green-cursors
-%{_datadir}/icons/catppuccin-macchiato-teal-cursors
-%{_datadir}/icons/catppuccin-macchiato-sky-cursors
-%{_datadir}/icons/catppuccin-macchiato-sapphire-cursors
-%{_datadir}/icons/catppuccin-macchiato-blue-cursors
-%{_datadir}/icons/catppuccin-macchiato-lavender-cursors
-%{_datadir}/icons/catppuccin-macchiato-dark-cursors
-%{_datadir}/icons/catppuccin-macchiato-light-cursors
+%doc CHANGELOG.md
+%doc README.md
+%{_datadir}/icons/catppuccin-macchiato-*-cursors
 
 %files mocha
 %license LICENSE
-%doc CHANGELOG.md README.md
-%{_datadir}/icons/catppuccin-mocha-rosewater-cursors
-%{_datadir}/icons/catppuccin-mocha-flamingo-cursors
-%{_datadir}/icons/catppuccin-mocha-pink-cursors
-%{_datadir}/icons/catppuccin-mocha-mauve-cursors
-%{_datadir}/icons/catppuccin-mocha-red-cursors
-%{_datadir}/icons/catppuccin-mocha-maroon-cursors
-%{_datadir}/icons/catppuccin-mocha-peach-cursors
-%{_datadir}/icons/catppuccin-mocha-yellow-cursors
-%{_datadir}/icons/catppuccin-mocha-green-cursors
-%{_datadir}/icons/catppuccin-mocha-teal-cursors
-%{_datadir}/icons/catppuccin-mocha-sky-cursors
-%{_datadir}/icons/catppuccin-mocha-sapphire-cursors
-%{_datadir}/icons/catppuccin-mocha-blue-cursors
-%{_datadir}/icons/catppuccin-mocha-lavender-cursors
-%{_datadir}/icons/catppuccin-mocha-dark-cursors
-%{_datadir}/icons/catppuccin-mocha-light-cursors
+%doc CHANGELOG.md
+%doc README.md
+%{_datadir}/icons/catppuccin-mocha-*-cursors
 
 %changelog
 %autochangelog
