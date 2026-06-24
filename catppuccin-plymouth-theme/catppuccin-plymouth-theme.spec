@@ -76,22 +76,26 @@ cp -a themes/* %{buildroot}%{_datadir}/plymouth/themes/
 %files latte
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-latte
+%dir %{_datadir}/plymouth/themes/catppuccin-latte
+%{_datadir}/plymouth/themes/catppuccin-latte/
 
 %files frappe
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-frappe
+%dir %{_datadir}/plymouth/themes/catppuccin-frappe
+%{_datadir}/plymouth/themes/catppuccin-frappe/
 
 %files macchiato
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-macchiato
+%dir %{_datadir}/plymouth/themes/catppuccin-macchiato
+%{_datadir}/plymouth/themes/catppuccin-macchiato/
 
 %files mocha
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-mocha
+%dir %{_datadir}/plymouth/themes/catppuccin-mocha
+%{_datadir}/plymouth/themes/catppuccin-mocha/
 
 %changelog
 %autochangelog

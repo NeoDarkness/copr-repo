@@ -1,6 +1,8 @@
 %global forgeurl https://github.com/catppuccin/grub
 %global commit   0a37ab19f654e77129b409fed371891c01ffd0b9
 
+%global themedir /boot/grub2/themes
+
 Name:           catppuccin-grub-theme
 Version:        1.0.0
 Release:        %autorelease
@@ -55,8 +57,8 @@ Catppuccin Mocha flavor theme for GRUB2.
 # Nothing to build
 
 %install
-install -d %{buildroot}/boot/grub2/themes
-cp -a src/* %{buildroot}/boot/grub2/themes/
+install -d %{buildroot}%{themedir}
+cp -a src/* %{buildroot}%{themedir}/
 
 %check
 # No test suite available
@@ -68,22 +70,26 @@ cp -a src/* %{buildroot}/boot/grub2/themes/
 %files latte
 %license LICENSE
 %doc README.md
-/boot/grub2/themes/catppuccin-latte-grub-theme
+%dir %{themedir}/catppuccin-latte-grub-theme
+%{themedir}/catppuccin-latte-grub-theme/
 
 %files frappe
 %license LICENSE
 %doc README.md
-/boot/grub2/themes/catppuccin-frappe-grub-theme
+%dir %{themedir}/catppuccin-frappe-grub-theme
+%{themedir}/catppuccin-frappe-grub-theme/
 
 %files macchiato
 %license LICENSE
 %doc README.md
-/boot/grub2/themes/catppuccin-macchiato-grub-theme
+%dir %{themedir}/catppuccin-macchiato-grub-theme
+%{themedir}/catppuccin-macchiato-grub-theme/
 
 %files mocha
 %license LICENSE
 %doc README.md
-/boot/grub2/themes/catppuccin-mocha-grub-theme
+%dir %{themedir}/catppuccin-mocha-grub-theme
+%{themedir}/catppuccin-mocha-grub-theme/
 
 %changelog
 %autochangelog

@@ -21,11 +21,11 @@ the classic pipes screensaver.
 
 It renders colorful animated pipes directly in the terminal.
 
-%build
-# Nothing to build
-
 %prep
 %forgeautosetup
+
+%build
+# Nothing to build
 
 %install
 %make_install PREFIX=%{_prefix} DESTDIR=%{buildroot}
