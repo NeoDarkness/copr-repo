@@ -37,8 +37,6 @@ Source1:        vendor.tar.gz
 
 BuildRequires:  cargo-rpm-macros >= 24
 
-Provides:       whiskers = %{version}-%{release}
-
 %description
 Whiskers CLI tool used to generate Catppuccin ports.
 
