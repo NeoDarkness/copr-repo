@@ -22,7 +22,7 @@ pipes.sh is an animated pipes terminal screensaver inspired by the classic pipes
 %forgeautosetup
 
 %install
-%make_install
+%make_install PREFIX=%{_prefix}
 
 %files
 %license LICENSE
