@@ -14,7 +14,7 @@ Source0:        %forgesource
 
 BuildArch:      noarch
 BuildRequires:  python3-pyside6
-BuildRequires:  whiskers
+BuildRequires:  catppuccin-whiskers
 BuildRequires:  xcursorgen
 BuildRequires:  inkscape
 BuildRequires:  just
@@ -62,54 +62,41 @@ just all
 install -d %{buildroot}%{_datadir}/icons
 cp -a dist/* %{buildroot}%{_datadir}/icons/
 
+find %{buildroot}%{_datadir}/icons/ \
+    \( -name "LICENSE" -o -name "AUTHORS" -o -name "manifest.hl" \) \
+    -delete
+
 %check
 # No test suite available
 
 %files
 %license LICENSE
-%doc README.md 
 %doc CHANGELOG.md
-%doc AUTHORS
+%doc README.md 
 
 %files latte
 %license LICENSE
-%doc README.md 
 %doc CHANGELOG.md
-%doc AUTHORS
+%doc README.md 
 %{_datadir}/icons/catppuccin-latte-*-cursors
-%exclude %{_datadir}/icons/catppuccin-latte-*-cursors/LICENSE
-%exclude %{_datadir}/icons/catppuccin-latte-*-cursors/AUTHORS
-%exclude %{_datadir}/icons/catppuccin-latte-*-cursors/manifest.hl
 
 %files frappe
 %license LICENSE
-%doc README.md 
 %doc CHANGELOG.md
-%doc AUTHORS
+%doc README.md 
 %{_datadir}/icons/catppuccin-frappe-*-cursors
-%exclude %{_datadir}/icons/catppuccin-frappe-*-cursors/LICENSE
-%exclude %{_datadir}/icons/catppuccin-frappe-*-cursors/AUTHORS
-%exclude %{_datadir}/icons/catppuccin-frappe-*-cursors/manifest.hl
 
 %files macchiato
 %license LICENSE
-%doc README.md 
 %doc CHANGELOG.md
-%doc AUTHORS
+%doc README.md 
 %{_datadir}/icons/catppuccin-macchiato-*-cursors
-%exclude %{_datadir}/icons/catppuccin-macchiato-*-cursors/LICENSE
-%exclude %{_datadir}/icons/catppuccin-macchiato-*-cursors/AUTHORS
-%exclude %{_datadir}/icons/catppuccin-macchiato-*-cursors/manifest.hl
 
 %files mocha
 %license LICENSE
-%doc README.md 
 %doc CHANGELOG.md
-%doc AUTHORS
+%doc README.md 
 %{_datadir}/icons/catppuccin-mocha-*-cursors
-%exclude %{_datadir}/icons/catppuccin-mocha-*-cursors/LICENSE
-%exclude %{_datadir}/icons/catppuccin-mocha-*-cursors/AUTHORS
-%exclude %{_datadir}/icons/catppuccin-mocha-*-cursors/manifest.hl
 
 %changelog
 %autochangelog
