@@ -5,7 +5,7 @@ Version:        12.16.1
 Release:        %autorelease
 Summary:        API platform for building and using APIs
 
-License:        LicenseRef-Proprietary
+License:        LicenseRef-postman-eula
 URL:            https://www.postman.com/
 Source0:        https://dl.pstmn.io/download/version/%{version}/linux64
 Source1:        postman.desktop
@@ -14,6 +14,8 @@ ExclusiveArch:  x86_64
 
 BuildRequires:  desktop-file-utils
 AutoReqProv:    no
+
+Requires:       hicolor-icon-theme
 
 %description
 Postman is an API platform for building and using APIs.
