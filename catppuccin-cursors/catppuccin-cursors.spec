@@ -66,82 +66,6 @@ find %{buildroot}%{_datadir}/icons/ \
     \( -name "LICENSE" -o -name "AUTHORS" -o -name "manifest.hl" \) \
     -delete
 
-for dir in %{buildroot}%{_datadir}/icons/catppuccin-*-cursors; do
-    /bin/touch "$dir/icon-theme.cache"
-done
-
-%post latte
-for dir in %{_datadir}/icons/catppuccin-latte-*-cursors; do
-    /bin/touch --no-create "$dir" &>/dev/null || :
-done
-
-%post frappe
-for dir in %{_datadir}/icons/catppuccin-frappe-*-cursors; do
-    /bin/touch --no-create "$dir" &>/dev/null || :
-done
-
-%post macchiato
-for dir in %{_datadir}/icons/catppuccin-macchiato-*-cursors; do
-    /bin/touch --no-create "$dir" &>/dev/null || :
-done
-
-%post mocha
-for dir in %{_datadir}/icons/catppuccin-mocha-*-cursors; do
-    /bin/touch --no-create "$dir" &>/dev/null || :
-done
-
-%postun latte
-if [ $1 -eq 0 ]; then
-    for dir in %{_datadir}/icons/catppuccin-latte-*-cursors; do
-        /bin/touch --no-create "$dir" &>/dev/null
-        /usr/bin/gtk-update-icon-cache "$dir" &>/dev/null || :
-    done
-fi
-
-%postun frappe
-if [ $1 -eq 0 ]; then
-    for dir in %{_datadir}/icons/catppuccin-frappe-*-cursors; do
-        /bin/touch --no-create "$dir" &>/dev/null
-        /usr/bin/gtk-update-icon-cache "$dir" &>/dev/null || :
-    done
-fi
-
-%postun macchiato
-if [ $1 -eq 0 ]; then
-    for dir in %{_datadir}/icons/catppuccin-macchiato-*-cursors; do
-        /bin/touch --no-create "$dir" &>/dev/null
-        /usr/bin/gtk-update-icon-cache "$dir" &>/dev/null || :
-    done
-fi
-
-%postun mocha
-if [ $1 -eq 0 ]; then
-    for dir in %{_datadir}/icons/catppuccin-mocha-*-cursors; do
-        /bin/touch --no-create "$dir" &>/dev/null
-        /usr/bin/gtk-update-icon-cache "$dir" &>/dev/null || :
-    done
-fi
-
-%posttrans latte
-for dir in %{_datadir}/icons/catppuccin-latte-*-cursors; do
-    /usr/bin/gtk-update-icon-cache "$dir" &>/dev/null || :
-done
-
-%posttrans frappe
-for dir in %{_datadir}/icons/catppuccin-frappe-*-cursors; do
-    /usr/bin/gtk-update-icon-cache "$dir" &>/dev/null || :
-done
-
-%posttrans macchiato
-for dir in %{_datadir}/icons/catppuccin-macchiato-*-cursors; do
-    /usr/bin/gtk-update-icon-cache "$dir" &>/dev/null || :
-done
-
-%posttrans mocha
-for dir in %{_datadir}/icons/catppuccin-mocha-*-cursors; do
-    /usr/bin/gtk-update-icon-cache "$dir" &>/dev/null || :
-done
-
 %check
 # No test suite available
 
@@ -152,35 +76,147 @@ done
 
 %files latte
 %license LICENSE
-%doc CHANGELOG.md
-%doc README.md
-%dir %{_datadir}/icons/catppuccin-latte-*-cursors
-%{_datadir}/icons/catppuccin-latte-*-cursors/
-%ghost %{_datadir}/icons/catppuccin-latte-*-cursors/icon-theme.cache
+%doc CHANGELOG.md README.md
+%dir %{_datadir}/icons/catppuccin-latte-rosewater-cursors
+%{_datadir}/icons/catppuccin-latte-rosewater-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-flamingo-cursors
+%{_datadir}/icons/catppuccin-latte-flamingo-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-pink-cursors
+%{_datadir}/icons/catppuccin-latte-pink-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-mauve-cursors
+%{_datadir}/icons/catppuccin-latte-mauve-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-red-cursors
+%{_datadir}/icons/catppuccin-latte-red-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-maroon-cursors
+%{_datadir}/icons/catppuccin-latte-maroon-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-peach-cursors
+%{_datadir}/icons/catppuccin-latte-peach-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-yellow-cursors
+%{_datadir}/icons/catppuccin-latte-yellow-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-green-cursors
+%{_datadir}/icons/catppuccin-latte-green-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-teal-cursors
+%{_datadir}/icons/catppuccin-latte-teal-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-sky-cursors
+%{_datadir}/icons/catppuccin-latte-sky-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-sapphire-cursors
+%{_datadir}/icons/catppuccin-latte-sapphire-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-blue-cursors
+%{_datadir}/icons/catppuccin-latte-blue-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-lavender-cursors
+%{_datadir}/icons/catppuccin-latte-lavender-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-dark-cursors
+%{_datadir}/icons/catppuccin-latte-dark-cursors/
+%dir %{_datadir}/icons/catppuccin-latte-light-cursors
+%{_datadir}/icons/catppuccin-latte-light-cursors/
 
 %files frappe
 %license LICENSE
-%doc CHANGELOG.md
-%doc README.md
-%dir %{_datadir}/icons/catppuccin-frappe-*-cursors
-%{_datadir}/icons/catppuccin-frappe-*-cursors/
-%ghost %{_datadir}/icons/catppuccin-frappe-*-cursors/icon-theme.cache
+%doc CHANGELOG.md README.md
+%dir %{_datadir}/icons/catppuccin-frappe-rosewater-cursors
+%{_datadir}/icons/catppuccin-frappe-rosewater-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-flamingo-cursors
+%{_datadir}/icons/catppuccin-frappe-flamingo-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-pink-cursors
+%{_datadir}/icons/catppuccin-frappe-pink-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-mauve-cursors
+%{_datadir}/icons/catppuccin-frappe-mauve-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-red-cursors
+%{_datadir}/icons/catppuccin-frappe-red-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-maroon-cursors
+%{_datadir}/icons/catppuccin-frappe-maroon-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-peach-cursors
+%{_datadir}/icons/catppuccin-frappe-peach-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-yellow-cursors
+%{_datadir}/icons/catppuccin-frappe-yellow-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-green-cursors
+%{_datadir}/icons/catppuccin-frappe-green-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-teal-cursors
+%{_datadir}/icons/catppuccin-frappe-teal-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-sky-cursors
+%{_datadir}/icons/catppuccin-frappe-sky-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-sapphire-cursors
+%{_datadir}/icons/catppuccin-frappe-sapphire-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-blue-cursors
+%{_datadir}/icons/catppuccin-frappe-blue-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-lavender-cursors
+%{_datadir}/icons/catppuccin-frappe-lavender-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-dark-cursors
+%{_datadir}/icons/catppuccin-frappe-dark-cursors/
+%dir %{_datadir}/icons/catppuccin-frappe-light-cursors
+%{_datadir}/icons/catppuccin-frappe-light-cursors/
 
 %files macchiato
 %license LICENSE
-%doc CHANGELOG.md
-%doc README.md
-%dir %{_datadir}/icons/catppuccin-macchiato-*-cursors
-%{_datadir}/icons/catppuccin-macchiato-*-cursors/
-%ghost %{_datadir}/icons/catppuccin-macchiato-*-cursors/icon-theme.cache
+%doc CHANGELOG.md README.md
+%dir %{_datadir}/icons/catppuccin-macchiato-rosewater-cursors
+%{_datadir}/icons/catppuccin-macchiato-rosewater-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-flamingo-cursors
+%{_datadir}/icons/catppuccin-macchiato-flamingo-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-pink-cursors
+%{_datadir}/icons/catppuccin-macchiato-pink-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-mauve-cursors
+%{_datadir}/icons/catppuccin-macchiato-mauve-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-red-cursors
+%{_datadir}/icons/catppuccin-macchiato-red-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-maroon-cursors
+%{_datadir}/icons/catppuccin-macchiato-maroon-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-peach-cursors
+%{_datadir}/icons/catppuccin-macchiato-peach-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-yellow-cursors
+%{_datadir}/icons/catppuccin-macchiato-yellow-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-green-cursors
+%{_datadir}/icons/catppuccin-macchiato-green-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-teal-cursors
+%{_datadir}/icons/catppuccin-macchiato-teal-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-sky-cursors
+%{_datadir}/icons/catppuccin-macchiato-sky-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-sapphire-cursors
+%{_datadir}/icons/catppuccin-macchiato-sapphire-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-blue-cursors
+%{_datadir}/icons/catppuccin-macchiato-blue-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-lavender-cursors
+%{_datadir}/icons/catppuccin-macchiato-lavender-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-dark-cursors
+%{_datadir}/icons/catppuccin-macchiato-dark-cursors/
+%dir %{_datadir}/icons/catppuccin-macchiato-light-cursors
+%{_datadir}/icons/catppuccin-macchiato-light-cursors/
 
 %files mocha
 %license LICENSE
-%doc CHANGELOG.md
-%doc README.md
-%dir %{_datadir}/icons/catppuccin-mocha-*-cursors
-%{_datadir}/icons/catppuccin-mocha-*-cursors/
-%ghost %{_datadir}/icons/catppuccin-mocha-*-cursors/icon-theme.cache
+%doc CHANGELOG.md README.md
+%dir %{_datadir}/icons/catppuccin-mocha-rosewater-cursors
+%{_datadir}/icons/catppuccin-mocha-rosewater-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-flamingo-cursors
+%{_datadir}/icons/catppuccin-mocha-flamingo-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-pink-cursors
+%{_datadir}/icons/catppuccin-mocha-pink-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-mauve-cursors
+%{_datadir}/icons/catppuccin-mocha-mauve-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-red-cursors
+%{_datadir}/icons/catppuccin-mocha-red-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-maroon-cursors
+%{_datadir}/icons/catppuccin-mocha-maroon-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-peach-cursors
+%{_datadir}/icons/catppuccin-mocha-peach-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-yellow-cursors
+%{_datadir}/icons/catppuccin-mocha-yellow-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-green-cursors
+%{_datadir}/icons/catppuccin-mocha-green-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-teal-cursors
+%{_datadir}/icons/catppuccin-mocha-teal-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-sky-cursors
+%{_datadir}/icons/catppuccin-mocha-sky-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-sapphire-cursors
+%{_datadir}/icons/catppuccin-mocha-sapphire-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-blue-cursors
+%{_datadir}/icons/catppuccin-mocha-blue-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-lavender-cursors
+%{_datadir}/icons/catppuccin-mocha-lavender-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-dark-cursors
+%{_datadir}/icons/catppuccin-mocha-dark-cursors/
+%dir %{_datadir}/icons/catppuccin-mocha-light-cursors
+%{_datadir}/icons/catppuccin-mocha-light-cursors/
 
 %changelog
 %autochangelog
