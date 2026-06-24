@@ -11,6 +11,7 @@ License:        GPL-2.0-only
 
 URL:            https://github.com/catppuccin/cursors
 Source0:        %forgesource
+Patch0:         fix-fsf-address.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-pyside6
