@@ -3,7 +3,7 @@
 %define __brp_check_rpaths %{nil}
 
 Name:           postman
-Version:        12.16.2
+Version:        12.16.3
 Release:        %autorelease
 Summary:        Postman API Platform
 
@@ -41,10 +41,9 @@ desktop-file-install \
 desktop-file-validate \
     %{buildroot}%{_datadir}/applications/postman.desktop
 
-install -d %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
-install -m 644 \
+install -Dm644 \
     app/resources/app/assets/icon.png \
-    %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
+    %{buildroot}%{_datadir}/pixmaps/postman.png
 
 %check
 # No test suite available
