@@ -12,6 +12,9 @@ License:        GPL-2.0-only
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 
+Patch0          remove-bundled-license-and-authors-files.patch
+Patch1          use-explicit-whiskers-version-constraint.patch
+
 BuildArch:      noarch
 BuildRequires:  python3-pyside6
 BuildRequires:  catppuccin-whiskers
@@ -61,10 +64,6 @@ just all
 %install
 install -d %{buildroot}%{_datadir}/icons
 cp -a dist/* %{buildroot}%{_datadir}/icons/
-
-find %{buildroot}%{_datadir}/icons/ \
-    \( -name "LICENSE" -o -name "AUTHORS" -o -name "manifest.hl" \) \
-    -delete
 
 %check
 # No test suite available
