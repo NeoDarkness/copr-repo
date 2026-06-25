@@ -6,21 +6,22 @@ Release:        %autorelease
 Summary:        Catppuccin cursor themes
 
 License:        GPL-2.0-only
+URL:            %{forgeurl}
 
 %forgemeta
 
-URL:            %{forgeurl}
 Source0:        %{forgesource}
 
 Patch:          remove-bundled-license-and-authors-files.patch
 Patch:          use-explicit-whiskers-version-constraint.patch
 
 BuildArch:      noarch
-BuildRequires:  python3-pyside6
+
 BuildRequires:  catppuccin-whiskers
-BuildRequires:  xcursorgen
 BuildRequires:  inkscape
 BuildRequires:  just
+BuildRequires:  python3-pyside6
+BuildRequires:  xcursorgen
 
 Requires:       %{name}-latte = %{version}-%{release}
 Requires:       %{name}-frappe = %{version}-%{release}
@@ -28,32 +29,31 @@ Requires:       %{name}-macchiato = %{version}-%{release}
 Requires:       %{name}-mocha = %{version}-%{release}
 
 %description
-Meta package that installs all Catppuccin cursor themes:
-Latte, Frappe, Macchiato, and Mocha.
+Meta package that installs all Catppuccin cursor themes.
 
 %package latte
 Summary:        Catppuccin Latte cursor theme
 
 %description latte
-Catppuccin Latte flavor cursor theme.
+Catppuccin Latte cursor theme.
 
 %package frappe
 Summary:        Catppuccin Frappe cursor theme
 
 %description frappe
-Catppuccin Frappe flavor cursor theme.
+Catppuccin Frappe cursor theme.
 
 %package macchiato
 Summary:        Catppuccin Macchiato cursor theme
 
 %description macchiato
-Catppuccin Macchiato flavor cursor theme.
+Catppuccin Macchiato cursor theme.
 
 %package mocha
 Summary:        Catppuccin Mocha cursor theme
 
 %description mocha
-Catppuccin Mocha flavor cursor theme.
+Catppuccin Mocha cursor theme.
 
 %prep
 %forgeautosetup -p1

@@ -6,19 +6,20 @@ Release:        %autorelease
 Summary:        Folder color switching utility for Papirus icon themes
 
 License:        MIT
+URL:            %{forgeurl}
 
 %forgemeta
 
-URL:            %{forgeurl}
 Source0:        %{forgesource}
 
 BuildArch:      noarch
+
 BuildRequires:  make
 
 Requires:       papirus-icon-theme
 
 %description
-Papirus Folders is a utility for changing folder colors in Papirus icon themes.
+Utility for changing folder colors in Papirus icon themes.
 
 %prep
 %forgeautosetup
@@ -27,7 +28,10 @@ Papirus Folders is a utility for changing folder colors in Papirus icon themes.
 # Nothing to build
 
 %install
-%make_install PREFIX=%{_prefix} DESTDIR=%{buildroot} ZSHCOMPDIR=%{zsh_completions_dir}
+%make_install \
+    PREFIX=%{_prefix} \
+    DESTDIR=%{buildroot} \
+    ZSHCOMPDIR=%{zsh_completions_dir}
 
 %check
 # No test suite available

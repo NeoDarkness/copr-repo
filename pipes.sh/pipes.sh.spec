@@ -6,13 +6,14 @@ Release:        %autorelease
 Summary:        Animated pipes terminal screensaver
 
 License:        MIT
+URL:            %{forgeurl}
 
 %forgemeta
 
-URL:            %{forgeurl}
 Source0:        %{forgesource}
 
 BuildArch:      noarch
+
 BuildRequires:  make
 
 %description

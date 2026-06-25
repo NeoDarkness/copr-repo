@@ -7,10 +7,10 @@ Release:        %autorelease
 Summary:        Catppuccin folder colors for Papirus icon themes
 
 License:        MIT
+URL:            %{forgeurl}
 
 %forgemeta
 
-URL:            %{forgeurl}
 Source0:        %{forgesource}
 
 BuildArch:      noarch

@@ -9,10 +9,10 @@ Release:        %autorelease
 Summary:        Soothing pastel themes for GRUB2
 
 License:        MIT
+URL:            %{forgeurl}
 
 %forgemeta
 
-URL:            %{forgeurl}
 Source0:        %{forgesource}
 
 BuildArch:      noarch
@@ -23,36 +23,35 @@ Requires:       grub2-catppuccin-macchiato-theme = %{version}-%{release}
 Requires:       grub2-catppuccin-mocha-theme = %{version}-%{release}
 
 %description
-Meta package that installs Catppuccin GRUB2 themes:
-Latte, Frappe, Macchiato, and Mocha.
+Meta package that installs all Catppuccin GRUB2 themes.
 
 %package -n grub2-catppuccin-latte-theme
 Summary:        Catppuccin Latte theme for GRUB2
 Requires:       grub2-common
 
 %description -n grub2-catppuccin-latte-theme
-Catppuccin Latte flavor theme for GRUB2.
+Catppuccin Latte theme for GRUB2.
 
 %package -n grub2-catppuccin-frappe-theme
 Summary:        Catppuccin Frappe theme for GRUB2
 Requires:       grub2-common
 
 %description -n grub2-catppuccin-frappe-theme
-Catppuccin Frappe flavor theme for GRUB2.
+Catppuccin Frappe theme for GRUB2.
 
 %package -n grub2-catppuccin-macchiato-theme
 Summary:        Catppuccin Macchiato theme for GRUB2
 Requires:       grub2-common
 
 %description -n grub2-catppuccin-macchiato-theme
-Catppuccin Macchiato flavor theme for GRUB2.
+Catppuccin Macchiato theme for GRUB2.
 
 %package -n grub2-catppuccin-mocha-theme
 Summary:        Catppuccin Mocha theme for GRUB2
 Requires:       grub2-common
 
 %description -n grub2-catppuccin-mocha-theme
-Catppuccin Mocha flavor theme for GRUB2.
+Catppuccin Mocha theme for GRUB2.
 
 %prep
 %forgeautosetup

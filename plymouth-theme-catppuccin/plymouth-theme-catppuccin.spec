@@ -7,10 +7,10 @@ Release:        %autorelease
 Summary:        Soothing pastel themes for Plymouth
 
 License:        MIT
+URL:            %{forgeurl}
 
 %forgemeta
 
-URL:            %{forgeurl}
 Source0:        %{forgesource}
 
 BuildArch:      noarch
@@ -21,8 +21,7 @@ Requires:       %{name}-macchiato = %{version}-%{release}
 Requires:       %{name}-mocha = %{version}-%{release}
 
 %description
-Meta package that installs all Catppuccin Plymouth themes:
-Frappe, Latte, Macchiato, and Mocha.
+Meta package that installs all Catppuccin Plymouth themes.
 
 %package latte
 Summary:        Catppuccin Latte Plymouth theme
@@ -30,7 +29,7 @@ Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description latte
-Catppuccin Latte flavor theme for Plymouth.
+Catppuccin Latte theme for Plymouth.
 
 %package frappe
 Summary:        Catppuccin Frappe Plymouth theme
@@ -38,7 +37,7 @@ Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description frappe
-Catppuccin Frappe flavor theme for Plymouth.
+Catppuccin Frappe theme for Plymouth.
 
 %package macchiato
 Summary:        Catppuccin Macchiato Plymouth theme
@@ -46,7 +45,7 @@ Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description macchiato
-Catppuccin Macchiato flavor theme for Plymouth.
+Catppuccin Macchiato theme for Plymouth.
 
 %package mocha
 Summary:        Catppuccin Mocha Plymouth theme
@@ -54,7 +53,7 @@ Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description mocha
-Catppuccin Mocha flavor theme for Plymouth.
+Catppuccin Mocha theme for Plymouth.
 
 %prep
 %forgeautosetup

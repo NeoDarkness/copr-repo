@@ -9,11 +9,14 @@ Summary:        Postman API Platform
 
 License:        Proprietary
 URL:            https://www.postman.com/
+
 Source0:        https://dl.pstmn.io/download/version/%{version}/linux64
 Source1:        postman.desktop
 
 ExclusiveArch:  x86_64
+
 BuildRequires:  desktop-file-utils
+
 AutoReqProv:    no
 
 Requires:       hicolor-icon-theme
@@ -32,12 +35,13 @@ install -d %{buildroot}/opt/postman
 cp -a . %{buildroot}/opt/postman/
 
 install -d %{buildroot}%{_bindir}
-ln -sf ../../opt/postman/Postman %{buildroot}%{_bindir}/postman
+ln -sf ../../opt/postman/Postman \
+    %{buildroot}%{_bindir}/postman
 
-install -d %{buildroot}%{_datadir}/applications
 desktop-file-install \
     --dir=%{buildroot}%{_datadir}/applications \
     %{SOURCE1}
+
 desktop-file-validate \
     %{buildroot}%{_datadir}/applications/postman.desktop
 
@@ -52,7 +56,7 @@ install -Dm644 \
 /opt/postman
 %{_bindir}/postman
 %{_datadir}/applications/postman.desktop
-%{_datadir}/icons/hicolor/128x128/apps/postman.png
+%{_datadir}/pixmaps/postman.png
 
 %changelog
 %autochangelog
