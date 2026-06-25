@@ -56,7 +56,7 @@ Summary:        Catppuccin Mocha cursor theme
 Catppuccin Mocha flavor cursor theme.
 
 %prep
-%forgeautosetup
+%forgeautosetup -p1
 
 %build
 just all
