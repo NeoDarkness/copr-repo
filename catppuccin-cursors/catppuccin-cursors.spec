@@ -12,8 +12,8 @@ License:        GPL-2.0-only
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 
-Patch:         remove-bundled-license-and-authors-files.patch
-Patch:         use-explicit-whiskers-version-constraint.patch
+Patch:          remove-bundled-license-and-authors-files.patch
+Patch:          use-explicit-whiskers-version-constraint.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-pyside6
