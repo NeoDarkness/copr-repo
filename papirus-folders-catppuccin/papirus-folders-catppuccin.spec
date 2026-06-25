@@ -1,5 +1,5 @@
 %global forgeurl https://github.com/catppuccin/papirus-folders
-%global commit   f83671d17ea67e335b34f8028a7e6d78bca735d7
+%global commit f83671d17ea67e335b34f8028a7e6d78bca735d7
 
 Name:           papirus-folders-catppuccin
 Version:        1.0.0
@@ -32,7 +32,7 @@ papirus-folders utility.
 
 %install
 install -d %{buildroot}%{_datadir}/icons/Papirus
-cp -a src/* %{buildroot}%{_datadir}/icons/Papirus/
+cp -a src/. %{buildroot}%{_datadir}/icons/Papirus/
 
 %check
 # No test suite available

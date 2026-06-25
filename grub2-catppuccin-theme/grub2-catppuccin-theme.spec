@@ -1,5 +1,5 @@
 %global forgeurl https://github.com/catppuccin/grub
-%global commit   0a37ab19f654e77129b409fed371891c01ffd0b9
+%global commit 0a37ab19f654e77129b409fed371891c01ffd0b9
 
 %global _grubthemedir /boot/grub2/themes
 
@@ -28,24 +28,28 @@ Latte, Frappe, Macchiato, and Mocha.
 
 %package -n grub2-catppuccin-latte-theme
 Summary:        Catppuccin Latte theme for GRUB2
+Requires:       grub2-common
 
 %description -n grub2-catppuccin-latte-theme
 Catppuccin Latte flavor theme for GRUB2.
 
 %package -n grub2-catppuccin-frappe-theme
 Summary:        Catppuccin Frappe theme for GRUB2
+Requires:       grub2-common
 
 %description -n grub2-catppuccin-frappe-theme
 Catppuccin Frappe flavor theme for GRUB2.
 
 %package -n grub2-catppuccin-macchiato-theme
 Summary:        Catppuccin Macchiato theme for GRUB2
+Requires:       grub2-common
 
 %description -n grub2-catppuccin-macchiato-theme
 Catppuccin Macchiato flavor theme for GRUB2.
 
 %package -n grub2-catppuccin-mocha-theme
 Summary:        Catppuccin Mocha theme for GRUB2
+Requires:       grub2-common
 
 %description -n grub2-catppuccin-mocha-theme
 Catppuccin Mocha flavor theme for GRUB2.
@@ -58,7 +62,7 @@ Catppuccin Mocha flavor theme for GRUB2.
 
 %install
 install -d %{buildroot}%{_grubthemedir}
-cp -a src/* %{buildroot}%{_grubthemedir}/
+cp -a src/. %{buildroot}%{_grubthemedir}/
 
 %check
 # No test suite available

@@ -1,5 +1,5 @@
 %global forgeurl https://github.com/catppuccin/plymouth
-%global commit   198eba2071d80e4a23b8f51a5859e8f4acf8de6c
+%global commit 198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 
 Name:           plymouth-theme-catppuccin
 Version:        1.0.0
@@ -64,7 +64,7 @@ Catppuccin Mocha flavor theme for Plymouth.
 
 %install
 install -d %{buildroot}%{_datadir}/plymouth/themes
-cp -a themes/* %{buildroot}%{_datadir}/plymouth/themes/
+cp -a themes/. %{buildroot}%{_datadir}/plymouth/themes/
 
 %postun latte
 export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/

@@ -7,8 +7,6 @@ Version:        2.9.0
 Release:        %autorelease
 Summary:        Soothing port creation tool
 
-SourceLicense:  MIT
-
 License:        %{shrink:
     MIT AND
     Apache-2.0 AND
