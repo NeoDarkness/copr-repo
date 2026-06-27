@@ -1,13 +1,13 @@
-%define debug_package %{nil}
+%global debug_package %{nil}
 %global __strip /bin/true
-%define __brp_check_rpaths %{nil}
+%global __brp_check_rpaths %{nil}
 
 Name:           postman
 Version:        12.16.3
 Release:        %autorelease
 Summary:        Postman API Platform
 
-License:        Proprietary
+License:        LicenseRef-Postman-EULA
 URL:            https://www.postman.com/
 
 Source0:        https://dl.pstmn.io/download/version/%{version}/linux64
@@ -18,8 +18,6 @@ ExclusiveArch:  x86_64
 BuildRequires:  desktop-file-utils
 
 AutoReqProv:    no
-
-Requires:       hicolor-icon-theme
 
 %description
 Postman is an API platform for building and using APIs.
@@ -45,7 +43,7 @@ desktop-file-install \
 desktop-file-validate \
     %{buildroot}%{_datadir}/applications/postman.desktop
 
-install -Dm644 \
+install -Dm0644 \
     app/resources/app/assets/icon.png \
     %{buildroot}%{_datadir}/pixmaps/postman.png
 

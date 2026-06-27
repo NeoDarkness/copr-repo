@@ -1,4 +1,4 @@
-%bcond check 1
+%bcond_without check
 
 %global forgeurl https://github.com/catppuccin/whiskers
 
@@ -60,11 +60,8 @@ install -Dpm0755 \
 %endif
 
 %files
-%license LICENSE
-%license LICENSE.dependencies
-%license cargo-vendor.txt
-%doc CHANGELOG.md
-%doc README.md
+%license LICENSE LICENSE.dependencies cargo-vendor.txt
+%doc README.md CHANGELOG.md
 %{_bindir}/whiskers
 
 %changelog

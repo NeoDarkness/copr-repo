@@ -4,27 +4,36 @@
 Name:           plymouth-theme-catppuccin
 Version:        0
 Release:        %autorelease
-Summary:        Soothing pastel themes for Plymouth
+Summary:        Common files for Catppuccin Plymouth themes
 
 License:        MIT
 URL:            %{forgeurl}
 
 %forgemeta
 
-Source:         %{forgesource}
+Source0:        %{forgesource}
 
 BuildArch:      noarch
 
+%description
+Common files for Catppuccin Plymouth themes.
+
+%package all
+Summary:        Meta package for all Catppuccin Plymouth themes
+
+Requires:       %{name} = %{version}-%{release}
 Requires:       %{name}-latte = %{version}-%{release}
 Requires:       %{name}-frappe = %{version}-%{release}
 Requires:       %{name}-macchiato = %{version}-%{release}
 Requires:       %{name}-mocha = %{version}-%{release}
 
-%description
+%description all
 Meta package that installs all Catppuccin Plymouth themes.
 
 %package latte
 Summary:        Catppuccin Latte Plymouth theme
+
+Requires:       %{name} = %{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
@@ -33,6 +42,8 @@ Catppuccin Latte theme for Plymouth.
 
 %package frappe
 Summary:        Catppuccin Frappe Plymouth theme
+
+Requires:       %{name} = %{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
@@ -41,6 +52,8 @@ Catppuccin Frappe theme for Plymouth.
 
 %package macchiato
 Summary:        Catppuccin Macchiato Plymouth theme
+
+Requires:       %{name} = %{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
@@ -49,6 +62,8 @@ Catppuccin Macchiato theme for Plymouth.
 
 %package mocha
 Summary:        Catppuccin Mocha Plymouth theme
+
+Requires:       %{name} = %{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
@@ -93,24 +108,18 @@ fi \
 %license LICENSE
 %doc README.md
 
+%files all
+
 %files latte
-%license LICENSE
-%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-latte
 
 %files frappe
-%license LICENSE
-%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-frappe
 
 %files macchiato
-%license LICENSE
-%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-macchiato
 
 %files mocha
-%license LICENSE
-%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-mocha
 
 %changelog

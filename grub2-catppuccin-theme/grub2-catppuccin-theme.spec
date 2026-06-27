@@ -6,51 +6,66 @@
 Name:           grub2-catppuccin-theme
 Version:        0
 Release:        %autorelease
-Summary:        Soothing pastel themes for GRUB2
+Summary:        Common files for Catppuccin GRUB2 themes
 
 License:        MIT
 URL:            %{forgeurl}
 
 %forgemeta
 
-Source:         %{forgesource}
+Source0:        %{forgesource}
 
 BuildArch:      noarch
 
-Requires:       grub2-catppuccin-latte-theme = %{version}-%{release}
-Requires:       grub2-catppuccin-frappe-theme = %{version}-%{release}
-Requires:       grub2-catppuccin-macchiato-theme = %{version}-%{release}
-Requires:       grub2-catppuccin-mocha-theme = %{version}-%{release}
-
 %description
+Common files for Catppuccin GRUB2 themes.
+
+%package all
+Summary:        Meta package for all Catppuccin GRUB2 themes
+
+Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}-latte = %{version}-%{release}
+Requires:       %{name}-frappe = %{version}-%{release}
+Requires:       %{name}-macchiato = %{version}-%{release}
+Requires:       %{name}-mocha = %{version}-%{release}
+
+%description all
 Meta package that installs all Catppuccin GRUB2 themes.
 
-%package -n grub2-catppuccin-latte-theme
+%package latte
 Summary:        Catppuccin Latte theme for GRUB2
+
+Requires:       %{name} = %{version}-%{release}
 Requires:       grub2-common
 
-%description -n grub2-catppuccin-latte-theme
+%description latte
 Catppuccin Latte theme for GRUB2.
 
-%package -n grub2-catppuccin-frappe-theme
+%package frappe
 Summary:        Catppuccin Frappe theme for GRUB2
+
+Requires:       %{name} = %{version}-%{release}
 Requires:       grub2-common
 
-%description -n grub2-catppuccin-frappe-theme
+%description frappe
 Catppuccin Frappe theme for GRUB2.
 
-%package -n grub2-catppuccin-macchiato-theme
+%package macchiato
 Summary:        Catppuccin Macchiato theme for GRUB2
+
+Requires:       %{name} = %{version}-%{release}
 Requires:       grub2-common
 
-%description -n grub2-catppuccin-macchiato-theme
+%description macchiato
 Catppuccin Macchiato theme for GRUB2.
 
-%package -n grub2-catppuccin-mocha-theme
+%package mocha
 Summary:        Catppuccin Mocha theme for GRUB2
+
+Requires:       %{name} = %{version}-%{release}
 Requires:       grub2-common
 
-%description -n grub2-catppuccin-mocha-theme
+%description mocha
 Catppuccin Mocha theme for GRUB2.
 
 %prep
@@ -70,24 +85,18 @@ cp -a src/. %{buildroot}%{_grubthemedir}/
 %license LICENSE
 %doc README.md
 
-%files -n grub2-catppuccin-latte-theme
-%license LICENSE
-%doc README.md
+%files all
+
+%files latte
 %{_grubthemedir}/catppuccin-latte-grub-theme
 
-%files -n grub2-catppuccin-frappe-theme
-%license LICENSE
-%doc README.md
+%files frappe
 %{_grubthemedir}/catppuccin-frappe-grub-theme
 
-%files -n grub2-catppuccin-macchiato-theme
-%license LICENSE
-%doc README.md
+%files macchiato
 %{_grubthemedir}/catppuccin-macchiato-grub-theme
 
-%files -n grub2-catppuccin-mocha-theme
-%license LICENSE
-%doc README.md
+%files mocha
 %{_grubthemedir}/catppuccin-mocha-grub-theme
 
 %changelog
