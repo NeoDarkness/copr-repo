@@ -2,7 +2,7 @@
 %global commit f83671d17ea67e335b34f8028a7e6d78bca735d7
 
 Name:           papirus-folders-catppuccin
-Version:        1.0.0
+Version:        0
 Release:        %autorelease
 Summary:        Catppuccin folder colors for Papirus icon themes
 
@@ -11,7 +11,7 @@ URL:            %{forgeurl}
 
 %forgemeta
 
-Source0:        %{forgesource}
+Source:         %{forgesource}
 
 BuildArch:      noarch
 

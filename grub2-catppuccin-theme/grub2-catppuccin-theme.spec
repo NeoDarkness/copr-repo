@@ -4,7 +4,7 @@
 %global _grubthemedir /boot/grub2/themes
 
 Name:           grub2-catppuccin-theme
-Version:        1.0.0
+Version:        0
 Release:        %autorelease
 Summary:        Soothing pastel themes for GRUB2
 
@@ -13,7 +13,7 @@ URL:            %{forgeurl}
 
 %forgemeta
 
-Source0:        %{forgesource}
+Source:         %{forgesource}
 
 BuildArch:      noarch
 

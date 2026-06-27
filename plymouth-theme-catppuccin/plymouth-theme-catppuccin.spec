@@ -2,7 +2,7 @@
 %global commit 198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 
 Name:           plymouth-theme-catppuccin
-Version:        1.0.0
+Version:        0
 Release:        %autorelease
 Summary:        Soothing pastel themes for Plymouth
 
@@ -11,7 +11,7 @@ URL:            %{forgeurl}
 
 %forgemeta
 
-Source0:        %{forgesource}
+Source:         %{forgesource}
 
 BuildArch:      noarch
 

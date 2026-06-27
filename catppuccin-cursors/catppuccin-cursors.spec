@@ -10,7 +10,7 @@ URL:            %{forgeurl}
 
 %forgemeta
 
-Source0:        %{forgesource}
+Source:         %{forgesource}
 
 Patch:          remove-bundled-license-and-authors-files.patch
 Patch:          use-explicit-whiskers-version-constraint.patch

@@ -10,7 +10,7 @@ URL:            %{forgeurl}
 
 %forgemeta
 
-Source0:        %{forgesource}
+Source:         %{forgesource}
 
 BuildArch:      noarch
 
