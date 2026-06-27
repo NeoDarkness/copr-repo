@@ -1,4 +1,4 @@
-%bcond_without check
+%bcond check 1
 
 %global forgeurl https://github.com/catppuccin/whiskers
 
