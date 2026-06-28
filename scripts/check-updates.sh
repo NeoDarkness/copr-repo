@@ -127,7 +127,7 @@ update_git_snapshot() {
     local commit="$2"
 
     sed -i -E \
-        "s|^%global[[:space:]]+commit[[:space:]]+.*|%global commit      $commit|" \
+        "s|^%global[[:space:]]+commit[[:space:]]+.*|%global commit $commit|" \
         "$spec"
 }
 
