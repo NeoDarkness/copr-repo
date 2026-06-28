@@ -2,7 +2,7 @@
 %global commit 198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 
 Name:           plymouth-theme-catppuccin
-Version:        0
+Version:        1.0.0
 Release:        %autorelease
 Summary:        Common files for Catppuccin Plymouth themes
 

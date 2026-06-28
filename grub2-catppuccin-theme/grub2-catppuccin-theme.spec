@@ -4,7 +4,7 @@
 %global _grubthemedir /boot/grub2/themes
 
 Name:           grub2-catppuccin-theme
-Version:        0
+Version:        1.0.0
 Release:        %autorelease
 Summary:        Common files for Catppuccin GRUB2 themes
 
