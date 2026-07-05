@@ -1,5 +1,5 @@
 %global forgeurl https://github.com/karlstav/cava
-%global commit 1de0cf4c98768bb94a36cec10f5ea44efcde49f4
+%global commit 2086ec3621e654c6dedc49902f5456e7cbdfe69a
 
 Name:           cava
 Version:        1.0.0
