@@ -62,7 +62,7 @@ install -Dpm0755 \
 
 %files
 %license LICENSE LICENSE.dependencies cargo-vendor.txt
-%doc README.md CHANGELOG.md
+%doc README.md
 %{_bindir}/whiskers
 
 %changelog

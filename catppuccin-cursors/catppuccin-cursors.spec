@@ -86,7 +86,7 @@ cp -a dist/. %{buildroot}%{_datadir}/icons/
 
 %files
 %license LICENSE
-%doc README.md CHANGELOG.md
+%doc README.md
 
 %files all
 
