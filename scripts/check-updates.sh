@@ -1,20 +1,28 @@
 #!/usr/bin/env bash
-# Auto sync RPM spec versions (GitHub + Postman + Forge snapshot commit only) + Auto Cargo Vendor
+
+# Auto sync RPM spec versions using git remote
+# Supports:
+# - Stable releases via git tags
+# - Snapshot packages via HEAD commit
+# - Postman special release API
+# - Auto Cargo vendor generation for Rust packages
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 UPDATED=0
-TIMEOUT=10
+TIMEOUT=15
 
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+RED='\033[0;31m'
 NC='\033[0m'
 
-# -------------------------
+# --------------------------------------------------
 # Spec helpers
-# -------------------------
+# --------------------------------------------------
 
 get_spec_version() {
     awk '
@@ -55,49 +63,32 @@ is_forge_snapshot() {
 }
 
 is_rust_package() {
-    grep -q "cargo\|rust" "$1"
+    grep -Eiq "cargo|rust" "$1"
 }
 
-# -------------------------
-# HTTP & GitHub helpers
-# -------------------------
+# --------------------------------------------------
+# Git helpers
+# --------------------------------------------------
 
-github_api() {
-    timeout "$TIMEOUT" curl -fsSL \
-        -H "Accept: application/vnd.github+json" \
-        -H "User-Agent: copr-sync" \
-        "$1"
+get_latest_commit() {
+    timeout "$TIMEOUT" \
+        git ls-remote "$1" HEAD 2>/dev/null \
+        | awk '{print $1}'
 }
 
-extract_github_repo() {
-    local url="$1"
-    url="${url#https://github.com/}"
-    url="${url#http://github.com/}"
-    url="${url%.git}"
-    echo "$url" | cut -d/ -f1-2
+get_latest_tag() {
+    timeout "$TIMEOUT" \
+        git ls-remote --tags --refs "$1" 2>/dev/null \
+        | awk -F/ '{print $3}' \
+        | grep -Ev '\^\{\}$' \
+        | sed 's/^v//' \
+        | sort -V \
+        | tail -n1
 }
 
-get_github_version() {
-    local repo
-    repo=$(extract_github_repo "$1")
-
-    [[ "$repo" =~ .+/.+ ]] || return 1
-
-    github_api "https://api.github.com/repos/$repo/releases/latest" \
-        | jq -r '.tag_name // empty' \
-        | sed 's/^v//' && return 0
-
-    github_api "https://api.github.com/repos/$repo/tags?per_page=1" \
-        | jq -r '.[0].name // empty' \
-        | sed 's/^v//'
-}
-
-get_github_commit() {
-    local repo
-    repo=$(extract_github_repo "$1")
-    github_api "https://api.github.com/repos/$repo/commits?per_page=1" \
-        | jq -r '.[0].sha // empty'
-}
+# --------------------------------------------------
+# Special handlers
+# --------------------------------------------------
 
 get_postman_version() {
     timeout "$TIMEOUT" curl -fsSL \
@@ -105,9 +96,9 @@ get_postman_version() {
         | jq -r '.notes[0].version // empty'
 }
 
-# -------------------------
-# Updaters & Vendor Generator
-# -------------------------
+# --------------------------------------------------
+# Updaters
+# --------------------------------------------------
 
 update_version() {
     local spec="$1"
@@ -131,67 +122,69 @@ update_git_snapshot() {
         "$spec"
 }
 
+# --------------------------------------------------
+# Cargo vendor
+# --------------------------------------------------
+
 generate_cargo_vendor() {
     local pkg_dir="$1"
-    local pkg_name="$2"
-    local version="$3"
-    local url="$4"
+    local version="$2"
+    local url="$3"
+
     local vendor_tarball="$pkg_dir/vendor.tar.gz"
 
-    # Lewati jika tarball vendor versi ini sudah ada
     if [[ -f "$vendor_tarball" ]]; then
         return 0
     fi
 
-    echo -e "  ${BLUE}📦 Vendor tarball missing. Generating for version $version...${NC}"
-    
-    # Pastikan perintah cargo tersedia di mesin pelari skrip
-    if ! command -v cargo &> /dev/null; then
-        echo "  ⚠️  Error: 'cargo' command not found. Cannot generate vendor tarball."
+    if ! command -v cargo >/dev/null 2>&1; then
+        echo -e "  ${RED}⚠ cargo not found${NC}"
         return 1
     fi
 
-    local repo
-    repo=$(extract_github_repo "$url")
+    echo -e "  ${BLUE}📦 Generating Cargo vendor...${NC}"
+
     local tmp_dir
-    tmp_dir=$(mktemp -d)
+    tmp_dir="$(mktemp -d)"
 
-    # Hapus file sisa tarball versi lama agar folder bersih
-    rm -f "$pkg_dir"/vendor.tar.gz
+    rm -f "$vendor_tarball"
 
-    # Unduh arsip kode sumber langsung dari GitHub tarball untuk di-vendor
-    if timeout "$TIMEOUT" curl -fsSL "https://github.com/$repo/archive/refs/tags/v$version.tar.gz" -o "$tmp_dir/src.tar.gz"; then
-        tar -xzf "$tmp_dir/src.tar.gz" -C "$tmp_dir"
-        local extracted_dir
-        extracted_dir=$(find "$tmp_dir" -maxdepth 1 -type d ! -path "$tmp_dir" | head -n1)
+    if git clone \
+        --depth 1 \
+        --branch "v$version" \
+        "$url" \
+        "$tmp_dir/src" >/dev/null 2>&1; then
 
-        # Proses pembuatan vendor
-        pushd "$extracted_dir" > /dev/null
-        if cargo vendor "$tmp_dir/vendor" > /dev/null; then
+        pushd "$tmp_dir/src" >/dev/null
+
+        if cargo vendor "$tmp_dir/vendor" >/dev/null 2>&1; then
             tar -czf "$vendor_tarball" -C "$tmp_dir" vendor
-            echo -e "  ${GREEN}✨ Vendor tarball created: $(basename "$vendor_tarball")${NC}"
-            UPDATED=$((UPDATED+1))
+
+            echo -e "  ${GREEN}✨ vendor.tar.gz generated${NC}"
+
+            UPDATED=$((UPDATED + 1))
         else
-            echo "  ⚠️  Failed running 'cargo vendor'"
+            echo -e "  ${RED}⚠ cargo vendor failed${NC}"
         fi
-        popd > /dev/null
+
+        popd >/dev/null
     else
-        echo "  ⚠️  Failed to download source tarball for vendoring"
+        echo -e "  ${RED}⚠ git clone failed${NC}"
     fi
 
     rm -rf "$tmp_dir"
 }
 
-# -------------------------
+# --------------------------------------------------
 # Main
-# -------------------------
+# --------------------------------------------------
 
 echo -e "${BLUE}🔍 Syncing package versions...${NC}\n"
 
 for dir in "$REPO_ROOT"/*; do
     [[ -d "$dir" ]] || continue
 
-    pkg=$(basename "$dir")
+    pkg="$(basename "$dir")"
 
     case "$pkg" in
         .git|scripts|.github)
@@ -200,89 +193,94 @@ for dir in "$REPO_ROOT"/*; do
     esac
 
     spec="$dir/$pkg.spec"
+
     [[ -f "$spec" ]] || continue
 
     echo -e "${YELLOW}Checking $pkg...${NC}"
 
-    version=$(get_spec_version "$spec")
-    url=$(get_spec_url "$spec")
+    version="$(get_spec_version "$spec")"
+    url="$(get_spec_url "$spec")"
 
     echo "  Current: $version"
 
-    # -------------------------
-    # Forge snapshot (commit-only)
-    # -------------------------
-    if is_forge_snapshot "$spec"; then
-        commit=$(get_spec_commit "$spec")
-        latest=$(get_github_commit "$url" || true)
+    # --------------------------------------------------
+    # Snapshot packages
+    # --------------------------------------------------
 
-        [[ -z "$latest" ]] && {
-            echo "  ⚠️  Failed to fetch commit"
+    if is_forge_snapshot "$spec"; then
+        commit="$(get_spec_commit "$spec")"
+        latest="$(get_latest_commit "$url" || true)"
+
+        if [[ -z "$latest" ]]; then
+            echo -e "  ${RED}⚠ Failed to fetch commit${NC}"
+            echo
             continue
-        }
+        fi
 
         echo "  Commit: ${commit:0:7} → ${latest:0:7}"
 
         if [[ "$commit" != "$latest" ]]; then
-            echo -e "  ${GREEN}✨ Updating git snapshot${NC}"
+            echo -e "  ${GREEN}✨ Updating snapshot commit${NC}"
+
             update_git_snapshot "$spec" "$latest"
-            UPDATED=$((UPDATED+1))
+
+            UPDATED=$((UPDATED + 1))
         else
-            echo "  ℹ️  Up to date"
+            echo "  ℹ Up to date"
         fi
-        
-        # Pengecekan Vendor khusus ekosistem Rust (Snapshot Version)
+
         if is_rust_package "$spec"; then
-            generate_cargo_vendor "$dir" "$pkg" "$latest" "$url" || true
+            generate_cargo_vendor "$dir" "$latest" "$url" || true
         fi
-        
+
         echo
         continue
     fi
 
-    # -------------------------
-    # Versioned packages (GitHub / Postman)
-    # -------------------------
-    if [[ "$pkg" == "postman" ]]; then
-        latest=$(get_postman_version || true)
-    else
-        [[ ! "$url" =~ github\.com ]] && {
-            echo "  ⚠️  Unsupported source"
-            continue
-        }
+    # --------------------------------------------------
+    # Stable releases
+    # --------------------------------------------------
 
-        latest=$(get_github_version "$url" || true)
+    if [[ "$pkg" == "postman" ]]; then
+        latest="$(get_postman_version || true)"
+    else
+        latest="$(get_latest_tag "$url" || true)"
     fi
 
-    [[ -z "$latest" ]] && {
-        echo "  ⚠️  No latest version found"
+    if [[ -z "$latest" ]]; then
+        echo -e "  ${RED}⚠ Failed to fetch latest version${NC}"
+        echo
         continue
-    }
+    fi
 
     echo "  Latest: $latest"
 
     if [[ "$version" != "$latest" ]]; then
         echo -e "  ${GREEN}✨ Updating: $version → $latest${NC}"
+
         update_version "$spec" "$latest"
-        UPDATED=$((UPDATED+1))
-        version="$latest" # Set variabel lokal ke versi baru untuk keperluan penamaan vendor
+
+        UPDATED=$((UPDATED + 1))
+
+        version="$latest"
     else
-        echo "  ℹ️  Up to date"
+        echo "  ℹ Up to date"
     fi
 
-    # Pengecekan Vendor khusus ekosistem Rust (Stable Release Version)
     if is_rust_package "$spec"; then
-        generate_cargo_vendor "$dir" "$pkg" "$version" "$url" || true
+        generate_cargo_vendor "$dir" "$version" "$url" || true
     fi
 
     echo
 done
 
-# -------------------------
-# Summary Output Only
-# -------------------------
+# --------------------------------------------------
+# Summary
+# --------------------------------------------------
+
 if [[ "$UPDATED" -gt 0 ]]; then
-    echo -e "${GREEN}✅ Done! Modified or generated vendor for $UPDATED target(s). Run git status to review changes.${NC}"
+    echo -e "${GREEN}✅ Done! Updated $UPDATED target(s).${NC}"
+    echo "Run: git status"
 else
     echo -e "${GREEN}✅ Everything is already up to date.${NC}"
 fi
