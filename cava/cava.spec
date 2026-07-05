@@ -4,7 +4,7 @@
 Name:           cava
 Version:        1.0.0
 Release:        %autorelease
-Summary:        Console-based audio visualizer
+Summary:        Console-based Audio Visualizer for Alsa
 
 License:        MIT
 URL:            %{forgeurl}
@@ -13,31 +13,20 @@ URL:            %{forgeurl}
 
 Source0:        %{forgesource}
 
-BuildRequires:  autoconf
-BuildRequires:  automake
-BuildRequires:  gcc
-BuildRequires:  libtool
-BuildRequires:  make
-BuildRequires:  pkgconf-pkg-config
-
-BuildRequires:  pkgconfig(fftw3)
-BuildRequires:  pkgconfig(iniparser)
-
 BuildRequires:  alsa-lib-devel
-BuildRequires:  pipewire-devel
-BuildRequires:  portaudio-devel
+BuildRequires:  fftw-devel
 BuildRequires:  pulseaudio-libs-devel
-
+BuildRequires:  libtool
 BuildRequires:  ncurses-devel
+BuildRequires:  iniparser-devel
+BuildRequires:  make
 
 %description
-CAVA is a console-based audio visualizer supporting multiple audio
-input backends and terminal output modes.
+C.A.V.A. is a bar spectrum analyzer for audio using ALSA for input.
 
 %prep
 %forgeautosetup
-echo %{version} > version
-autoreconf -fiv
+./autogen.sh
 
 %build
 %configure FONT_DIR=/lib/kbd/consolefonts
@@ -52,6 +41,7 @@ autoreconf -fiv
 %files
 %license LICENSE
 %doc README.md
+%doc example_files
 %{_bindir}/cava
 /lib/kbd/consolefonts/cava.psf
 
