@@ -4,7 +4,7 @@
 Name:           papirus-folders-catppuccin
 Version:        1.0.0
 Release:        %autorelease
-Summary:        Catppuccin folder colors for Papirus icon themes
+Summary:        Soothing pastel folder colors for Papirus icon themes
 
 License:        MIT
 URL:            %{forgeurl}
@@ -19,10 +19,10 @@ Requires:       papirus-folders
 Requires:       papirus-icon-theme
 
 %description
-Catppuccin folder colors for Papirus icon themes.
+Soothing pastel folder colors for Papirus icon themes.
 
 This package provides Catppuccin folder color variants for use with the
-papirus-folders utility.
+papirus-folders utility, allowing you to bring the cozy Catppuccin aesthetic to your file manager.
 
 %prep
 %forgeautosetup

@@ -4,7 +4,7 @@
 Name:           plymouth-theme-catppuccin
 Version:        1.0.0
 Release:        %autorelease
-Summary:        Common files for Catppuccin Plymouth themes
+Summary:        Soothing pastel theme for Plymouth
 
 License:        MIT
 URL:            %{forgeurl}
@@ -16,59 +16,42 @@ Source0:        %{forgesource}
 BuildArch:      noarch
 
 %description
-Common files for Catppuccin Plymouth themes.
-
-%package all
-Summary:        Meta package for all Catppuccin Plymouth themes
-
-Requires:       %{name} = %{version}-%{release}
-Requires:       %{name}-latte = %{version}-%{release}
-Requires:       %{name}-frappe = %{version}-%{release}
-Requires:       %{name}-macchiato = %{version}-%{release}
-Requires:       %{name}-mocha = %{version}-%{release}
-
-%description all
-Meta package that installs all Catppuccin Plymouth themes.
+Soothing pastel theme for Plymouth.
 
 %package latte
-Summary:        Catppuccin Latte Plymouth theme
-
-Requires:       %{name} = %{version}-%{release}
+Summary:        Soothing pastel theme for Plymouth - Latte
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description latte
-Catppuccin Latte theme for Plymouth.
+Soothing pastel theme for Plymouth - Latte.
 
 %package frappe
-Summary:        Catppuccin Frappe Plymouth theme
+Summary:        Soothing pastel theme for Plymouth - Frappe
 
-Requires:       %{name} = %{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description frappe
-Catppuccin Frappe theme for Plymouth.
+Soothing pastel theme for Plymouth - Frappe.
 
 %package macchiato
-Summary:        Catppuccin Macchiato Plymouth theme
+Summary:        Soothing pastel theme for Plymouth - Macchiato
 
-Requires:       %{name} = %{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description macchiato
-Catppuccin Macchiato theme for Plymouth.
+Soothing pastel theme for Plymouth - Macchiato.
 
 %package mocha
-Summary:        Catppuccin Mocha Plymouth theme
+Summary:        Soothing pastel theme for Plymouth - Mocha
 
-Requires:       %{name} = %{version}-%{release}
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 
 %description mocha
-Catppuccin Mocha theme for Plymouth.
+Soothing pastel theme for Plymouth - Mocha.
 
 %prep
 %forgeautosetup
@@ -105,21 +88,25 @@ fi \
 # No test suite available
 
 %files
-%license LICENSE
-%doc README.md
-
-%files all
 
 %files latte
+%license LICENSE
+%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-latte
 
 %files frappe
+%license LICENSE
+%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-frappe
 
 %files macchiato
+%license LICENSE
+%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-macchiato
 
 %files mocha
+%license LICENSE
+%doc README.md
 %{_datadir}/plymouth/themes/catppuccin-mocha
 
 %changelog

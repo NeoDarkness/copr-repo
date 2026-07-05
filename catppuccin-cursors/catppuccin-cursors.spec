@@ -4,7 +4,7 @@
 Name:           catppuccin-cursors
 Version:        2.0.0
 Release:        %autorelease
-Summary:        Common files for Catppuccin cursor themes
+Summary:        Soothing pastel mouse cursors
 
 License:        GPL-2.0-only
 URL:            %{forgeurl}
@@ -25,51 +25,31 @@ BuildRequires:  python3-pyside6
 BuildRequires:  xcursorgen
 
 %description
-Common files for Catppuccin cursor themes.
-
-%package all
-Summary:        Meta package for all Catppuccin cursor themes
-
-Requires:       %{name} = %{version}-%{release}
-Requires:       %{name}-latte = %{version}-%{release}
-Requires:       %{name}-frappe = %{version}-%{release}
-Requires:       %{name}-macchiato = %{version}-%{release}
-Requires:       %{name}-mocha = %{version}-%{release}
-
-%description all
-Meta package that installs all Catppuccin cursor themes.
+Soothing pastel mouse cursors.
 
 %package latte
-Summary:        Catppuccin Latte cursor theme
-
-Requires:       %{name} = %{version}-%{release}
+Summary:        Soothing pastel mouse cursors - Latte
 
 %description latte
-Catppuccin Latte cursor theme.
+Soothing pastel mouse cursors - Latte.
 
 %package frappe
-Summary:        Catppuccin Frappe cursor theme
-
-Requires:       %{name} = %{version}-%{release}
+Summary:        Soothing pastel mouse cursors - Frappe
 
 %description frappe
-Catppuccin Frappe cursor theme.
+Soothing pastel mouse cursors - Frappe.
 
 %package macchiato
-Summary:        Catppuccin Macchiato cursor theme
-
-Requires:       %{name} = %{version}-%{release}
+Summary:        Soothing pastel mouse cursors - Macchiato
 
 %description macchiato
-Catppuccin Macchiato cursor theme.
+Soothing pastel mouse cursors - Macchiato.
 
 %package mocha
-Summary:        Catppuccin Mocha cursor theme
-
-Requires:       %{name} = %{version}-%{release}
+Summary:        Soothing pastel mouse cursors - Mocha
 
 %description mocha
-Catppuccin Mocha cursor theme.
+Soothing pastel mouse cursors - Mocha.
 
 %prep
 %forgeautosetup -p1
@@ -85,21 +65,25 @@ cp -a dist/. %{buildroot}%{_datadir}/icons/
 # No test suite available
 
 %files
-%license LICENSE
-%doc README.md
-
-%files all
 
 %files latte
+%license LICENSE
+%doc README.md
 %{_datadir}/icons/catppuccin-latte-*-cursors
 
 %files frappe
+%license LICENSE
+%doc README.md
 %{_datadir}/icons/catppuccin-frappe-*-cursors
 
 %files macchiato
+%license LICENSE
+%doc README.md
 %{_datadir}/icons/catppuccin-macchiato-*-cursors
 
 %files mocha
+%license LICENSE
+%doc README.md
 %{_datadir}/icons/catppuccin-mocha-*-cursors
 
 %changelog

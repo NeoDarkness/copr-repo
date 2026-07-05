@@ -6,7 +6,7 @@
 Name:           catppuccin-whiskers
 Version:        2.9.0
 Release:        %autorelease
-Summary:        Soothing port creation tool
+Summary:        Soothing port creation tool for the high-spirited!
 
 License:        %{shrink:
     MIT AND
