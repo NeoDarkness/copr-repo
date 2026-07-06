@@ -77,13 +77,28 @@ get_latest_commit() {
 }
 
 get_latest_tag() {
-    timeout "$TIMEOUT" \
+    local all_tags
+    all_tags=$(timeout "$TIMEOUT" \
         git ls-remote --tags --refs "$1" 2>/dev/null \
         | awk -F/ '{print $3}' \
         | grep -Ev '\^\{\}$' \
-        | sed 's/^v//' \
-        | sort -V \
-        | tail -n1
+        | sed 's/^v//')
+
+    if [[ -z "$all_tags" ]]; then
+        return
+    fi
+
+    local semver_tags
+    semver_tags=$(echo "$all_tags" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$')
+
+    if [[ -n "$semver_tags" ]]; then
+        # Prefer semver tags if they exist
+        echo "$semver_tags" | sort -V | tail -n1
+    else
+        # Fallback for non-semver repos: just sort all tags and hope for the best.
+        # This is what the original script did and is a reasonable fallback.
+        echo "$all_tags" | sort -V | tail -n1
+    fi
 }
 
 # --------------------------------------------------

@@ -1,5 +1,4 @@
 %global forgeurl https://github.com/catppuccin/cursors
-%global commit a7eb08527dcce01010fa0ec46fa2bc4c3154f0d4
 
 Name:           catppuccin-cursors
 Version:        2.0.0
