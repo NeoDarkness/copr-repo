@@ -72,6 +72,16 @@ is_rust_package() {
     grep -Eiq "cargo|rust" "$1"
 }
 
+sanitize_rpm_version() {
+    local version="$1"
+
+    version="${version//-/.}"
+    version="${version//_/.}"
+    version="${version#v}"
+
+    echo "$version"
+}
+
 # --------------------------------------------------
 # GitHub helpers
 # --------------------------------------------------
@@ -277,6 +287,8 @@ for dir in "$REPO_ROOT"/*; do
     if [[ -z "$latest_tag" ]]; then
         latest_tag="1.0.0"
     fi
+
+    latest_tag="$(sanitize_rpm_version "$latest_tag")"
 
     # --------------------------------------------------
     # Snapshot packages

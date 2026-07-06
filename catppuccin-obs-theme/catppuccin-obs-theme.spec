@@ -1,5 +1,5 @@
 %global forgeurl https://github.com/catppuccin/obs
-%global version pre-30.2.0
+%global version pre.30.2.0
 %global commit 054a297d303a5bac4f1652a13b17d78a13201c0e
 
 Name:           catppuccin-obs-theme
