@@ -1,4 +1,5 @@
 %global forgeurl https://github.com/pipeseroni/pipes.sh
+%global commit 581792d4e0ea51e15889ba14a85db1bc9727b83d
 
 Name:           pipes.sh
 Version:        1.3.0
