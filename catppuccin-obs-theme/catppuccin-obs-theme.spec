@@ -1,8 +1,9 @@
 %global forgeurl https://github.com/catppuccin/obs
 %global commit 054a297d303a5bac4f1652a13b17d78a13201c0e
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           catppuccin-obs-theme
-Version:        1.0.0
+Version:        0^git%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel theme for OBS Studio
 

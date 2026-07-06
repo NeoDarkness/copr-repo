@@ -1,8 +1,9 @@
 %global forgeurl https://github.com/karlstav/cava
 %global commit 4b12c2b043723f42567ddbfd5a516566bdf52316
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           cava
-Version:        1.0.0
+Version:        0^git%{shortcommit}
 Release:        %autorelease
 Summary:        Console-based Audio Visualizer for Alsa
 

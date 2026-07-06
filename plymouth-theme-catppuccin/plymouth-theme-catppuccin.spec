@@ -1,8 +1,9 @@
 %global forgeurl https://github.com/catppuccin/plymouth
 %global commit 198eba2071d80e4a23b8f51a5859e8f4acf8de6c
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           plymouth-theme-catppuccin
-Version:        1.0.0
+Version:        0^git%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel theme for Plymouth
 
