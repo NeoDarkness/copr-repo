@@ -1,17 +1,15 @@
 %global forgeurl https://github.com/pipeseroni/pipes.sh
-%global version 1.3.0
-%global commit 581792d4e0ea51e15889ba14a85db1bc9727b83d
+%global commit   581792d4e0ea51e15889ba14a85db1bc9727b83d
+
+%forgemeta
 
 Name:           pipes.sh
-Version:        %{forgeversion}
-Release:        %autorelease
+Version:        1.3.0
+Release:        1%{?dist}
 Summary:        Animated pipes terminal screensaver
 
 License:        MIT
 URL:            %{forgeurl}
-
-%forgemeta
-
 Source0:        %{forgesource}
 
 BuildArch:      noarch
@@ -28,13 +26,11 @@ It renders colorful animated pipes directly in the terminal.
 %forgeautosetup
 
 %build
-# Nothing to build
 
 %install
 %make_install PREFIX=%{_prefix} DESTDIR=%{buildroot}
 
 %check
-# No test suite available
 
 %files
 %license LICENSE

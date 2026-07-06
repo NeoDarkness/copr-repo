@@ -1,12 +1,13 @@
 %bcond check 1
 
 %global forgeurl https://github.com/catppuccin/whiskers
-%global version 2.9.0
-%global commit 233654f3cd8101f572e6842dce426c56c86ff98b
+%global commit   233654f3cd8101f572e6842dce426c56c86ff98b
+
+%forgemeta
 
 Name:           catppuccin-whiskers
-Version:        %{forgeversion}
-Release:        %autorelease
+Version:        2.9.0
+Release:        1%{?dist}
 Summary:        Soothing port creation tool for the high-spirited!
 
 License:        %{shrink:
@@ -26,14 +27,7 @@ License:        %{shrink:
 }
 
 URL:            %{forgeurl}
-
-%forgemeta
-
 Source0:        %{forgesource}
-# To generate vendor tarball:
-# spectool -g catppuccin-whiskers.spec
-# cargo vendor
-# tar czf vendor.tar.gz vendor/
 Source1:        vendor.tar.gz
 
 BuildRequires:  cargo-rpm-macros >= 24

@@ -4,7 +4,7 @@
 
 Name:           postman
 Version:        12.17.3
-Release:        %autorelease
+Release:        1%{?dist}
 Summary:        Postman API Platform
 
 License:        LicenseRef-Postman-EULA
@@ -26,7 +26,6 @@ Postman is an API platform for building and using APIs.
 %autosetup -n Postman
 
 %build
-# Nothing to build
 
 %install
 install -d %{buildroot}/opt/postman
@@ -48,7 +47,6 @@ install -Dm0644 \
     %{buildroot}%{_datadir}/pixmaps/postman.png
 
 %check
-# No test suite available
 
 %files
 /opt/postman

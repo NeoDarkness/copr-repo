@@ -1,19 +1,17 @@
 %global forgeurl https://github.com/catppuccin/grub
-%global version 1.0.0
-%global commit 0a37ab19f654e77129b409fed371891c01ffd0b9
+%global commit   0a37ab19f654e77129b409fed371891c01ffd0b9
 
 %global _grubthemedir /boot/grub2/themes
 
+%forgemeta
+
 Name:           catppuccin-grub-theme
-Version:        %{forgeversion}
-Release:        %autorelease
+Version:        1.0.0
+Release:        1%{?dist}
 Summary:        Soothing pastel theme for GRUB2
 
 License:        MIT
 URL:            %{forgeurl}
-
-%forgemeta
-
 Source0:        %{forgesource}
 
 BuildArch:      noarch
@@ -57,14 +55,12 @@ Soothing pastel theme for GRUB2 - Mocha.
 %forgeautosetup
 
 %build
-# Nothing to build
 
 %install
 install -d %{buildroot}%{_grubthemedir}
 cp -a src/. %{buildroot}%{_grubthemedir}/
 
 %check
-# No test suite available
 
 %files
 

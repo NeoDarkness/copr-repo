@@ -180,7 +180,7 @@ update_git_snapshot() {
     local commit="$2"
 
     sed -i -E \
-        "s|^%global[[:space:]]+commit[[:space:]]+.*|%global commit $commit|" \
+        "s|^%global[[:space:]]+commit[[:space:]]+.*|%global commit   $commit|" \
         "$spec"
 }
 
@@ -190,7 +190,7 @@ update_git_snapshot() {
 
 generate_cargo_vendor() {
     local pkg_dir="$1"
-    local version="$2"
+    local target_ref="$2"
     local url="$3"
 
     local vendor_tarball="$pkg_dir/vendor.tar.gz"
@@ -211,38 +211,34 @@ generate_cargo_vendor() {
 
     rm -f "$vendor_tarball"
 
-    if ! git clone \
-        --depth 1 \
-        --branch "$version" \
-        "$url" \
-        "$tmp_dir/src" >/dev/null 2>&1; then
+    # Lebih aman menggunakan git clone dasar lalu checkout ref (bisa commit SHA ataupun tag)
+    if ! git clone "$url" "$tmp_dir/src" >/dev/null 2>&1; then
+        echo -e "  ${RED}⚠ git clone failed${NC}"
+        rm -rf "$tmp_dir"
+        return 1
+    fi
 
-        if ! git clone \
-            --depth 1 \
-            --branch "v$version" \
-            "$url" \
-            "$tmp_dir/src" >/dev/null 2>&1; then
+    pushd "$tmp_dir/src" >/dev/null
 
-            echo -e "  ${RED}⚠ git clone failed${NC}"
+    if ! git checkout "$target_ref" >/dev/null 2>&1; then
+        # Jika gagal (misal tag murni semver), coba dengan prefiks v
+        if ! git checkout "v$target_ref" >/dev/null 2>&1; then
+            echo -e "  ${RED}⚠ git checkout $target_ref failed${NC}"
+            popd >/dev/null
             rm -rf "$tmp_dir"
             return 1
         fi
     fi
 
-    pushd "$tmp_dir/src" >/dev/null
-
     if cargo vendor "$tmp_dir/vendor" >/dev/null 2>&1; then
         tar -czf "$vendor_tarball" -C "$tmp_dir" vendor
-
         echo -e "  ${GREEN}✨ vendor.tar.gz generated${NC}"
-
         UPDATED=$((UPDATED + 1))
     else
         echo -e "  ${RED}⚠ cargo vendor failed${NC}"
     fi
 
     popd >/dev/null
-
     rm -rf "$tmp_dir"
 }
 
@@ -309,24 +305,26 @@ for dir in "$REPO_ROOT"/*; do
 
         if [[ "$version" != "$latest_tag" ]]; then
             echo -e "  ${GREEN}✨ Updating base version${NC}"
-
             update_version_macro "$spec" "$latest_tag"
-
             UPDATED=$((UPDATED + 1))
         fi
 
         if [[ "$commit" != "$latest_commit" ]]; then
             echo -e "  ${GREEN}✨ Updating snapshot commit${NC}"
-
             update_git_snapshot "$spec" "$latest_commit"
-
             UPDATED=$((UPDATED + 1))
+            
+            # Jika commit berubah, hapus vendor lama agar dibuat ulang berbasis commit baru
+            if is_rust_package "$spec"; then
+                rm -f "$dir/vendor.tar.gz"
+            fi
         else
             echo "  ℹ Snapshot up to date"
         fi
 
         if is_rust_package "$spec"; then
-            generate_cargo_vendor "$dir" "$latest_tag" "$url" || true
+            # Snapshot harus di-vendor berdasarkan commit SHA, bukan tag base version
+            generate_cargo_vendor "$dir" "$latest_commit" "$url" || true
         fi
 
         echo
@@ -341,10 +339,13 @@ for dir in "$REPO_ROOT"/*; do
 
     if [[ "$version" != "$latest_tag" ]]; then
         echo -e "  ${GREEN}✨ Updating: $version → $latest_tag${NC}"
-
         update_version_macro "$spec" "$latest_tag"
-
         UPDATED=$((UPDATED + 1))
+        
+        # Jika versi stabil berubah, bersihkan vendor lama
+        if is_rust_package "$spec"; then
+            rm -f "$dir/vendor.tar.gz"
+        fi
 
         version="$latest_tag"
     else
