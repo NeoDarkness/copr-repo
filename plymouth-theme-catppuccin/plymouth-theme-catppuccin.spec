@@ -1,9 +1,9 @@
 %global forgeurl https://github.com/catppuccin/plymouth
+%global version 1.0.0
 %global commit 198eba2071d80e4a23b8f51a5859e8f4acf8de6c
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           plymouth-theme-catppuccin
-Version:        0^git%{shortcommit}
+Version:        %{forgeversion}
 Release:        %autorelease
 Summary:        Soothing pastel theme for Plymouth
 
@@ -21,6 +21,7 @@ Soothing pastel theme for Plymouth.
 
 %package latte
 Summary:        Soothing pastel theme for Plymouth - Latte
+
 Requires:       plymouth-plugin-two-step
 Requires:       plymouth-system-theme
 

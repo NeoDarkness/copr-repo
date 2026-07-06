@@ -1,11 +1,11 @@
 %bcond check 1
 
 %global forgeurl https://github.com/catppuccin/whiskers
+%global version 2.9.0
 %global commit 233654f3cd8101f572e6842dce426c56c86ff98b
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           catppuccin-whiskers
-Version:        0^git%{shortcommit}
+Version:        %{forgeversion}
 Release:        %autorelease
 Summary:        Soothing port creation tool for the high-spirited!
 

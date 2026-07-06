@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Auto sync RPM spec versions using git remote
+# Auto sync RPM spec versions using GitHub API
 # Supports:
 # - Stable releases via git tags
 # - Snapshot packages via HEAD commit
@@ -26,7 +26,13 @@ NC='\033[0m'
 
 get_spec_version() {
     awk '
-        /^Version:/ {
+        /^%global[[:space:]]+version[[:space:]]+/ {
+            print $3
+            found=1
+            exit
+        }
+
+        /^Version:/ && !found {
             sub(/^Version:[[:space:]]*/, "")
             print
             exit
@@ -67,37 +73,66 @@ is_rust_package() {
 }
 
 # --------------------------------------------------
-# Git helpers
+# GitHub helpers
 # --------------------------------------------------
 
+github_repo_path() {
+    echo "${1#https://github.com/}"
+}
+
+github_api() {
+    local url="$1"
+
+    local headers=(
+        -H "Accept: application/vnd.github+json"
+    )
+
+    if command -v gh >/dev/null 2>&1; then
+        local token
+        token="$(gh auth token 2>/dev/null || true)"
+
+        if [[ -n "$token" ]]; then
+            headers+=(
+                -H "Authorization: Bearer $token"
+            )
+        fi
+    fi
+
+    timeout "$TIMEOUT" curl -fsSL \
+        "${headers[@]}" \
+        "$url"
+}
+
 get_latest_commit() {
-    timeout "$TIMEOUT" \
-        git ls-remote "$1" HEAD 2>/dev/null \
-        | awk '{print $1}'
+    local repo
+    repo="$(github_repo_path "$1")"
+
+    github_api \
+        "https://api.github.com/repos/$repo/commits/HEAD" \
+        | jq -r '.sha // empty'
 }
 
 get_latest_tag() {
-    local all_tags
-    all_tags=$(timeout "$TIMEOUT" \
-        git ls-remote --tags --refs "$1" 2>/dev/null \
-        | awk -F/ '{print $3}' \
-        | grep -Ev '\^\{\}$' \
+    local repo
+    repo="$(github_repo_path "$1")"
+
+    local tags
+    tags=$(github_api \
+        "https://api.github.com/repos/$repo/tags?per_page=100" \
+        | jq -r '.[].name' \
         | sed 's/^v//')
 
-    if [[ -z "$all_tags" ]]; then
+    if [[ -z "$tags" ]]; then
         return
     fi
 
     local semver_tags
-    semver_tags=$(echo "$all_tags" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$')
+    semver_tags=$(echo "$tags" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$')
 
     if [[ -n "$semver_tags" ]]; then
-        # Prefer semver tags if they exist
         echo "$semver_tags" | sort -V | tail -n1
     else
-        # Fallback for non-semver repos: just sort all tags and hope for the best.
-        # This is what the original script did and is a reasonable fallback.
-        echo "$all_tags" | sort -V | tail -n1
+        echo "$tags" | sort -V | tail -n1
     fi
 }
 
@@ -115,17 +150,19 @@ get_postman_version() {
 # Updaters
 # --------------------------------------------------
 
-update_version() {
+update_version_macro() {
     local spec="$1"
     local version="$2"
 
-    sed -i -E \
-        "s|^Version:[[:space:]]+.*|Version:        $version|" \
-        "$spec"
-
-    sed -i -E \
-        "s|^Release:[[:space:]]+.*|Release:        %autorelease|" \
-        "$spec"
+    if grep -q "^%global[[:space:]]\+version[[:space:]]" "$spec"; then
+        sed -i -E \
+            "s|^%global[[:space:]]+version[[:space:]]+.*|%global version $version|" \
+            "$spec"
+    else
+        sed -i -E \
+            "s|^Version:[[:space:]]+.*|Version:        $version|" \
+            "$spec"
+    fi
 }
 
 update_git_snapshot() {
@@ -164,28 +201,37 @@ generate_cargo_vendor() {
 
     rm -f "$vendor_tarball"
 
-    if git clone \
+    if ! git clone \
         --depth 1 \
-        --branch "v$version" \
+        --branch "$version" \
         "$url" \
         "$tmp_dir/src" >/dev/null 2>&1; then
 
-        pushd "$tmp_dir/src" >/dev/null
+        if ! git clone \
+            --depth 1 \
+            --branch "v$version" \
+            "$url" \
+            "$tmp_dir/src" >/dev/null 2>&1; then
 
-        if cargo vendor "$tmp_dir/vendor" >/dev/null 2>&1; then
-            tar -czf "$vendor_tarball" -C "$tmp_dir" vendor
-
-            echo -e "  ${GREEN}✨ vendor.tar.gz generated${NC}"
-
-            UPDATED=$((UPDATED + 1))
-        else
-            echo -e "  ${RED}⚠ cargo vendor failed${NC}"
+            echo -e "  ${RED}⚠ git clone failed${NC}"
+            rm -rf "$tmp_dir"
+            return 1
         fi
-
-        popd >/dev/null
-    else
-        echo -e "  ${RED}⚠ git clone failed${NC}"
     fi
+
+    pushd "$tmp_dir/src" >/dev/null
+
+    if cargo vendor "$tmp_dir/vendor" >/dev/null 2>&1; then
+        tar -czf "$vendor_tarball" -C "$tmp_dir" vendor
+
+        echo -e "  ${GREEN}✨ vendor.tar.gz generated${NC}"
+
+        UPDATED=$((UPDATED + 1))
+    else
+        echo -e "  ${RED}⚠ cargo vendor failed${NC}"
+    fi
+
+    popd >/dev/null
 
     rm -rf "$tmp_dir"
 }
@@ -216,7 +262,21 @@ for dir in "$REPO_ROOT"/*; do
     version="$(get_spec_version "$spec")"
     url="$(get_spec_url "$spec")"
 
-    echo "  Current: $version"
+    echo "  Current: ${version:-snapshot}"
+
+    # --------------------------------------------------
+    # Always check latest tag first
+    # --------------------------------------------------
+
+    if [[ "$pkg" == "postman" ]]; then
+        latest_tag="$(get_postman_version || true)"
+    else
+        latest_tag="$(get_latest_tag "$url" || true)"
+    fi
+
+    if [[ -z "$latest_tag" ]]; then
+        latest_tag="1.0.0"
+    fi
 
     # --------------------------------------------------
     # Snapshot packages
@@ -224,28 +284,37 @@ for dir in "$REPO_ROOT"/*; do
 
     if is_forge_snapshot "$spec"; then
         commit="$(get_spec_commit "$spec")"
-        latest="$(get_latest_commit "$url" || true)"
+        latest_commit="$(get_latest_commit "$url" || true)"
 
-        if [[ -z "$latest" ]]; then
+        if [[ -z "$latest_commit" ]]; then
             echo -e "  ${RED}⚠ Failed to fetch commit${NC}"
             echo
             continue
         fi
 
-        echo "  Commit: ${commit:0:7} → ${latest:0:7}"
+        echo "  Base Version: $latest_tag"
+        echo "  Commit: ${commit:0:7} → ${latest_commit:0:7}"
 
-        if [[ "$commit" != "$latest" ]]; then
+        if [[ "$version" != "$latest_tag" ]]; then
+            echo -e "  ${GREEN}✨ Updating base version${NC}"
+
+            update_version_macro "$spec" "$latest_tag"
+
+            UPDATED=$((UPDATED + 1))
+        fi
+
+        if [[ "$commit" != "$latest_commit" ]]; then
             echo -e "  ${GREEN}✨ Updating snapshot commit${NC}"
 
-            update_git_snapshot "$spec" "$latest"
+            update_git_snapshot "$spec" "$latest_commit"
 
             UPDATED=$((UPDATED + 1))
         else
-            echo "  ℹ Up to date"
+            echo "  ℹ Snapshot up to date"
         fi
 
         if is_rust_package "$spec"; then
-            generate_cargo_vendor "$dir" "$latest" "$url" || true
+            generate_cargo_vendor "$dir" "$latest_tag" "$url" || true
         fi
 
         echo
@@ -256,28 +325,16 @@ for dir in "$REPO_ROOT"/*; do
     # Stable releases
     # --------------------------------------------------
 
-    if [[ "$pkg" == "postman" ]]; then
-        latest="$(get_postman_version || true)"
-    else
-        latest="$(get_latest_tag "$url" || true)"
-    fi
+    echo "  Latest: $latest_tag"
 
-    if [[ -z "$latest" ]]; then
-        echo -e "  ${RED}⚠ Failed to fetch latest version${NC}"
-        echo
-        continue
-    fi
+    if [[ "$version" != "$latest_tag" ]]; then
+        echo -e "  ${GREEN}✨ Updating: $version → $latest_tag${NC}"
 
-    echo "  Latest: $latest"
-
-    if [[ "$version" != "$latest" ]]; then
-        echo -e "  ${GREEN}✨ Updating: $version → $latest${NC}"
-
-        update_version "$spec" "$latest"
+        update_version_macro "$spec" "$latest_tag"
 
         UPDATED=$((UPDATED + 1))
 
-        version="$latest"
+        version="$latest_tag"
     else
         echo "  ℹ Up to date"
     fi

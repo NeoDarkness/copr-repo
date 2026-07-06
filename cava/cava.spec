@@ -1,11 +1,11 @@
 %global forgeurl https://github.com/karlstav/cava
+%global version 1.0.0
 %global commit 4b12c2b043723f42567ddbfd5a516566bdf52316
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           cava
-Version:        0^git%{shortcommit}
+Version:        %{forgeversion}
 Release:        %autorelease
-Summary:        Console-based Audio Visualizer for Alsa
+Summary:        Console-based Audio Visualizer for ALSA
 
 License:        MIT
 URL:            %{forgeurl}
@@ -16,11 +16,11 @@ Source0:        %{forgesource}
 
 BuildRequires:  alsa-lib-devel
 BuildRequires:  fftw-devel
-BuildRequires:  pulseaudio-libs-devel
-BuildRequires:  libtool
-BuildRequires:  ncurses-devel
 BuildRequires:  iniparser-devel
+BuildRequires:  libtool
 BuildRequires:  make
+BuildRequires:  ncurses-devel
+BuildRequires:  pulseaudio-libs-devel
 
 %description
 C.A.V.A. is a bar spectrum analyzer for audio using ALSA for input.

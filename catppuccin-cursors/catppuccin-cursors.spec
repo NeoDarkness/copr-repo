@@ -1,9 +1,9 @@
 %global forgeurl https://github.com/catppuccin/cursors
+%global version 2.0.0
 %global commit a7eb08527dcce01010fa0ec46fa2bc4c3154f0d4
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           catppuccin-cursors
-Version:        0^git%{shortcommit}
+Version:        %{forgeversion}
 Release:        %autorelease
 Summary:        Soothing pastel mouse cursors
 

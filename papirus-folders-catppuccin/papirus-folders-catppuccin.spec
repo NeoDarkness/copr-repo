@@ -1,9 +1,9 @@
 %global forgeurl https://github.com/catppuccin/papirus-folders
+%global version 1.0.0
 %global commit f83671d17ea67e335b34f8028a7e6d78bca735d7
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           papirus-folders-catppuccin
-Version:        0^git%{shortcommit}
+Version:        %{forgeversion}
 Release:        %autorelease
 Summary:        Soothing pastel folder colors for Papirus icon themes
 

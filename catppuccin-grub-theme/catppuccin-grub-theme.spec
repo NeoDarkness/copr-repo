@@ -1,11 +1,11 @@
 %global forgeurl https://github.com/catppuccin/grub
+%global version 1.0.0
 %global commit 0a37ab19f654e77129b409fed371891c01ffd0b9
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 %global _grubthemedir /boot/grub2/themes
 
 Name:           catppuccin-grub-theme
-Version:        0^git%{shortcommit}
+Version:        %{forgeversion}
 Release:        %autorelease
 Summary:        Soothing pastel theme for GRUB2
 
