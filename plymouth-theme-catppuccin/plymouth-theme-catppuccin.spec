@@ -62,26 +62,37 @@ Soothing pastel theme for Plymouth - Mocha.
 install -d %{buildroot}%{_datadir}/plymouth/themes
 cp -a themes/. %{buildroot}%{_datadir}/plymouth/themes/
 
-%global plymouth_postun(theme) \
-export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/ \
-if [ $1 -eq 0 ]; then \
-    if [ "$(%{_sbindir}/plymouth-set-default-theme)" = "%{theme}" ]; then \
-        %{_sbindir}/plymouth-set-default-theme --reset \
-    fi \
-fi \
-%{nil}
-
 %postun latte
-%plymouth_postun catppuccin-latte
+export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/
+if [ $1 -eq 0 ]; then
+    if [ "$(%{_sbindir}/plymouth-set-default-theme)" = "catppuccin-latte" ]; then
+        %{_sbindir}/plymouth-set-default-theme --reset
+    fi
+fi
 
 %postun frappe
-%plymouth_postun catppuccin-frappe
+export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/
+if [ $1 -eq 0 ]; then
+    if [ "$(%{_sbindir}/plymouth-set-default-theme)" = "catppuccin-frappe" ]; then
+        %{_sbindir}/plymouth-set-default-theme --reset
+    fi
+fi
 
 %postun macchiato
-%plymouth_postun catppuccin-macchiato
+export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/
+if [ $1 -eq 0 ]; then
+    if [ "$(%{_sbindir}/plymouth-set-default-theme)" = "catppuccin-macchiato" ]; then
+        %{_sbindir}/plymouth-set-default-theme --reset
+    fi
+fi
 
 %postun mocha
-%plymouth_postun catppuccin-mocha
+export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/
+if [ $1 -eq 0 ]; then
+    if [ "$(%{_sbindir}/plymouth-set-default-theme)" = "catppuccin-mocha" ]; then
+        %{_sbindir}/plymouth-set-default-theme --reset
+    fi
+fi
 
 %check
 

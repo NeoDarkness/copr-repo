@@ -66,22 +66,22 @@ cp -a dist/. %{buildroot}%{_datadir}/icons/
 
 %files latte
 %license LICENSE
-%doc README.md
+%doc README.md CHANGELOG.md
 %{_datadir}/icons/catppuccin-latte-*-cursors
 
 %files frappe
 %license LICENSE
-%doc README.md
+%doc README.md CHANGELOG.md
 %{_datadir}/icons/catppuccin-frappe-*-cursors
 
 %files macchiato
 %license LICENSE
-%doc README.md
+%doc README.md CHANGELOG.md
 %{_datadir}/icons/catppuccin-macchiato-*-cursors
 
 %files mocha
 %license LICENSE
-%doc README.md
+%doc README.md CHANGELOG.md
 %{_datadir}/icons/catppuccin-mocha-*-cursors
 
 %changelog
