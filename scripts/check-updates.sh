@@ -126,24 +126,21 @@ get_latest_tag() {
     local repo
     repo="$(github_repo_path "$1")"
 
-    local tags
-    tags=$(github_api \
-        "https://api.github.com/repos/$repo/tags?per_page=100" \
-        | jq -r '.[].name' \
-        | sed 's/^v//')
+    local release
 
-    if [[ -z "$tags" ]]; then
+    release="$(
+        github_api \
+            "https://api.github.com/repos/$repo/releases/latest" \
+            2>/dev/null \
+            | jq -r '.tag_name // empty'
+    )"
+
+    if [[ -z "$release" || "$release" == "null" ]]; then
+        echo "1.0.0"
         return
     fi
 
-    local semver_tags
-    semver_tags=$(echo "$tags" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$')
-
-    if [[ -n "$semver_tags" ]]; then
-        echo "$semver_tags" | sort -V | tail -n1
-    else
-        echo "$tags" | sort -V | tail -n1
-    fi
+    sanitize_rpm_version "$release"
 }
 
 # --------------------------------------------------
