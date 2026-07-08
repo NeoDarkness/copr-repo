@@ -31,7 +31,11 @@ cp -a themes/. %{buildroot}%{_datadir}/obs/obs-studio/themes/
 %files
 %license LICENSE
 %doc README.md
-%{_datadir}/obs/obs-studio/themes/*
+%{_datadir}/obs/obs-studio/themes/Catppuccin.obt
+%{_datadir}/obs/obs-studio/themes/Catppuccin_Frappe.ovt
+%{_datadir}/obs/obs-studio/themes/Catppuccin_Latte.ovt
+%{_datadir}/obs/obs-studio/themes/Catppuccin_Macchiato.ovt
+%{_datadir}/obs/obs-studio/themes/Catppuccin_Mocha.ovt
 
 %changelog
 %autochangelog

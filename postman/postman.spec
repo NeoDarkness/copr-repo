@@ -43,14 +43,13 @@ desktop-file-install \
     --dir=%{buildroot}%{_datadir}/applications \
     %{SOURCE1}
 
-desktop-file-validate \
-    %{buildroot}%{_datadir}/applications/postman.desktop
-
 install -Dm0644 \
     app/resources/app/assets/icon.png \
     %{buildroot}%{_datadir}/pixmaps/postman.png
 
 %check
+desktop-file-validate \
+    %{buildroot}%{_datadir}/applications/postman.desktop
 
 %files
 /opt/postman
