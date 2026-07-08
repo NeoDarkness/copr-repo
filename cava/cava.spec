@@ -12,13 +12,15 @@ License:        MIT
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 
-BuildRequires:  alsa-lib-devel
-BuildRequires:  fftw-devel
-BuildRequires:  iniparser-devel
 BuildRequires:  libtool
 BuildRequires:  make
-BuildRequires:  ncurses-devel
-BuildRequires:  pulseaudio-libs-devel
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  pkgconfig(alsa)
+BuildRequires:  pkgconfig(fftw3)
+BuildRequires:  pkgconfig(iniparser)
+BuildRequires:  pkgconfig(ncursesw)
+BuildRequires:  pkgconfig(libpulse)
 
 %description
 C.A.V.A. is a bar spectrum analyzer for audio using ALSA for input.

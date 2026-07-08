@@ -17,7 +17,11 @@ ExclusiveArch:  x86_64
 
 BuildRequires:  desktop-file-utils
 
-AutoReqProv:    no
+Requires:       alsa-lib
+Requires:       gtk3
+Requires:       libXScrnSaver
+Requires:       libXtst
+Requires:       nss
 
 %description
 Postman is an API platform for building and using APIs.
