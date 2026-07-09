@@ -1,5 +1,4 @@
 %global forgeurl https://github.com/karlstav/cava
-%global tag      v2.9.0
 
 %forgemeta
 
