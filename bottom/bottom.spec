@@ -1,7 +1,6 @@
 %bcond check 0
 
 %global forgeurl https://github.com/ClementTsang/bottom
-%global tag      0.14.3
 
 %forgemeta
 

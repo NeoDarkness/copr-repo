@@ -1,5 +1,4 @@
 %global forgeurl https://github.com/pipeseroni/pipes.sh
-%global tag      v1.3.0
 
 %forgemeta
 

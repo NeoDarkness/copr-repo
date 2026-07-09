@@ -1,5 +1,4 @@
 %global forgeurl https://github.com/PapirusDevelopmentTeam/papirus-folders
-%global tag      v1.14.0
 
 %forgemeta
 
