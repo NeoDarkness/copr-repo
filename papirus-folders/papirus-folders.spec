@@ -1,10 +1,10 @@
 %global forgeurl https://github.com/PapirusDevelopmentTeam/papirus-folders
-
-Version:        1.14.0
+%global tag      v1.14.0
 
 %forgemeta
 
 Name:           papirus-folders
+Version:        1.14.0
 Release:        %autorelease
 Summary:        Folder color switching utility for Papirus icon themes
 
