@@ -33,13 +33,9 @@ The cross-shell prompt for astronauts.
 %{cargo_license} > LICENSE.dependencies
 %{cargo_vendor_manifest}
 
-# Generate shell completions
 target/rpm/starship completions bash > starship.bash
 target/rpm/starship completions fish > starship.fish
 target/rpm/starship completions zsh > _starship
-
-# Generate man page
-target/rpm/starship man > starship.1
 
 %install
 install -Dpm0755 \
