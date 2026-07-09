@@ -3,7 +3,7 @@
 %global __brp_check_rpaths %{nil}
 
 Name:           postman
-Version:        12.18.3
+Version:        12.18.4
 Release:        %autorelease
 Summary:        Postman API Platform
 
