@@ -5,7 +5,7 @@
 
 Name:           catppuccin-cursors
 Version:        2.0.0
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Soothing pastel mouse cursors
 
 License:        GPL-2.0-only
@@ -66,22 +66,26 @@ cp -a dist/. %{buildroot}%{_datadir}/icons/
 
 %files latte
 %license LICENSE
-%doc README.md CHANGELOG.md
+%doc README.md
+%doc CHANGELOG.md
 %{_datadir}/icons/catppuccin-latte-*-cursors
 
 %files frappe
 %license LICENSE
-%doc README.md CHANGELOG.md
+%doc README.md
+%doc CHANGELOG.md
 %{_datadir}/icons/catppuccin-frappe-*-cursors
 
 %files macchiato
 %license LICENSE
-%doc README.md CHANGELOG.md
+%doc README.md
+%doc CHANGELOG.md
 %{_datadir}/icons/catppuccin-macchiato-*-cursors
 
 %files mocha
 %license LICENSE
-%doc README.md CHANGELOG.md
+%doc README.md
+%doc CHANGELOG.md
 %{_datadir}/icons/catppuccin-mocha-*-cursors
 
 %changelog

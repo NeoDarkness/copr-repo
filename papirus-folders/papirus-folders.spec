@@ -5,7 +5,7 @@
 
 Name:           papirus-folders
 Version:        1.14.0
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Folder color switching utility for Papirus icon themes
 
 License:        MIT

@@ -5,7 +5,7 @@
 
 Name:           pipes.sh
 Version:        1.3.0
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Animated pipes terminal screensaver
 
 License:        MIT

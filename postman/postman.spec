@@ -4,7 +4,7 @@
 
 Name:           postman
 Version:        12.18.3
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Postman API Platform
 
 License:        LicenseRef-Postman-EULA
