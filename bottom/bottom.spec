@@ -11,21 +11,29 @@ Release:        %autorelease
 Summary:        Cross-platform graphical process and system monitor
 
 SourceLicense:  MIT
+# Apache-2.0 OR BSL-1.0
+# Apache-2.0 OR MIT
+# Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
+# BSD-2-Clause OR MIT OR Apache-2.0
+# ISC
+# MIT
+# MIT OR Apache-2.0
+# MPL-2.0
+# Unlicense OR MIT
+# Zlib
+# Zlib OR Apache-2.0 OR MIT
 License:        %{shrink:
     MIT AND
-    Apache-2.0 AND
-    ((Apache-2.0 OR MIT) AND BSD-3-Clause) AND
-    ((MIT OR Apache-2.0) AND Unicode-3.0) AND
-    (0BSD OR MIT OR Apache-2.0) AND
     (Apache-2.0 OR BSL-1.0) AND
     (Apache-2.0 OR MIT) AND
     (Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT) AND
-    (BSD-2-Clause OR Apache-2.0 OR MIT) AND
-    BSD-3-Clause AND
+    (BSD-2-Clause OR MIT OR Apache-2.0) AND
     ISC AND
-    (MIT OR Apache-2.0 OR LGPL-2.1-or-later) AND
-    (MIT OR Zlib OR Apache-2.0) AND
-    (Unlicense OR MIT)
+    (MIT OR Apache-2.0) AND
+    MPL-2.0 AND
+    (Unlicense OR MIT) AND
+    Zlib AND
+    (Zlib OR Apache-2.0 OR MIT)
 }
 
 URL:            %{forgeurl}
@@ -44,6 +52,8 @@ terminal user interface.
 %cargo_prep -v vendor
 
 %build
+export BTM_GENERATE=true
+
 %cargo_build
 
 %{cargo_license_summary}
@@ -56,19 +66,19 @@ install -Dpm0755 \
     %{buildroot}%{_bindir}/btm
 
 install -Dpm0644 \
-    completion/btm.bash \
+    target/tmp/bottom/btm.bash \
     %{buildroot}%{bash_completions_dir}/btm
 
 install -Dpm0644 \
-    completion/btm.fish \
+    target/tmp/bottom/btm.fish \
     %{buildroot}%{fish_completions_dir}/btm.fish
 
 install -Dpm0644 \
-    completion/_btm \
+    target/tmp/bottom/_btm \
     %{buildroot}%{zsh_completions_dir}/_btm
 
 install -Dpm0644 \
-    manpage/btm.1 \
+    target/tmp/bottom/btm.1 \
     %{buildroot}%{_mandir}/man1/btm.1
 
 install -Dpm0644 \
