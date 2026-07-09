@@ -1,4 +1,5 @@
 %global forgeurl https://github.com/catppuccin/cursors
+%global tag      v2.0.0
 
 %forgemeta
 

@@ -1,6 +1,7 @@
 %bcond check 0
 
 %global forgeurl https://github.com/catppuccin/whiskers
+%global tag      v2.9.0
 
 %forgemeta
 
