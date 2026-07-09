@@ -52,7 +52,7 @@ terminal user interface.
 %cargo_prep -v vendor
 
 %build
-export BTM_GENERATE=true
+export BTM_GENERATE=1
 
 %cargo_build
 
@@ -66,19 +66,19 @@ install -Dpm0755 \
     %{buildroot}%{_bindir}/btm
 
 install -Dpm0644 \
-    target/tmp/bottom/btm.bash \
+    target/tmp/bottom/completion/btm.bash \
     %{buildroot}%{bash_completions_dir}/btm
 
 install -Dpm0644 \
-    target/tmp/bottom/btm.fish \
+    target/tmp/bottom/completion/btm.fish \
     %{buildroot}%{fish_completions_dir}/btm.fish
 
 install -Dpm0644 \
-    target/tmp/bottom/_btm \
+    target/tmp/bottom/completion/_btm \
     %{buildroot}%{zsh_completions_dir}/_btm
 
 install -Dpm0644 \
-    target/tmp/bottom/btm.1 \
+    target/tmp/bottom/manpage/btm.1 \
     %{buildroot}%{_mandir}/man1/btm.1
 
 install -Dpm0644 \
