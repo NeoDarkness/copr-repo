@@ -1,7 +1,6 @@
 %bcond check 0
 
 %global forgeurl https://github.com/catppuccin/whiskers
-%global commit   233654f3cd8101f572e6842dce426c56c86ff98b
 
 %forgemeta
 

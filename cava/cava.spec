@@ -1,5 +1,4 @@
 %global forgeurl https://github.com/karlstav/cava
-%global commit   4b12c2b043723f42567ddbfd5a516566bdf52316
 
 %forgemeta
 
