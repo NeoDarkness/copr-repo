@@ -1,12 +1,12 @@
 %bcond check 0
 
 %global forgeurl https://github.com/catppuccin/whiskers
-%global tag      v2.9.0
+
+Version:        2.9.0
 
 %forgemeta
 
 Name:           catppuccin-whiskers
-Version:        2.9.0
 Release:        %autorelease
 Summary:        Soothing port creation tool for the high-spirited!
 

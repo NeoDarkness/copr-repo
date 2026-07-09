@@ -1,10 +1,10 @@
 %global forgeurl https://github.com/catppuccin/cursors
-%global tag      v2.0.0
+
+Version:        2.0.0
 
 %forgemeta
 
 Name:           catppuccin-cursors
-Version:        2.0.0
 Release:        %autorelease
 Summary:        Soothing pastel mouse cursors
 

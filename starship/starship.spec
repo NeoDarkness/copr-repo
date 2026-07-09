@@ -1,12 +1,12 @@
 %bcond check 0
 
 %global forgeurl https://github.com/starship/starship
-%global tag      v1.26.0
+
+Version:        1.26.0
 
 %forgemeta
 
 Name:           starship
-Version:        1.26.0
 Release:        %autorelease
 Summary:        The minimal, blazing-fast, and infinitely customizable prompt
 

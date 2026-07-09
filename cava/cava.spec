@@ -1,10 +1,10 @@
 %global forgeurl https://github.com/karlstav/cava
-%global tag      1.0.0
+
+Version:        1.0.0
 
 %forgemeta
 
 Name:           cava
-Version:        1.0.0
 Release:        %autorelease
 Summary:        Console-based Audio Visualizer for ALSA
 
