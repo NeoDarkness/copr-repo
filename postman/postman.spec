@@ -15,8 +15,6 @@ Source1:        postman.desktop
 
 ExclusiveArch:  x86_64
 
-BuildRequires:  desktop-file-utils
-
 Requires:       alsa-lib
 Requires:       gtk3
 Requires:       libXScrnSaver
@@ -39,23 +37,21 @@ install -d %{buildroot}%{_bindir}
 ln -sf ../../opt/postman/Postman \
     %{buildroot}%{_bindir}/postman
 
-desktop-file-install \
-    --dir=%{buildroot}%{_datadir}/applications \
-    %{SOURCE1}
+install -Dpm0644 \
+    %{SOURCE1} \
+    %{buildroot}%{_datadir}/applications/postman.desktop
 
-install -Dm0644 \
+install -Dpm0644 \
     app/resources/app/assets/icon.png \
-    %{buildroot}%{_datadir}/pixmaps/postman.png
+    %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %check
-desktop-file-validate \
-    %{buildroot}%{_datadir}/applications/postman.desktop
 
 %files
 /opt/postman
 %{_bindir}/postman
 %{_datadir}/applications/postman.desktop
-%{_datadir}/pixmaps/postman.png
+%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %changelog
 %autochangelog
