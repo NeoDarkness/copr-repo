@@ -44,7 +44,7 @@ terminal user interface.
 %cargo_prep -v vendor
 
 %build
-%cargo_build --features deploy
+%cargo_build
 
 %{cargo_license_summary}
 %{cargo_license} > LICENSE.dependencies
