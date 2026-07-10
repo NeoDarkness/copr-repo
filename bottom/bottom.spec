@@ -1,12 +1,12 @@
 %bcond check 0
 
 %global forgeurl https://github.com/ClementTsang/bottom
-%global commit   6d55442c0c323259f165fbdb4df1a8f749fa3f67
+%global commit   e5d228854a6ac4ae81d53788808a791ff652bde5
 
 %forgemeta
 
 Name:           bottom
-Version:        0.14.3
+Version:        0.14.4
 Release:        %autorelease
 Summary:        Cross-platform graphical process and system monitor
 

@@ -83,6 +83,20 @@ sanitize_rpm_version() {
 }
 
 # --------------------------------------------------
+# Cross-platform sed wrapper (macOS & Linux)
+# --------------------------------------------------
+safe_sed_inplace() {
+    local regex="$1"
+    local file="$2"
+    
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i "" -E "$regex" "$file"
+    else
+        sed -i -E "$regex" "$file"
+    fi
+}
+
+# --------------------------------------------------
 # GitHub helpers
 # --------------------------------------------------
 
@@ -108,7 +122,7 @@ github_api() {
         fi
     fi
 
-    timeout "$TIMEOUT" curl -fsSL \
+    curl --max-time "$TIMEOUT" -fsSL \
         "${headers[@]}" \
         "$url"
 }
@@ -148,7 +162,7 @@ get_latest_tag() {
 # --------------------------------------------------
 
 get_postman_version() {
-    timeout "$TIMEOUT" curl -fsSL \
+    curl --max-time "$TIMEOUT" -fsSL \
         "https://www.postman.com/mkapi/release.json" \
         | jq -r '.notes[0].version // empty'
 }
@@ -162,13 +176,9 @@ update_version_macro() {
     local version="$2"
 
     if grep -q "^%global[[:space:]]\+version[[:space:]]" "$spec"; then
-        sed -i -E \
-            "s|^%global[[:space:]]+version[[:space:]]+.*|%global version $version|" \
-            "$spec"
+        safe_sed_inplace "s|^%global[[:space:]]+version[[:space:]]+.*|%global version $version|" "$spec"
     else
-        sed -i -E \
-            "s|^Version:[[:space:]]+.*|Version:        $version|" \
-            "$spec"
+        safe_sed_inplace "s|^Version:[[:space:]]+.*|Version:        $version|" "$spec"
     fi
 }
 
@@ -176,9 +186,7 @@ update_git_snapshot() {
     local spec="$1"
     local commit="$2"
 
-    sed -i -E \
-        "s|^%global[[:space:]]+commit[[:space:]]+.*|%global commit   $commit|" \
-        "$spec"
+    safe_sed_inplace "s|^%global[[:space:]]+commit[[:space:]]+.*|%global commit   $commit|" "$spec"
 }
 
 # --------------------------------------------------
@@ -208,7 +216,6 @@ generate_cargo_vendor() {
 
     rm -f "$vendor_tarball"
 
-    # Lebih aman menggunakan git clone dasar lalu checkout ref (bisa commit SHA ataupun tag)
     if ! git clone "$url" "$tmp_dir/src" >/dev/null 2>&1; then
         echo -e "  ${RED}⚠ git clone failed${NC}"
         rm -rf "$tmp_dir"
@@ -218,7 +225,6 @@ generate_cargo_vendor() {
     pushd "$tmp_dir/src" >/dev/null
 
     if ! git checkout "$target_ref" >/dev/null 2>&1; then
-        # Jika gagal (misal tag murni semver), coba dengan prefiks v
         if ! git checkout "v$target_ref" >/dev/null 2>&1; then
             echo -e "  ${RED}⚠ git checkout $target_ref failed${NC}"
             popd >/dev/null
@@ -267,10 +273,6 @@ for dir in "$REPO_ROOT"/*; do
 
     echo "  Current: ${version:-snapshot}"
 
-    # --------------------------------------------------
-    # Always check latest tag first
-    # --------------------------------------------------
-
     if [[ "$pkg" == "postman" ]]; then
         latest_tag="$(get_postman_version || true)"
     else
@@ -282,10 +284,6 @@ for dir in "$REPO_ROOT"/*; do
     fi
 
     latest_tag="$(sanitize_rpm_version "$latest_tag")"
-
-    # --------------------------------------------------
-    # Snapshot packages
-    # --------------------------------------------------
 
     if is_forge_snapshot "$spec"; then
         commit="$(get_spec_commit "$spec")"
@@ -311,7 +309,6 @@ for dir in "$REPO_ROOT"/*; do
             update_git_snapshot "$spec" "$latest_commit"
             UPDATED=$((UPDATED + 1))
             
-            # Jika commit berubah, hapus vendor lama agar dibuat ulang berbasis commit baru
             if is_rust_package "$spec"; then
                 rm -f "$dir/vendor.tar.gz"
             fi
@@ -320,17 +317,12 @@ for dir in "$REPO_ROOT"/*; do
         fi
 
         if is_rust_package "$spec"; then
-            # Snapshot harus di-vendor berdasarkan commit SHA, bukan tag base version
             generate_cargo_vendor "$dir" "$latest_commit" "$url" || true
         fi
 
         echo
         continue
     fi
-
-    # --------------------------------------------------
-    # Stable releases
-    # --------------------------------------------------
 
     echo "  Latest: $latest_tag"
 
@@ -339,7 +331,6 @@ for dir in "$REPO_ROOT"/*; do
         update_version_macro "$spec" "$latest_tag"
         UPDATED=$((UPDATED + 1))
         
-        # Jika versi stabil berubah, bersihkan vendor lama
         if is_rust_package "$spec"; then
             rm -f "$dir/vendor.tar.gz"
         fi
@@ -355,10 +346,6 @@ for dir in "$REPO_ROOT"/*; do
 
     echo
 done
-
-# --------------------------------------------------
-# Summary
-# --------------------------------------------------
 
 if [[ "$UPDATED" -gt 0 ]]; then
     echo -e "${GREEN}✅ Done! Updated $UPDATED target(s).${NC}"
