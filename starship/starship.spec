@@ -1,7 +1,7 @@
 %bcond check 0
 
 %global forgeurl https://github.com/starship/starship
-%global commit   6530bea7e06949a647d5694792ed7699cab05743
+%global commit   9140ca5d6a6d7e3f7362baf428b50b4f94811991
 
 %forgemeta
 
