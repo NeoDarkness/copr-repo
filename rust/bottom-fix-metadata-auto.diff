@@ -1,0 +1,47 @@
+--- bottom-0.14.4/Cargo.toml	2006-07-24T01:21:28+00:00
++++ bottom-0.14.4/Cargo.toml	2026-07-11T23:56:42.003023+00:00
+@@ -358,39 +358,11 @@
+ [target.'cfg(all(target_arch = "x86_64", target_os = "linux"))'.dev-dependencies.portable-pty]
+ version = "0.9.0"
+ 
+-[target.'cfg(target_os = "freebsd")'.dependencies.filedescriptor]
+-version = "0.8.3"
+-
+-[target.'cfg(target_os = "freebsd")'.dependencies.serde_json]
+-version = "1.0.145"
+-
+-[target.'cfg(target_os = "freebsd")'.dependencies.sysctl]
+-version = "0.7.1"
+-
+ [target.'cfg(target_os = "linux")'.dependencies.rustix]
+ version = "1.1.2"
+ features = [
+     "fs",
+     "param",
+-]
+-
+-[target.'cfg(target_os = "macos")'.dependencies.core-foundation]
+-version = "0.10.1"
+-
+-[target.'cfg(target_os = "macos")'.dependencies.mach2]
+-version = "0.6.0"
+-
+-[target.'cfg(target_os = "windows")'.dependencies.windows]
+-version = "0.62.2"
+-features = [
+-    "Win32_Foundation",
+-    "Win32_Security",
+-    "Win32_Storage_FileSystem",
+-    "Win32_System_IO",
+-    "Win32_System_Ioctl",
+-    "Win32_System_Performance",
+-    "Win32_System_ProcessStatus",
+-    "Win32_System_Threading",
+ ]
+ 
+ [target."cfg(unix)".dependencies.libc]
+@@ -424,3 +396,4 @@
+ codegen-units = 1
+ debug = 0
+ strip = "symbols"
++
