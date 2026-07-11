@@ -1,7 +1,7 @@
 %bcond check 0
 
 %global forgeurl https://github.com/ClementTsang/bottom
-%global commit   fb4c295a1c94dc4772235ae3ba80733df3441f34
+%global commit   69f6ce1553cb698012eed776397bb0e759afb0df
 
 %forgemeta
 
