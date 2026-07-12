@@ -1,5 +1,7 @@
 %bcond check 0
 
+%global cargo_install_lib 0
+
 %global forgeurl https://github.com/starship/starship
 %global commit   9140ca5d6a6d7e3f7362baf428b50b4f94811991
 
@@ -8,7 +10,7 @@
 Name:           starship
 Version:        1.26.0
 Release:        %autorelease
-Summary:        The minimal, blazing-fast, and infinitely customizable prompt
+Summary:        Minimal, blazing-fast, and infinitely customizable prompt for any shell! ☄🌌️
 
 SourceLicense:  ISC
 # (Apache-2.0 OR MIT) AND BSD-3-Clause
@@ -62,7 +64,8 @@ Source1:        vendor.tar.gz
 BuildRequires:  cargo-rpm-macros
 
 %description
-The cross-shell prompt for astronauts.
+The minimal, blazing-fast, and infinitely customizable prompt for any
+shell! ☄🌌️.
 
 %prep
 %autosetup -n %{archivename} -p1 -a1
@@ -80,9 +83,7 @@ target/rpm/starship completions fish > starship.fish
 target/rpm/starship completions zsh > _starship
 
 %install
-install -Dpm0755 \
-    target/rpm/starship \
-    %{buildroot}%{_bindir}/starship
+%cargo_install
 
 install -Dpm0644 \
     starship.bash \

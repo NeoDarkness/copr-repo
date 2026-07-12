@@ -1,5 +1,7 @@
 %bcond check 0
 
+%global cargo_install_lib 0
+
 %global forgeurl https://github.com/ClementTsang/bottom
 %global commit   69f6ce1553cb698012eed776397bb0e759afb0df
 
@@ -8,7 +10,7 @@
 Name:           bottom
 Version:        0.14.4
 Release:        %autorelease
-Summary:        Cross-platform graphical process and system monitor
+Summary:        Customizable cross-platform graphical process/system monitor for the terminal
 
 SourceLicense:  MIT
 # Apache-2.0 OR BSL-1.0
@@ -43,9 +45,8 @@ Source1:        vendor.tar.gz
 BuildRequires:  cargo-rpm-macros
 
 %description
-Bottom is a cross-platform graphical process and system monitor written in
-Rust. It provides CPU, memory, disk, network, and process monitoring in a
-terminal user interface.
+A customizable cross-platform graphical process/system monitor for the
+terminal. Supports Linux, macOS, and Windows.
 
 %prep
 %autosetup -n %{archivename} -p1 -a1
@@ -61,9 +62,7 @@ export BTM_GENERATE=1
 %{cargo_vendor_manifest}
 
 %install
-install -Dpm0755 \
-    target/rpm/btm \
-    %{buildroot}%{_bindir}/btm
+%cargo_install
 
 install -Dpm0644 \
     target/tmp/bottom/completion/btm.bash \

@@ -1,5 +1,7 @@
 %bcond check 0
 
+%global cargo_install_lib 0
+
 %global forgeurl https://github.com/catppuccin/whiskers
 %global commit   233654f3cd8101f572e6842dce426c56c86ff98b
 
@@ -8,7 +10,7 @@
 Name:           catppuccin-whiskers
 Version:        2.9.0
 Release:        %autorelease
-Summary:        Soothing port creation tool for the high-spirited!
+Summary:        😾 Soothing port creation tool for the high-spirited!
 
 SourceLicense:  MIT
 # (Apache-2.0 OR MIT) AND BSD-3-Clause
@@ -50,7 +52,7 @@ Source1:        vendor.tar.gz
 BuildRequires:  cargo-rpm-macros
 
 %description
-Whiskers CLI tool used to generate Catppuccin ports.
+😾 Soothing port creation tool for the high-spirited!.
 
 %prep
 %autosetup -n %{archivename} -p1 -a1
@@ -63,9 +65,7 @@ Whiskers CLI tool used to generate Catppuccin ports.
 %{cargo_vendor_manifest}
 
 %install
-install -Dpm0755 \
-    target/rpm/whiskers \
-    %{buildroot}%{_bindir}/whiskers
+%cargo_install
 
 %if %{with check}
 %check
