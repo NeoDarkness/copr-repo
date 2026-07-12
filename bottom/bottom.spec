@@ -2,6 +2,11 @@
 
 %global cargo_install_lib 0
 
+%global forgeurl https://github.com/ClementTsang/bottom
+%global commit   c696597e8164d854f532257e77993e5b74c909a4
+
+%forgemeta
+
 Name:           bottom
 Version:        0.14.4
 Release:        %autorelease
@@ -33,8 +38,8 @@ License:        %{shrink:
     (Zlib OR Apache-2.0 OR MIT)
 }
 
-URL:            https://github.com/ClementTsang/bottom
-Source0:        %{url}/archive/refs/tags/%{version}.tar.gz
+URL:            %{forgeurl}
+Source0:        %{forgesource}
 Source1:        vendor.tar.gz
 Patch0:         bottom-fix-metadata-auto.diff
 
@@ -45,7 +50,7 @@ A customizable cross-platform graphical process/system monitor for the
 terminal. Supports Linux, macOS, and Windows.
 
 %prep
-%autosetup -n %{name}-%{version} -p1 -a1
+%autosetup -n %{archivename} -p1 -a1
 %cargo_prep -v vendor
 
 %build
