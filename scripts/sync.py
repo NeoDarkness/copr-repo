@@ -7,26 +7,45 @@ import shutil
 import subprocess
 import tempfile
 import difflib
-from urllib.request import Request, urlparse, urlopen
+import threading
+from urllib.request import Request, urlopen
 from urllib.error import URLError
 from concurrent.futures import ThreadPoolExecutor
 
 TIMEOUT = 15
-GREEN = '\033[0;32m'
-YELLOW = '\033[1;33m'
-BLUE = '\033[0;34m'
-RED = '\033[0;31m'
-NC = '\033[0m'
-
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+# ANSI Styling Codes
+GREEN = "\033[0;32m"
+YELLOW = "\033[1;33m"
+BLUE = "\033[0;34m"
+CYAN = "\033[0;36m"
+RED = "\033[0;31m"
+BOLD = "\033[1m"
+DIM = "\033[2m"
+NC = "\033[0m"
+
+# Terminal Manipulation Codes (No external libs needed)
+CLEAR_LINE = "\033[2K"
+CURSOR_UP = "\033[A"
+
+# Thread-safe terminal drawing state
+print_lock = threading.Lock()
+active_tasks = {}
+task_order = []
+max_len = 20  # Dynamically updated in main()
+
 
 def file_name_auto_patch(name: str) -> str:
     return f"{name}-fix-metadata-auto.diff"
 
+
 def get_gh_token():
     if shutil.which("gh"):
         try:
-            res = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True, check=True)
+            res = subprocess.run(
+                ["gh", "auth", "token"], capture_output=True, text=True, check=True
+            )
             token = res.stdout.strip()
             if token:
                 return token
@@ -34,10 +53,10 @@ def get_gh_token():
             pass
     return None
 
+
 def fetch_json(url):
     req = Request(url)
     req.add_header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36")
-    
     if "github.com" in url:
         req.add_header("Accept", "application/vnd.github+json")
         token = get_gh_token()
@@ -46,9 +65,9 @@ def fetch_json(url):
     try:
         with urlopen(req, timeout=TIMEOUT) as response:
             return json.loads(response.read().decode())
-    except Exception as e:
-        print(f"  {RED}⚠ Error fetching JSON from {url}: {e}{NC}", file=sys.stderr)
+    except Exception:
         return None
+
 
 def download_file(url, dest_path):
     req = Request(url)
@@ -56,14 +75,18 @@ def download_file(url, dest_path):
     if token and "github.com" in url:
         req.add_header("Authorization", f"Bearer {token}")
     try:
-        with urlopen(req, timeout=TIMEOUT) as response, open(dest_path, "wb") as out_file:
+        with urlopen(req, timeout=TIMEOUT) as response, open(
+            dest_path, "wb"
+        ) as out_file:
             shutil.copyfileobj(response, out_file)
         return True
     except URLError:
         return False
 
+
 def github_repo_path(url):
     return url.replace("https://github.com/", "").strip("/")
+
 
 def get_latest_commit(url):
     repo = github_repo_path(url)
@@ -72,20 +95,21 @@ def get_latest_commit(url):
         return data.get("sha")
     return None
 
+
 def get_latest_tag(url):
     repo = github_repo_path(url)
-    
     data = fetch_json(f"https://api.github.com/repos/{repo}/releases/latest")
     if data and isinstance(data, dict) and "tag_name" in data:
         return sanitize_rpm_version(data["tag_name"])
-        
     return "1.0.0"
+
 
 def get_postman_version():
     data = fetch_json("https://www.postman.com/mkapi/release.json")
     if data and "notes" in data and len(data["notes"]) > 0:
         return sanitize_rpm_version(data["notes"][0].get("version", "1.0.0"))
     return "1.0.0"
+
 
 def sanitize_rpm_version(version):
     if not version:
@@ -94,6 +118,7 @@ def sanitize_rpm_version(version):
     if version.startswith("v"):
         version = version[1:]
     return version
+
 
 def parse_spec(spec_path):
     version, url, commit = None, None, None
@@ -125,20 +150,37 @@ def parse_spec(spec_path):
 
     return version, url, commit, is_snapshot, is_rust
 
+
 def update_spec_file(spec_path, key, new_value):
     with open(spec_path, "r", encoding="utf-8") as f:
         content = f.read()
 
     if key == "version":
         if re.search(r"^%global\s+version\s+", content, re.MULTILINE):
-            content = re.sub(r"^%global\s+version\s+.*", f"%global version {new_value}", content, flags=re.MULTILINE)
+            content = re.sub(
+                r"^%global\s+version\s+.*",
+                f"%global version {new_value}",
+                content,
+                flags=re.MULTILINE,
+            )
         else:
-            content = re.sub(r"^Version:\s*.*", f"Version:        {new_value}", content, flags=re.MULTILINE)
+            content = re.sub(
+                r"^Version:\s*.*",
+                f"Version:        {new_value}",
+                content,
+                flags=re.MULTILINE,
+            )
     elif key == "commit":
-        content = re.sub(r"^%global\s+commit\s+.*", f"%global commit   {new_value}", content, flags=re.MULTILINE)
+        content = re.sub(
+            r"^%global\s+commit\s+.*",
+            f"%global commit   {new_value}",
+            content,
+            flags=re.MULTILINE,
+        )
 
     with open(spec_path, "w", encoding="utf-8") as f:
         f.write(content)
+
 
 def inject_patch_into_spec(spec_path, pkg_name):
     with open(spec_path, "r", encoding="utf-8") as f:
@@ -146,9 +188,8 @@ def inject_patch_into_spec(spec_path, pkg_name):
 
     patch_filename = file_name_auto_patch(pkg_name)
     patch_line = f"Patch0:         {patch_filename}\n"
-    
-    has_patch = any(re.match(r"^Patch0:\s*", line) for line in lines)
-    if has_patch:
+
+    if any(re.match(r"^Patch0:\s*", line) for line in lines):
         return False
 
     last_source_idx = -1
@@ -161,8 +202,8 @@ def inject_patch_into_spec(spec_path, pkg_name):
         with open(spec_path, "w", encoding="utf-8") as f:
             f.writelines(lines)
         return True
-    
     return False
+
 
 def preprocess_cargo_toml_helper(contents: str) -> str | None:
     try:
@@ -172,7 +213,7 @@ def preprocess_cargo_toml_helper(contents: str) -> str | None:
             text=True,
             check=True,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+            stderr=subprocess.PIPE,
         )
         patched1 = ret1.stdout or contents
 
@@ -182,17 +223,29 @@ def preprocess_cargo_toml_helper(contents: str) -> str | None:
             text=True,
             check=True,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+            stderr=subprocess.PIPE,
         )
         patched2 = ret2.stdout or patched1
 
-        if patched2 == contents:
-            return None
-
-        return patched2
-    except subprocess.CalledProcessError as e:
-        print(f"  {RED}⚠ rust2rpm-helper processing failed: {e.stderr.strip()}{NC}")
+        return None if patched2 == contents else patched2
+    except subprocess.CalledProcessError:
         return None
+
+
+def update_ui_status(pkg_name, status_text):
+    """Thread-safe multi-line live terminal updater without external dependencies."""
+    global max_len
+    with print_lock:
+        active_tasks[pkg_name] = status_text
+
+        # Rollback cursor to rewrite previous states seamlessly
+        if len(task_order) > 0:
+            sys.stdout.write(CURSOR_UP * len(task_order))
+
+        for pkg in task_order:
+            sys.stdout.write(f"{CLEAR_LINE}  {pkg:<{max_len}} : {active_tasks[pkg]}\n")
+        sys.stdout.flush()
+
 
 def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
     pkg_name = os.path.basename(pkg_dir)
@@ -202,15 +255,10 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
     if os.path.exists(vendor_tarball):
         return 0
 
-    if not shutil.which("cargo"):
-        print(f"  {RED}⚠ cargo not found for {pkg_name}{NC}")
+    if not shutil.which("cargo") or not shutil.which("rust2rpm-helper"):
         return 0
 
-    if not shutil.which("rust2rpm-helper"):
-        print(f"  {RED}⚠ rust2rpm-helper not found in $PATH! Skipping metadata patch generation for {pkg_name}{NC}")
-        return 0
-
-    print(f"  {BLUE}📦 Downloading upstream tarball for {pkg_name}...{NC}")
+    update_ui_status(pkg_name, f"{BLUE}Downloading upstream tarball...{NC}")
     tmp_dir = tempfile.mkdtemp()
     tarball_path = os.path.join(tmp_dir, "source.tar.gz")
     repo = github_repo_path(url)
@@ -218,15 +266,15 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
 
     try:
         if not download_file(tarball_url, tarball_path):
-            print(f"  {RED}⚠ Failed to download tarball for {pkg_name}{NC}")
             return 0
 
         extract_dir = os.path.join(tmp_dir, "extract")
         os.makedirs(extract_dir, exist_ok=True)
-        
-        res = subprocess.run(["tar", "-xzf", tarball_path, "-C", extract_dir], capture_output=True)
+
+        res = subprocess.run(
+            ["tar", "-xzf", tarball_path, "-C", extract_dir], capture_output=True
+        )
         if res.returncode != 0:
-            print(f"  {RED}⚠ Failed to extract tarball for {pkg_name}{NC}")
             return 0
 
         subdirs = os.listdir(extract_dir)
@@ -242,121 +290,210 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
                 original_contents = f.read()
 
             patched_contents = preprocess_cargo_toml_helper(original_contents)
-            
             if patched_contents:
-                print(f"  {GREEN}✨ Non-Linux targets stripped by rust2rpm-helper. Generating patch for {pkg_name}...{NC}")
-                
+                update_ui_status(
+                    pkg_name, f"{CYAN}Stripping foreign dependencies...{NC}"
+                )
                 with open(cargo_toml, "w", encoding="utf-8") as f:
                     f.write(patched_contents)
 
                 diff = difflib.unified_diff(
                     original_contents.splitlines(keepends=True),
                     patched_contents.splitlines(keepends=True),
-                    fromfile="a/Cargo.toml", tofile="b/Cargo.toml"
+                    fromfile="a/Cargo.toml",
+                    tofile="b/Cargo.toml",
                 )
                 with open(patch_file, "w", encoding="utf-8") as pf:
                     pf.writelines(diff)
                 updated_count += 1
-
                 if inject_patch_into_spec(spec_path, pkg_name):
-                    print(f"  {GREEN}✨ Patch0 successfully added to {pkg_name}.spec{NC}")
                     updated_count += 1
             else:
                 if os.path.exists(patch_file):
                     os.remove(patch_file)
 
+        update_ui_status(pkg_name, f"{YELLOW}Running cargo vendor...{NC}")
         vendor_out_dir = os.path.join(tmp_dir, "vendor")
-        vendor_res = subprocess.run(["cargo", "vendor", vendor_out_dir], cwd=src_dir, capture_output=True, text=True)
-        
+        vendor_res = subprocess.run(
+            ["cargo", "vendor", vendor_out_dir],
+            cwd=src_dir,
+            capture_output=True,
+            text=True,
+        )
+
         if vendor_res.returncode == 0:
-            subprocess.run(["tar", "-czf", vendor_tarball, "-C", tmp_dir, "vendor"], check=True)
-            print(f"  {GREEN}✨ vendor.tar.gz created for {pkg_name}!{NC}")
+            subprocess.run(
+                ["tar", "-czf", vendor_tarball, "-C", tmp_dir, "vendor"], check=True
+            )
             updated_count += 1
             return updated_count
-        else:
-            print(f"  {RED}⚠ cargo vendor execution failed for {pkg_name}{NC}")
-            return 0
-
+        return 0
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
+
 
 def process_package(item):
     dir_path = os.path.join(REPO_ROOT, item)
     spec_path = os.path.join(dir_path, f"{item}.spec")
     if not os.path.exists(spec_path):
-        return 0
+        update_ui_status(item, f"{RED}Missing .spec file{NC}")
+        return {"name": item, "status": "No Spec", "updates": 0, "version": "-"}
 
-    print(f"{YELLOW}Checking package: {item}...{NC}")
+    update_ui_status(item, f"{YELLOW}Checking metadata...{NC}")
     current_version, url, current_commit, is_snapshot, is_rust = parse_spec(spec_path)
-    
+
     local_updates = 0
     latest_tag = get_postman_version() if item == "postman" else get_latest_tag(url)
+    status_msg = "Up to date"
 
     if is_snapshot:
         latest_commit = get_latest_commit(url)
         if not latest_commit:
-            print(f"  {RED}⚠ Failed to fetch upstream commit metadata for {item}{NC}\n")
-            return 0
+            update_ui_status(item, f"{RED}API Fetch Failure{NC}")
+            return {
+                "name": item,
+                "status": "Failed API",
+                "updates": 0,
+                "version": current_version,
+            }
 
         if current_version != latest_tag:
             update_spec_file(spec_path, "version", latest_tag)
             local_updates += 1
             current_version = latest_tag
+            status_msg = "Snapshot Updated"
 
         if current_commit != latest_commit:
-            print(f"  {GREEN}✨ Updating snapshot commit for {item}{NC}")
             update_spec_file(spec_path, "commit", latest_commit)
             local_updates += 1
+            status_msg = "Snapshot Updated"
             if is_rust:
-                auto_patch = file_name_auto_patch(item)
-                for f_remove in ["vendor.tar.gz", auto_patch, f"{item}-cargo.diff", f"{item}-remove-non-linux-deps.patch"]:
+                for f_remove in [
+                    "vendor.tar.gz",
+                    file_name_auto_patch(item),
+                    f"{item}-cargo.diff",
+                    f"{item}-remove-non-linux-deps.patch",
+                ]:
                     p = os.path.join(dir_path, f_remove)
                     if os.path.exists(p):
                         os.remove(p)
-        
+
         if is_rust:
-            local_updates += generate_cargo_vendor(dir_path, latest_commit, url, spec_path)
-        return local_updates
+            local_updates += generate_cargo_vendor(
+                dir_path, latest_commit, url, spec_path
+            )
+            if local_updates > 0 and status_msg == "Up to date":
+                status_msg = "Vendor Created"
+
+        update_ui_status(item, f"{GREEN}Finished{NC}")
+        return {
+            "name": item,
+            "status": status_msg,
+            "updates": local_updates,
+            "version": current_version,
+        }
 
     if current_version != latest_tag:
-        print(f"  {GREEN}✨ Updating version for {item}: {current_version} → {latest_tag}{NC}")
         update_spec_file(spec_path, "version", latest_tag)
         local_updates += 1
+        status_msg = f"New Version ({latest_tag})"
         if is_rust:
-            auto_patch = file_name_auto_patch(item)
-            for f_remove in ["vendor.tar.gz", auto_patch, f"{item}-cargo.diff", f"{item}-remove-non-linux-deps.patch"]:
+            for f_remove in [
+                "vendor.tar.gz",
+                file_name_auto_patch(item),
+                f"{item}-cargo.diff",
+                f"{item}-remove-non-linux-deps.patch",
+            ]:
                 p = os.path.join(dir_path, f_remove)
                 if os.path.exists(p):
                     os.remove(p)
         current_version = latest_tag
 
     if is_rust:
-        local_updates += generate_cargo_vendor(dir_path, current_version, url, spec_path)
+        cargo_updates = generate_cargo_vendor(dir_path, current_version, url, spec_path)
+        local_updates += cargo_updates
+        if cargo_updates > 0 and status_msg == "Up to date":
+            status_msg = "Vendor Created"
 
-    return local_updates
+    update_ui_status(item, f"{GREEN}Finished{NC}")
+    return {
+        "name": item,
+        "status": status_msg,
+        "updates": local_updates,
+        "version": current_version,
+    }
+
 
 def main():
-    print(f"{BLUE}🔍 Syncing package versions with automated patch naming and Spec integration...{NC}\n")
-    
+    global task_order, max_len
+    sys.stdout.write(
+        f"{BOLD}{BLUE}🔍 Syncing package versions using optimized parallel runner...{NC}\n\n"
+    )
+    sys.stdout.flush()
+
     if not os.path.exists(REPO_ROOT):
         sys.exit(1)
 
     packages = [
-        item for item in os.listdir(REPO_ROOT)
-        if os.path.isdir(os.path.join(REPO_ROOT, item)) and item not in [".git", "scripts", ".github"]
+        item
+        for item in os.listdir(REPO_ROOT)
+        if os.path.isdir(os.path.join(REPO_ROOT, item))
+        and item not in [".git", "scripts", ".github"]
     ]
 
-    total_updated = 0
-    with ThreadPoolExecutor() as executor:
-        results = executor.map(process_package, packages)
-        total_updated = sum(results)
+    task_order = sorted(packages)
 
-    print("\n--------------------------------------------------")
+    # Calculate maximum package name length to keep colons aligned perfectly
+    max_len = max(len(pkg) for pkg in task_order) if task_order else 20
+
+    # Allocate initial blank lines for all packages to draw on top of them safely
+    for pkg in task_order:
+        active_tasks[pkg] = f"{DIM}Pending...{NC}"
+        sys.stdout.write(f"  {pkg:<{max_len}} : {active_tasks[pkg]}\n")
+    sys.stdout.flush()
+
+    results = []
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(process_package, pkg) for pkg in task_order]
+        for future in futures:
+            results.append(future.result())
+
+    # Draw Summary Matrix UI
+    matrix_width = max(60, max_len + 40)
+    sys.stdout.write(f"\n{BOLD}{CYAN}{'=' * matrix_width}{NC}\n")
+    sys.stdout.write(
+        f"{BOLD}{'PACKAGE':<{max_len + 2}} {'VERSION':<15} {'STATUS':<15} {'CHANGES'}{NC}\n"
+    )
+    sys.stdout.write(f"{DIM}{'-' * matrix_width}{NC}\n")
+
+    total_updated = 0
+    for res in results:
+        total_updated += res["updates"]
+        status_color = (
+            GREEN
+            if "Up to date" in res["status"] or "Finished" in res["status"]
+            else YELLOW
+        )
+        if "Failed" in res["status"] or "No Spec" in res["status"]:
+            status_color = RED
+
+        sys.stdout.write(
+            f"  {res['name']:<{max_len}} {res['version']:<15} {status_color}{res['status']:<15}{NC} {res['updates']}\n"
+        )
+
+    sys.stdout.write(f"{BOLD}{CYAN}{'=' * matrix_width}{NC}\n\n")
+
     if total_updated > 0:
-        print(f"{GREEN}✅ Done! Successfully updated {total_updated} target(s)/asset(s).{NC}")
-        print("Check updates: git status")
+        sys.stdout.write(
+            f"{GREEN}{BOLD} ✅ Success! Successfully updated {total_updated} target(s)/asset(s).{NC}\n"
+        )
+        sys.stdout.write(f"{DIM}Verify local changes with: git status{NC}\n")
     else:
-        print(f"{GREEN}✅ All packages are up to date with the latest versions.{NC}")
+        sys.stdout.write(
+            f"{GREEN}{BOLD} ✅ All packages are up to date with upstream tracking.{NC}\n"
+        )
+    sys.stdout.flush()
+
 
 if __name__ == "__main__":
     main()
