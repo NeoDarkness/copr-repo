@@ -1,5 +1,3 @@
-diff --git a/build b/build
-index 3f249fd8..7b25d96e 100755
 --- a/build
 +++ b/build
 @@ -26,9 +26,6 @@ PNG_DIR="$SCRIPT_DIR/pngs"

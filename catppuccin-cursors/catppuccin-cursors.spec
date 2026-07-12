@@ -11,8 +11,8 @@ Summary:        Soothing pastel mouse cursors
 License:        GPL-2.0-only
 URL:            %{forgeurl}
 Source0:        %{forgesource}
-Patch0:         remove-bundled-license-and-authors-files.patch
-Patch1:         use-explicit-whiskers-version-constraint.patch
+Patch0:         remove-bundled-license-and-authors-files.diff
+Patch1:         use-explicit-whiskers-version-constraint.diff
 
 BuildArch:      noarch
 

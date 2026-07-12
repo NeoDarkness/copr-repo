@@ -1,5 +1,3 @@
-diff --git a/src/templates/index.theme.tera b/src/templates/index.theme.tera
-index 52619fda..13acafec 100644
 --- a/src/templates/index.theme.tera
 +++ b/src/templates/index.theme.tera
 @@ -1,6 +1,6 @@
@@ -10,8 +8,6 @@ index 52619fda..13acafec 100644
    matrix:
    - accent: ["blue", "dark", "flamingo", "green", "lavender", "light", "maroon", "mauve", "peach", "pink", "red", "rosewater", "sapphire", "sky", "teal", "yellow"]
    - flavor
-diff --git a/src/templates/manifest.hl.tera b/src/templates/manifest.hl.tera
-index bd54e1c9..904e1916 100644
 --- a/src/templates/manifest.hl.tera
 +++ b/src/templates/manifest.hl.tera
 @@ -1,6 +1,6 @@
@@ -22,8 +18,6 @@ index bd54e1c9..904e1916 100644
    matrix:
    - accent: ["blue", "dark", "flamingo", "green", "lavender", "light", "maroon", "mauve", "peach", "pink", "red", "rosewater", "sapphire", "sky", "teal", "yellow"]
    - flavor
-diff --git a/src/templates/svgs.tera b/src/templates/svgs.tera
-index 53bd608b..40a9eaac 100644
 --- a/src/templates/svgs.tera
 +++ b/src/templates/svgs.tera
 @@ -1,6 +1,6 @@
