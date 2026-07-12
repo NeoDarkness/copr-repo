@@ -79,10 +79,6 @@ def get_latest_tag(url):
     if data and isinstance(data, dict) and "tag_name" in data:
         return sanitize_rpm_version(data["tag_name"])
         
-    tags_data = fetch_json(f"https://api.github.com/repos/{repo}/tags")
-    if tags_data and isinstance(tags_data, list) and len(tags_data) > 0:
-        return sanitize_rpm_version(tags_data[0].get("name"))
-        
     return "1.0.0"
 
 def get_postman_version():
