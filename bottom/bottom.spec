@@ -3,7 +3,7 @@
 %global cargo_install_lib 0
 
 %global forgeurl https://github.com/ClementTsang/bottom
-%global commit   69f6ce1553cb698012eed776397bb0e759afb0df
+%global commit   c696597e8164d854f532257e77993e5b74c909a4
 
 %forgemeta
 
@@ -41,6 +41,7 @@ License:        %{shrink:
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 Source1:        vendor.tar.gz
+Patch0:         bottom-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros
 

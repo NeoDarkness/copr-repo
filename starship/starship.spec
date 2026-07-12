@@ -60,6 +60,7 @@ License:        %{shrink:
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 Source1:        vendor.tar.gz
+Patch0:         starship-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros
 
