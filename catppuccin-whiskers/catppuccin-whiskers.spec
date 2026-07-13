@@ -3,12 +3,12 @@
 %global cargo_install_lib 0
 
 %global forgeurl https://github.com/catppuccin/whiskers
-%global version0 2.9.0
+%global commit   233654f3cd8101f572e6842dce426c56c86ff98b
 
 %forgemeta
 
 Name:           catppuccin-whiskers
-Version:        %{forgeversion}
+Version:        2.9.0
 Release:        %autorelease
 Summary:        😾 Soothing port creation tool for the high-spirited!
 

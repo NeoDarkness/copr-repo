@@ -1,10 +1,10 @@
 %global forgeurl https://github.com/pipeseroni/pipes.sh
-%global version0 1.3.0
+%global commit   581792d4e0ea51e15889ba14a85db1bc9727b83d
 
 %forgemeta
 
 Name:           pipes.sh
-Version:        %{forgeversion}
+Version:        1.3.0
 Release:        %autorelease
 Summary:        Animated pipes terminal screensaver
 

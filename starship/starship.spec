@@ -3,12 +3,12 @@
 %global cargo_install_lib 0
 
 %global forgeurl https://github.com/starship/starship
-%global version0 1.26.0
+%global commit   9140ca5d6a6d7e3f7362baf428b50b4f94811991
 
 %forgemeta
 
 Name:           starship
-Version:        %{forgeversion}
+Version:        1.26.0
 Release:        %autorelease
 Summary:        Minimal, blazing-fast, and infinitely customizable prompt for any shell! ☄🌌️
 

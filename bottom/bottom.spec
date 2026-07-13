@@ -3,12 +3,12 @@
 %global cargo_install_lib 0
 
 %global forgeurl https://github.com/ClementTsang/bottom
-%global version0 0.14.4
+%global commit   c696597e8164d854f532257e77993e5b74c909a4
 
 %forgemeta
 
 Name:           bottom
-Version:        %{forgeversion}
+Version:        0.14.4
 Release:        %autorelease
 Summary:        Customizable cross-platform graphical process/system monitor for the terminal
 

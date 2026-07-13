@@ -15,6 +15,7 @@ from concurrent.futures import ThreadPoolExecutor
 TIMEOUT = 15
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
+# ANSI Styling Codes
 GREEN = "\033[0;32m"
 YELLOW = "\033[1;33m"
 BLUE = "\033[0;34m"
@@ -24,13 +25,15 @@ BOLD = "\033[1m"
 DIM = "\033[2m"
 NC = "\033[0m"
 
+# Terminal Manipulation Codes (No external libs needed)
 CLEAR_LINE = "\033[2K"
 CURSOR_UP = "\033[A"
 
+# Thread-safe terminal drawing state
 print_lock = threading.Lock()
 active_tasks = {}
 task_order = []
-max_len = 20
+max_len = 20  # Dynamically updated in main()
 
 
 def file_name_auto_patch(name: str) -> str:
@@ -68,39 +71,16 @@ def fetch_json(url):
 
 def download_file(url, dest_path):
     req = Request(url)
-    req.add_header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36")
-    
     token = get_gh_token()
     if token and "github.com" in url:
         req.add_header("Authorization", f"Bearer {token}")
-        req.add_header("Accept", "application/vnd.github+json")
-        
     try:
-        with urlopen(req, timeout=TIMEOUT) as response, open(dest_path, "wb") as out_file:
+        with urlopen(req, timeout=TIMEOUT) as response, open(
+            dest_path, "wb"
+        ) as out_file:
             shutil.copyfileobj(response, out_file)
         return True
-    except Exception:
-        return False
-
-
-def check_url_valid(url):
-    if not url:
-        return False
-    url = url.strip()
-    
-    if "%{" in url:
-        return True
-        
-    req = Request(url, method="HEAD")
-    req.add_header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36")
-    token = get_gh_token()
-    if token and "github.com" in url:
-        req.add_header("Authorization", f"Bearer {token}")
-        
-    try:
-        with urlopen(req, timeout=7) as response:
-            return response.status in [200, 301, 302, 304]
-    except Exception:
+    except URLError:
         return False
 
 
@@ -145,20 +125,13 @@ def parse_spec(spec_path):
     with open(spec_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    v_match = re.search(r"^%global\s+version\d*\s+(\S+)", content, re.MULTILINE)
+    v_match = re.search(r"^%global\s+version\s+(\S+)", content, re.MULTILINE)
     if v_match:
         version = v_match.group(1)
     else:
         v_match = re.search(r"^Version:\s*(\S+)", content, re.MULTILINE)
         if v_match:
             version = v_match.group(1)
-    
-    if version and version.startswith("%{") and "version" in version:
-        base_v_match = re.search(r"^%global\s+version\d*\s+(\S+)", content, re.MULTILINE)
-        if base_v_match:
-            version = base_v_match.group(1)
-
-    has_dynamic_version_macro = bool(re.search(r"^Version:\s*%\{\w*version\w*\}", content, re.MULTILINE))
 
     u_match = re.search(r"^%global\s+forgeurl\s+(\S+)", content, re.MULTILINE)
     if u_match:
@@ -175,7 +148,7 @@ def parse_spec(spec_path):
     is_snapshot = "%global commit" in content
     is_rust = bool(re.search(r"cargo|rust", content, re.IGNORECASE))
 
-    return version, url, commit, is_snapshot, is_rust, has_dynamic_version_macro
+    return version, url, commit, is_snapshot, is_rust
 
 
 def update_spec_file(spec_path, key, new_value):
@@ -183,31 +156,20 @@ def update_spec_file(spec_path, key, new_value):
         content = f.read()
 
     if key == "version":
-        if re.search(r"^Version:\s*%\{\w*version\w*\}", content, re.MULTILINE):
-            if re.search(r"^%global\s+version\d*\s+", content, re.MULTILINE):
-                content = re.sub(
-                    r"^%global\s+(version\d*)\s+.*",
-                    rf"%global \1 {new_value}",
-                    content,
-                    flags=re.MULTILINE,
-                )
-            else:
-                pass
+        if re.search(r"^%global\s+version\s+", content, re.MULTILINE):
+            content = re.sub(
+                r"^%global\s+version\s+.*",
+                f"%global version {new_value}",
+                content,
+                flags=re.MULTILINE,
+            )
         else:
-            if re.search(r"^%global\s+version\d*\s+", content, re.MULTILINE):
-                content = re.sub(
-                    r"^%global\s+(version\d*)\s+.*",
-                    rf"%global \1 {new_value}",
-                    content,
-                    flags=re.MULTILINE,
-                )
-            else:
-                content = re.sub(
-                    r"^Version:\s*.*",
-                    f"Version:        {new_value}",
-                    content,
-                    flags=re.MULTILINE,
-                )
+            content = re.sub(
+                r"^Version:\s*.*",
+                f"Version:        {new_value}",
+                content,
+                flags=re.MULTILINE,
+            )
     elif key == "commit":
         content = re.sub(
             r"^%global\s+commit\s+.*",
@@ -271,10 +233,12 @@ def preprocess_cargo_toml_helper(contents: str) -> str | None:
 
 
 def update_ui_status(pkg_name, status_text):
+    """Thread-safe multi-line live terminal updater without external dependencies."""
     global max_len
     with print_lock:
         active_tasks[pkg_name] = status_text
 
+        # Rollback cursor to rewrite previous states seamlessly
         if len(task_order) > 0:
             sys.stdout.write(CURSOR_UP * len(task_order))
 
@@ -292,31 +256,18 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
         return 0
 
     if not shutil.which("cargo") or not shutil.which("rust2rpm-helper"):
-        update_ui_status(pkg_name, f"{RED}Missing cargo/rust2rpm-helper{NC}")
         return 0
 
-    update_ui_status(pkg_name, f"{BLUE}Downloading upstream tarball ({target_ref})...{NC}")
+    update_ui_status(pkg_name, f"{BLUE}Downloading upstream tarball...{NC}")
     tmp_dir = tempfile.mkdtemp()
     tarball_path = os.path.join(tmp_dir, "source.tar.gz")
     repo = github_repo_path(url)
-    
     tarball_url = f"https://api.github.com/repos/{repo}/tarball/{target_ref}"
-    success = download_file(tarball_url, tarball_path)
-    
-    if not success:
-        fallback_url = f"https://github.com/{repo}/archive/refs/tags/{target_ref}.tar.gz"
-        success = download_file(fallback_url, tarball_path)
-        
-    if not success and not target_ref.startswith("v"):
-        fallback_url_v = f"https://github.com/{repo}/archive/refs/tags/v{target_ref}.tar.gz"
-        success = download_file(fallback_url_v, tarball_path)
-
-    if not success:
-        update_ui_status(pkg_name, f"{RED}Download tarball gagal (404/403/Timeout){NC}")
-        shutil.rmtree(tmp_dir, ignore_errors=True)
-        return 0
 
     try:
+        if not download_file(tarball_url, tarball_path):
+            return 0
+
         extract_dir = os.path.join(tmp_dir, "extract")
         os.makedirs(extract_dir, exist_ok=True)
 
@@ -324,12 +275,10 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
             ["tar", "-xzf", tarball_path, "-C", extract_dir], capture_output=True
         )
         if res.returncode != 0:
-            update_ui_status(pkg_name, f"{RED}Gagal mengekstrak tarball{NC}")
             return 0
 
         subdirs = os.listdir(extract_dir)
         if not subdirs:
-            update_ui_status(pkg_name, f"{RED}Tarball kosong{NC}")
             return 0
         src_dir = os.path.join(extract_dir, subdirs[0])
 
@@ -365,7 +314,6 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
 
         update_ui_status(pkg_name, f"{YELLOW}Running cargo vendor...{NC}")
         vendor_out_dir = os.path.join(tmp_dir, "vendor")
-        
         vendor_res = subprocess.run(
             ["cargo", "vendor", vendor_out_dir],
             cwd=src_dir,
@@ -374,15 +322,12 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
         )
 
         if vendor_res.returncode == 0:
-            update_ui_status(pkg_name, f"{CYAN}Creating vendor.tar.gz...{NC}")
             subprocess.run(
                 ["tar", "-czf", vendor_tarball, "-C", tmp_dir, "vendor"], check=True
             )
             updated_count += 1
             return updated_count
-        else:
-            update_ui_status(pkg_name, f"{RED}Cargo vendor gagal: {vendor_res.stderr[:30].strip()}...{NC}")
-            return 0
+        return 0
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
@@ -395,43 +340,11 @@ def process_package(item):
         return {"name": item, "status": "No Spec", "updates": 0, "version": "-"}
 
     update_ui_status(item, f"{YELLOW}Checking metadata...{NC}")
-    raw_current_version, url, current_commit, is_snapshot, is_rust, has_dynamic_version = parse_spec(spec_path)
-    
-    current_version = sanitize_rpm_version(raw_current_version)
+    current_version, url, current_commit, is_snapshot, is_rust = parse_spec(spec_path)
 
     local_updates = 0
     latest_tag = get_postman_version() if item == "postman" else get_latest_tag(url)
     status_msg = "Up to date"
-
-    if url:
-        repo = github_repo_path(url)
-        test_url = f"https://github.com/{repo}"
-        if is_snapshot and current_commit:
-            test_url = f"https://github.com/{repo}/archive/{current_commit}.tar.gz"
-        elif not is_snapshot and latest_tag:
-            test_url = f"https://github.com/{repo}/archive/refs/tags/{latest_tag}.tar.gz"
-
-        update_ui_status(item, f"{BLUE}Validating Forge Source URL...{NC}")
-        if not check_url_valid(test_url):
-            fallback_test = test_url
-            if "tags/" in test_url:
-                if latest_tag.startswith("v"):
-                    fallback_test = test_url.replace(f"tags/{latest_tag}", f"tags/{latest_tag[1:]}")
-                else:
-                    fallback_test = test_url.replace(f"tags/{latest_tag}", f"tags/v{latest_tag}")
-            
-            if not check_url_valid(fallback_test):
-                update_ui_status(item, f"{RED}Invalid Source URL (404){NC}")
-                return {
-                    "name": item,
-                    "status": "Bad Source URL",
-                    "updates": 0,
-                    "version": current_commit[:7] if (is_snapshot and has_dynamic_version and current_commit) else current_version,
-                }
-
-    display_version = current_version
-    if is_snapshot and has_dynamic_version and current_commit:
-        display_version = current_commit[:7]
 
     if is_snapshot:
         latest_commit = get_latest_commit(url)
@@ -441,20 +354,19 @@ def process_package(item):
                 "name": item,
                 "status": "Failed API",
                 "updates": 0,
-                "version": display_version,
+                "version": current_version,
             }
 
-        if current_version != latest_tag and not has_dynamic_version:
+        if current_version != latest_tag:
             update_spec_file(spec_path, "version", latest_tag)
             local_updates += 1
-            display_version = latest_tag
+            current_version = latest_tag
             status_msg = "Snapshot Updated"
 
         if current_commit != latest_commit:
             update_spec_file(spec_path, "commit", latest_commit)
             local_updates += 1
             status_msg = "Snapshot Updated"
-            display_version = latest_commit[:7]
             if is_rust:
                 for f_remove in [
                     "vendor.tar.gz",
@@ -478,7 +390,7 @@ def process_package(item):
             "name": item,
             "status": status_msg,
             "updates": local_updates,
-            "version": display_version,
+            "version": current_version,
         }
 
     if current_version != latest_tag:
@@ -495,23 +407,20 @@ def process_package(item):
                 p = os.path.join(dir_path, f_remove)
                 if os.path.exists(p):
                     os.remove(p)
-        
-        display_version = latest_tag
+        current_version = latest_tag
 
     if is_rust:
-        cargo_updates = generate_cargo_vendor(dir_path, raw_current_version, url, spec_path)
+        cargo_updates = generate_cargo_vendor(dir_path, current_version, url, spec_path)
         local_updates += cargo_updates
         if cargo_updates > 0 and status_msg == "Up to date":
             status_msg = "Vendor Created"
-        elif cargo_updates == 0 and status_msg == "Up to date" and not os.path.exists(os.path.join(dir_path, "vendor.tar.gz")):
-            status_msg = "Vendor Failed"
 
     update_ui_status(item, f"{GREEN}Finished{NC}")
     return {
         "name": item,
         "status": status_msg,
         "updates": local_updates,
-        "version": display_version,
+        "version": current_version,
     }
 
 
@@ -533,8 +442,11 @@ def main():
     ]
 
     task_order = sorted(packages)
+
+    # Calculate maximum package name length to keep colons aligned perfectly
     max_len = max(len(pkg) for pkg in task_order) if task_order else 20
 
+    # Allocate initial blank lines for all packages to draw on top of them safely
     for pkg in task_order:
         active_tasks[pkg] = f"{DIM}Pending...{NC}"
         sys.stdout.write(f"  {pkg:<{max_len}} : {active_tasks[pkg]}\n")
@@ -546,6 +458,7 @@ def main():
         for future in futures:
             results.append(future.result())
 
+    # Draw Summary Matrix UI
     matrix_width = max(60, max_len + 40)
     sys.stdout.write(f"\n{BOLD}{CYAN}{'=' * matrix_width}{NC}\n")
     sys.stdout.write(
@@ -561,7 +474,7 @@ def main():
             if "Up to date" in res["status"] or "Finished" in res["status"]
             else YELLOW
         )
-        if "Failed" in res["status"] or "No Spec" in res["status"] or "Bad" in res["status"]:
+        if "Failed" in res["status"] or "No Spec" in res["status"]:
             status_color = RED
 
         sys.stdout.write(

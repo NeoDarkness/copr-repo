@@ -6,7 +6,7 @@
 %forgemeta
 
 Name:           catppuccin-grub-theme
-Version:        %{forgeversion}
+Version:        1.0.0
 Release:        %autorelease
 Summary:        Soothing pastel theme for GRUB2
 

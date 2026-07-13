@@ -4,7 +4,7 @@
 %forgemeta
 
 Name:           papirus-folders-catppuccin
-Version:        %{forgeversion}
+Version:        1.0.0
 Release:        %autorelease
 Summary:        Soothing pastel folder colors for Papirus icon themes
 
