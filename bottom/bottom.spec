@@ -3,7 +3,7 @@
 %global cargo_install_lib 0
 
 %global forgeurl https://github.com/ClementTsang/bottom
-%global commit   c696597e8164d854f532257e77993e5b74c909a4
+%global commit   9c7962242277b436bba6e53ff048af2eeeeb040f
 
 %forgemeta
 
