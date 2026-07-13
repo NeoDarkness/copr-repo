@@ -1,25 +1,17 @@
 %global debug_package %{nil}
-%global __strip /bin/true
-%global __brp_check_rpaths %{nil}
 
 Name:           postman
 Version:        12.19.0
 Release:        %autorelease
 Summary:        Postman API Platform
 
-License:        LicenseRef-Postman-EULA
+License:        Proprietary
 URL:            https://www.postman.com/
 
 Source0:        https://dl.pstmn.io/download/version/%{version}/linux64
 Source1:        postman.desktop
 
 ExclusiveArch:  x86_64
-
-Requires:       alsa-lib
-Requires:       gtk3
-Requires:       libXScrnSaver
-Requires:       libXtst
-Requires:       nss
 
 %description
 Postman is an API platform for building and using APIs.
