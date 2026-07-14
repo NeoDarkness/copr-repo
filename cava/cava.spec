@@ -32,11 +32,12 @@ C.A.V.A. is a bar spectrum analyzer for audio using ALSA for input.
 ./autogen.sh
 
 %build
-%configure FONT_DIR=/lib/kbd/consolefonts
-%make_build
+%configure FONT_DIR=/lib/kbd/consolefonts LIBS=-lrt
+%make_build cava_LDFLAGS=
 
 %install
 %make_install
+rm -f %{buildroot}%{_libdir}/libiniparser.{a,la,so}
 
 %check
 
