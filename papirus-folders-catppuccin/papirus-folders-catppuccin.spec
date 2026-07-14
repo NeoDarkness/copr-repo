@@ -1,11 +1,11 @@
 %global forgeurl https://github.com/catppuccin/papirus-folders
-%global commit   f83671d17ea67e335b34f8028a7e6d78bca735d7
+%global commit f83671d17ea67e335b34f8028a7e6d78bca735d7
 
 %forgemeta
 
 Name:           papirus-folders-catppuccin
 Version:        1.0.0
-Release:        %autorelease
+Release:        1%{?dist}
 Summary:        Soothing pastel folder colors for Papirus icon themes
 
 License:        MIT

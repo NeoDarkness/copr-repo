@@ -15,7 +15,6 @@ from concurrent.futures import ThreadPoolExecutor
 TIMEOUT = 15
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-# ANSI Styling Codes
 GREEN = "\033[0;32m"
 YELLOW = "\033[1;33m"
 BLUE = "\033[0;34m"
@@ -25,15 +24,13 @@ BOLD = "\033[1m"
 DIM = "\033[2m"
 NC = "\033[0m"
 
-# Terminal Manipulation Codes (No external libs needed)
 CLEAR_LINE = "\033[2K"
 CURSOR_UP = "\033[A"
 
-# Thread-safe terminal drawing state
 print_lock = threading.Lock()
 active_tasks = {}
 task_order = []
-max_len = 20  # Dynamically updated in main()
+max_len = 20
 
 
 def file_name_auto_patch(name: str) -> str:
@@ -96,18 +93,18 @@ def get_latest_commit(url):
     return None
 
 
-def get_latest_tag(url):
+def get_latest_tag_raw(url):
     repo = github_repo_path(url)
     data = fetch_json(f"https://api.github.com/repos/{repo}/releases/latest")
     if data and isinstance(data, dict) and "tag_name" in data:
-        return sanitize_rpm_version(data["tag_name"])
+        return data["tag_name"]
     return "1.0.0"
 
 
 def get_postman_version():
     data = fetch_json("https://www.postman.com/mkapi/release.json")
     if data and "notes" in data and len(data["notes"]) > 0:
-        return sanitize_rpm_version(data["notes"][0].get("version", "1.0.0"))
+        return data["notes"][0].get("version", "1.0.0")
     return "1.0.0"
 
 
@@ -133,13 +130,16 @@ def parse_spec(spec_path):
         if v_match:
             version = v_match.group(1)
 
-    u_match = re.search(r"^%global\s+forgeurl\s+(\S+)", content, re.MULTILINE)
+    forgeurl_match = re.search(r"^%global\s+forgeurl\s+(\S+)", content, re.MULTILINE)
+    forgeurl_val = forgeurl_match.group(1) if forgeurl_match else None
+
+    u_match = re.search(r"^URL:\s*(\S+)", content, re.MULTILINE)
     if u_match:
         url = u_match.group(1)
-    else:
-        u_match = re.search(r"^URL:\s*(\S+)", content, re.MULTILINE)
-        if u_match:
-            url = u_match.group(1)
+        if url == "%{forgeurl}" and forgeurl_val:
+            url = forgeurl_val
+    elif forgeurl_val:
+        url = forgeurl_val
 
     c_match = re.search(r"^%global\s+commit\s+(\S+)", content, re.MULTILINE)
     if c_match:
@@ -173,7 +173,7 @@ def update_spec_file(spec_path, key, new_value):
     elif key == "commit":
         content = re.sub(
             r"^%global\s+commit\s+.*",
-            f"%global commit   {new_value}",
+            f"%global commit {new_value}",
             content,
             flags=re.MULTILINE,
         )
@@ -233,12 +233,10 @@ def preprocess_cargo_toml_helper(contents: str) -> str | None:
 
 
 def update_ui_status(pkg_name, status_text):
-    """Thread-safe multi-line live terminal updater without external dependencies."""
     global max_len
     with print_lock:
         active_tasks[pkg_name] = status_text
 
-        # Rollback cursor to rewrite previous states seamlessly
         if len(task_order) > 0:
             sys.stdout.write(CURSOR_UP * len(task_order))
 
@@ -343,7 +341,8 @@ def process_package(item):
     current_version, url, current_commit, is_snapshot, is_rust = parse_spec(spec_path)
 
     local_updates = 0
-    latest_tag = get_postman_version() if item == "postman" else get_latest_tag(url)
+    raw_tag = get_postman_version() if item == "postman" else get_latest_tag_raw(url)
+    latest_rpm_version = sanitize_rpm_version(raw_tag)
     status_msg = "Up to date"
 
     if is_snapshot:
@@ -357,10 +356,10 @@ def process_package(item):
                 "version": current_version,
             }
 
-        if current_version != latest_tag:
-            update_spec_file(spec_path, "version", latest_tag)
+        if current_version != latest_rpm_version:
+            update_spec_file(spec_path, "version", latest_rpm_version)
             local_updates += 1
-            current_version = latest_tag
+            current_version = latest_rpm_version
             status_msg = "Snapshot Updated"
 
         if current_commit != latest_commit:
@@ -393,10 +392,10 @@ def process_package(item):
             "version": current_version,
         }
 
-    if current_version != latest_tag:
-        update_spec_file(spec_path, "version", latest_tag)
+    if current_version != latest_rpm_version:
+        update_spec_file(spec_path, "version", latest_rpm_version)
         local_updates += 1
-        status_msg = f"New Version ({latest_tag})"
+        status_msg = f"New Version ({latest_rpm_version})"
         if is_rust:
             for f_remove in [
                 "vendor.tar.gz",
@@ -407,10 +406,11 @@ def process_package(item):
                 p = os.path.join(dir_path, f_remove)
                 if os.path.exists(p):
                     os.remove(p)
-        current_version = latest_tag
+        current_version = latest_rpm_version
 
     if is_rust:
-        cargo_updates = generate_cargo_vendor(dir_path, current_version, url, spec_path)
+        target_ref = raw_tag if raw_tag.startswith("v") else current_version
+        cargo_updates = generate_cargo_vendor(dir_path, target_ref, url, spec_path)
         local_updates += cargo_updates
         if cargo_updates > 0 and status_msg == "Up to date":
             status_msg = "Vendor Created"
@@ -443,10 +443,8 @@ def main():
 
     task_order = sorted(packages)
 
-    # Calculate maximum package name length to keep colons aligned perfectly
     max_len = max(len(pkg) for pkg in task_order) if task_order else 20
 
-    # Allocate initial blank lines for all packages to draw on top of them safely
     for pkg in task_order:
         active_tasks[pkg] = f"{DIM}Pending...{NC}"
         sys.stdout.write(f"  {pkg:<{max_len}} : {active_tasks[pkg]}\n")
@@ -458,7 +456,6 @@ def main():
         for future in futures:
             results.append(future.result())
 
-    # Draw Summary Matrix UI
     matrix_width = max(60, max_len + 40)
     sys.stdout.write(f"\n{BOLD}{CYAN}{'=' * matrix_width}{NC}\n")
     sys.stdout.write(

@@ -2,7 +2,7 @@
 
 Name:           postman
 Version:        12.19.0
-Release:        %autorelease
+Release:        1%{?dist}
 Summary:        Postman API Platform
 
 License:        Proprietary

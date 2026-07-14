@@ -1,11 +1,11 @@
 %global forgeurl https://github.com/catppuccin/plymouth
-%global commit   198eba2071d80e4a23b8f51a5859e8f4acf8de6c
+%global commit 198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 
 %forgemeta
 
 Name:           plymouth-theme-catppuccin
 Version:        1.0.0
-Release:        %autorelease
+Release:        1%{?dist}
 Summary:        Soothing pastel theme for Plymouth
 
 License:        MIT

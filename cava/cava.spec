@@ -1,11 +1,13 @@
 %global forgeurl https://github.com/karlstav/cava
-%global commit   4b12c2b043723f42567ddbfd5a516566bdf52316
+
+Version:        1.0.0
+
+%global tag %{version}
 
 %forgemeta
 
 Name:           cava
-Version:        1.0.0
-Release:        %autorelease
+Release:        1%{?dist}
 Summary:        Console-based Audio Visualizer for ALSA
 
 License:        MIT

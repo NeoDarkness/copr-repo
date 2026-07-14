@@ -1,6 +1,6 @@
 --- a/Cargo.toml
 +++ b/Cargo.toml
-@@ -94,28 +94,12 @@
+@@ -95,28 +95,12 @@
  optional = true
  features = ["preserve_order", "indexmap2"]
  
@@ -28,8 +28,8 @@
 -winres = "0.1.12"
  
  [dev-dependencies]
- mockall = "=0.15.0"
-@@ -132,3 +116,4 @@
+ mockall = "=0.14.0"
+@@ -133,3 +117,4 @@
  
  [lints.clippy]
  use_self = "warn"
