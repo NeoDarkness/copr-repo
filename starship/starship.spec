@@ -12,7 +12,6 @@ Name:           starship
 Release:        %autorelease
 Summary:        Minimal, blazing-fast, and infinitely customizable prompt for any shell! ☄🌌️
 
-SourceLicense:  ISC
 # (Apache-2.0 OR MIT) AND BSD-3-Clause
 # (MIT OR Apache-2.0) AND Unicode-3.0
 # Apache-2.0

@@ -28,7 +28,9 @@ It renders colorful animated pipes directly in the terminal.
 %build
 
 %install
-%make_install PREFIX=%{_prefix} DESTDIR=%{buildroot}
+%make_install \
+    PREFIX=%{_prefix} \
+    DESTDIR=%{buildroot}
 
 %check
 

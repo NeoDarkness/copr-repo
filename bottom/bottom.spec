@@ -14,7 +14,6 @@ Name:           bottom
 Release:        %autorelease
 Summary:        Customizable cross-platform graphical process/system monitor for the terminal
 
-SourceLicense:  MIT
 # Apache-2.0 OR BSL-1.0
 # Apache-2.0 OR MIT
 # Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
