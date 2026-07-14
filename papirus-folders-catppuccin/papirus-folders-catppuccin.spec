@@ -20,8 +20,9 @@ Requires:       papirus-icon-theme
 %description
 Soothing pastel folder colors for Papirus icon themes.
 
-This package provides Catppuccin folder color variants for use with the
-papirus-folders utility, allowing you to bring the cozy Catppuccin aesthetic to your file manager.
+This package provides Catppuccin folder color variants for use with
+the papirus-folders utility, allowing you to bring the cozy
+Catppuccin aesthetic to your file manager.
 
 %prep
 %forgeautosetup
