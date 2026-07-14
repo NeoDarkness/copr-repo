@@ -14,29 +14,30 @@ License:        MIT
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 
-BuildRequires:  make
+BuildRequires:  autoconf
+BuildRequires:  automake
 BuildRequires:  libtool
+BuildRequires:  make
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(fftw3)
-BuildRequires:  pkgconfig(libpulse)
-BuildRequires:  pkgconfig(libpipewire-0.3)
 BuildRequires:  pkgconfig(iniparser)
-BuildRequires:  pkgconfig(ncurses)
+BuildRequires:  pkgconfig(libpipewire-0.3)
+BuildRequires:  pkgconfig(libpulse)
+BuildRequires:  pkgconfig(ncursesw)
 
 %description
 C.A.V.A. is a bar spectrum analyzer for audio using ALSA for input.
 
 %prep
 %forgeautosetup
-./autogen.sh
+%autoreconf
 
 %build
-%configure FONT_DIR=/lib/kbd/consolefonts LIBS=-lrt
-%make_build cava_LDFLAGS=
+%configure --with-fontdir=/lib/kbd/consolefonts LIBS="-lrt"
+%make_build
 
 %install
 %make_install
-rm -f %{buildroot}%{_libdir}/libiniparser.{a,la,so}
 
 %check
 
