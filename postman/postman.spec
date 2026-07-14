@@ -5,13 +5,15 @@ Version:        12.19.0
 Release:        %autorelease
 Summary:        Postman API Platform
 
-License:        Proprietary
+License:        LicenseRef-postman-eula
 URL:            https://www.postman.com/
 
 Source0:        https://dl.pstmn.io/download/version/%{version}/linux64
 Source1:        postman.desktop
 
 ExclusiveArch:  x86_64
+
+BuildRequires:  desktop-file-utils
 
 %description
 Postman is an API platform for building and using APIs.
@@ -32,6 +34,7 @@ ln -sf ../../opt/postman/Postman \
 install -Dpm0644 \
     %{SOURCE1} \
     %{buildroot}%{_datadir}/applications/postman.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/postman.desktop
 
 install -Dpm0644 \
     app/resources/app/assets/icon.png \

@@ -41,10 +41,12 @@ License:        %{shrink:
 
 URL:            %{forgeurl}
 Source0:        %{forgesource}
+# Generated with: cargo vendor
 Source1:        vendor.tar.gz
 Patch0:         bottom-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros
+BuildRequires:  desktop-file-utils
 
 %description
 A customizable cross-platform graphical process/system monitor for the
@@ -85,6 +87,7 @@ install -Dpm0644 \
 install -Dpm0644 \
     desktop/bottom.desktop \
     %{buildroot}%{_datadir}/applications/bottom.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/bottom.desktop
 
 install -Dpm0644 \
     assets/icons/bottom-system-monitor.svg \

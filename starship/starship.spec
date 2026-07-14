@@ -58,6 +58,7 @@ License:        %{shrink:
 
 URL:            %{forgeurl}
 Source0:        %{forgesource}
+# Generated with: cargo vendor
 Source1:        vendor.tar.gz
 Patch0:         starship-fix-metadata-auto.diff
 
