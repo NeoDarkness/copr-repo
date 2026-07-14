@@ -3,7 +3,7 @@
 %global cargo_install_lib 0
 
 %global forgeurl https://github.com/starship/starship
-%global commit   66f986e57e0bc278eb797ce2d117b52e9341e663
+%global commit   8eb25b8130d1b7bf0c98c71d6f978224814b5208
 
 %forgemeta
 
