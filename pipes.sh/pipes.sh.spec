@@ -5,7 +5,7 @@ Version:        1.3.0
 %forgemeta
 
 Name:           pipes.sh
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Animated pipes terminal screensaver
 
 License:        MIT

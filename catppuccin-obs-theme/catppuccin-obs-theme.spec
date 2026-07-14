@@ -5,7 +5,7 @@
 
 Name:           catppuccin-obs-theme
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Soothing pastel theme for OBS Studio
 
 License:        MIT

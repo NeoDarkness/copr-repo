@@ -5,7 +5,7 @@ Version:        1.14.0
 %forgemeta
 
 Name:           papirus-folders
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Folder color switching utility for Papirus icon themes
 
 License:        MIT

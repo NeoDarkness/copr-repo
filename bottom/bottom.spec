@@ -11,7 +11,7 @@ Version:        0.14.4
 %forgemeta
 
 Name:           bottom
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Customizable cross-platform graphical process/system monitor for the terminal
 
 SourceLicense:  MIT

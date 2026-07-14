@@ -7,7 +7,7 @@
 
 Name:           catppuccin-grub-theme
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Soothing pastel theme for GRUB2
 
 License:        MIT

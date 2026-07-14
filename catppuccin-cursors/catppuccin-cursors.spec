@@ -5,7 +5,7 @@ Version:        2.0.0
 %forgemeta
 
 Name:           catppuccin-cursors
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Soothing pastel mouse cursors
 
 License:        GPL-2.0-only

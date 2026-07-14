@@ -9,7 +9,7 @@ Version:        1.26.0
 %forgemeta
 
 Name:           starship
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Minimal, blazing-fast, and infinitely customizable prompt for any shell! ☄🌌️
 
 SourceLicense:  ISC

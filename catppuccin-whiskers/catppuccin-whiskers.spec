@@ -9,7 +9,7 @@ Version:        2.9.0
 %forgemeta
 
 Name:           catppuccin-whiskers
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        😾 Soothing port creation tool for the high-spirited!
 
 SourceLicense:  MIT

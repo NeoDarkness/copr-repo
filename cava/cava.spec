@@ -7,7 +7,7 @@ Version:        1.0.0
 %forgemeta
 
 Name:           cava
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Console-based Audio Visualizer for ALSA
 
 License:        MIT

@@ -5,7 +5,7 @@
 
 Name:           plymouth-theme-catppuccin
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        Soothing pastel theme for Plymouth
 
 License:        MIT
