@@ -1,4 +1,4 @@
-%bcond_without check
+%bcond check 0
 
 %global cargo_install_lib 0
 
@@ -59,8 +59,7 @@ terminal. Supports Linux, macOS, and Windows.
 %cargo_prep -v vendor
 
 %build
-export BTM_GENERATE=1
-
+export BTM_GENERATE=true
 %cargo_build
 
 %{cargo_license_summary}
@@ -97,8 +96,7 @@ install -Dm0644 \
 
 %if %{with check}
 %check
-%cargo_test -- \
-    --skip collection::tests::test_data_collection
+%cargo_test
 %endif
 
 %files
