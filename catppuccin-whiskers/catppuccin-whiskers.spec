@@ -10,7 +10,7 @@ Version:        2.9.0
 
 Name:           catppuccin-whiskers
 Release:        %autorelease
-Summary:        😾 Soothing port creation tool for the high-spirited!
+Summary:        Soothing port creation tool for the high-spirited
 
 # (Apache-2.0 OR MIT) AND BSD-3-Clause
 # (MIT OR Apache-2.0) AND Unicode-3.0
@@ -52,7 +52,7 @@ Source1:        vendor.tar.gz
 BuildRequires:  cargo-rpm-macros
 
 %description
-😾 Soothing port creation tool for the high-spirited!.
+Soothing port creation tool for the high-spirited.
 
 %prep
 %autosetup -n %{archivename} -p1 -a1

@@ -10,7 +10,7 @@ Version:        1.26.0
 
 Name:           starship
 Release:        %autorelease
-Summary:        Minimal, blazing-fast, and infinitely customizable prompt for any shell! ☄🌌️
+Summary:        Minimal, blazing-fast, and infinitely customizable prompt for any shell
 
 # (Apache-2.0 OR MIT) AND BSD-3-Clause
 # (MIT OR Apache-2.0) AND Unicode-3.0
@@ -66,7 +66,7 @@ BuildRequires:  cargo-rpm-macros
 
 %description
 The minimal, blazing-fast, and infinitely customizable prompt for any
-shell! ☄🌌️.
+shell.
 
 %prep
 %autosetup -n %{archivename} -p1 -a1
