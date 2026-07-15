@@ -1,4 +1,5 @@
 %global debug_package %{nil}
+%global __strip /bin/true
 
 Name:           postman
 Version:        12.19.3
