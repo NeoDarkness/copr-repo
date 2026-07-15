@@ -65,6 +65,7 @@ Source1:        vendor.tar.gz
 Patch0:         starship-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros
+BuildRequires:  git-core
 
 %description
 The minimal, blazing-fast, and infinitely customizable prompt for any
