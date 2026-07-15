@@ -1,4 +1,4 @@
-%bcond check 0
+%bcond_with check
 
 %global cargo_install_lib 0
 
@@ -91,17 +91,9 @@ target/rpm/starship completions zsh > _starship
 %install
 %cargo_install
 
-install -Dpm 0644 \
-    starship.bash \
-    %{buildroot}%{bash_completions_dir}/starship
-
-install -Dpm 0644 \
-    starship.fish \
-    %{buildroot}%{fish_completions_dir}/starship.fish
-
-install -Dpm 0644 \
-    _starship \
-    %{buildroot}%{zsh_completions_dir}/_starship
+install -Dpm 0644 starship.bash %{buildroot}%{bash_completions_dir}/starship
+install -Dpm 0644 starship.fish %{buildroot}%{fish_completions_dir}/starship.fish
+install -Dpm 0644 _starship %{buildroot}%{zsh_completions_dir}/_starship
 
 %if %{with check}
 %check

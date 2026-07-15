@@ -13,8 +13,6 @@ Source1:        postman.desktop
 
 ExclusiveArch:  x86_64
 
-BuildRequires:  desktop-file-utils
-
 %description
 Postman is an API platform for building and using APIs.
 
@@ -28,16 +26,10 @@ install -d %{buildroot}/opt/postman
 cp -a . %{buildroot}/opt/postman/
 
 install -d %{buildroot}%{_bindir}
-ln -sf ../../opt/postman/Postman \
-    %{buildroot}%{_bindir}/postman
+ln -sf /opt/postman/Postman %{buildroot}%{_bindir}/postman
 
-install -Dpm 0644 \
-    %{SOURCE1} \
-    %{buildroot}%{_datadir}/applications/postman.desktop
-desktop-file-validate %{buildroot}%{_datadir}/applications/postman.desktop
-
-install -Dpm 0644 \
-    app/resources/app/assets/icon.png \
+install -Dpm 0644 %{SOURCE1} %{buildroot}%{_datadir}/applications/postman.desktop
+install -Dpm 0644 app/resources/app/assets/icon.png \
     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %check

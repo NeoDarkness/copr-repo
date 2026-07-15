@@ -27,10 +27,7 @@ Utility for changing folder colors in Papirus icon themes.
 %build
 
 %install
-%make_install \
-    PREFIX=%{_prefix} \
-    DESTDIR=%{buildroot} \
-    ZSHCOMPDIR=%{zsh_completions_dir}
+%make_install PREFIX=%{_prefix} ZSHCOMPDIR=%{zsh_completions_dir}
 
 %check
 
