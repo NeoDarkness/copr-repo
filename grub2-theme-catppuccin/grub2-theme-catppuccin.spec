@@ -5,7 +5,7 @@
 
 %forgemeta
 
-Name:           catppuccin-grub-theme
+Name:           grub2-theme-catppuccin
 Version:        1.0.0
 Release:        %autorelease
 Summary:        Soothing pastel theme for GRUB2
@@ -19,36 +19,36 @@ BuildArch:      noarch
 %description
 Soothing pastel theme for GRUB2.
 
-%package -n catppuccin-latte-grub-theme
+%package latte
 Summary:        Soothing pastel theme for GRUB2 - Latte
 
 Requires:       grub2-common
 
-%description -n catppuccin-latte-grub-theme
+%description latte
 Soothing pastel theme for GRUB2 - Latte.
 
-%package -n catppuccin-frappe-grub-theme
+%package frappe
 Summary:        Soothing pastel theme for GRUB2 - Frappe
 
 Requires:       grub2-common
 
-%description -n catppuccin-frappe-grub-theme
+%description frappe
 Soothing pastel theme for GRUB2 - Frappe.
 
-%package -n catppuccin-macchiato-grub-theme
+%package macchiato
 Summary:        Soothing pastel theme for GRUB2 - Macchiato
 
 Requires:       grub2-common
 
-%description -n catppuccin-macchiato-grub-theme
+%description macchiato
 Soothing pastel theme for GRUB2 - Macchiato.
 
-%package -n catppuccin-mocha-grub-theme
+%package mocha
 Summary:        Soothing pastel theme for GRUB2 - Mocha
 
 Requires:       grub2-common
 
-%description -n catppuccin-mocha-grub-theme
+%description mocha
 Soothing pastel theme for GRUB2 - Mocha.
 
 %prep
@@ -64,22 +64,22 @@ cp -a src/. %{buildroot}%{_grubthemedir}/
 
 %files
 
-%files -n catppuccin-latte-grub-theme
+%files latte
 %license LICENSE
 %doc README.md
 %{_grubthemedir}/catppuccin-latte-grub-theme
 
-%files -n catppuccin-frappe-grub-theme
+%files frappe
 %license LICENSE
 %doc README.md
 %{_grubthemedir}/catppuccin-frappe-grub-theme
 
-%files -n catppuccin-macchiato-grub-theme
+%files macchiato
 %license LICENSE
 %doc README.md
 %{_grubthemedir}/catppuccin-macchiato-grub-theme
 
-%files -n catppuccin-mocha-grub-theme
+%files mocha
 %license LICENSE
 %doc README.md
 %{_grubthemedir}/catppuccin-mocha-grub-theme

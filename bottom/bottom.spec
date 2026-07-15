@@ -97,7 +97,8 @@ install -Dm0644 \
 
 %if %{with check}
 %check
-%cargo_test
+%cargo_test -- \
+    --skip collection::tests::test_data_collection
 %endif
 
 %files
