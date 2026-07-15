@@ -65,6 +65,8 @@ Source1:        vendor.tar.gz
 Patch0:         starship-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros
+BuildRequires:  cmake
+BuildRequires:  mold
 BuildRequires:  git-core
 
 %description
