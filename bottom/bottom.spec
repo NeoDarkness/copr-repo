@@ -69,28 +69,28 @@ export BTM_GENERATE=true
 %install
 %cargo_install
 
-install -Dm0644 \
+install -Dpm 0644 \
     target/tmp/bottom/completion/btm.bash \
     %{buildroot}%{bash_completions_dir}/btm
 
-install -Dm0644 \
+install -Dpm 0644 \
     target/tmp/bottom/completion/btm.fish \
     %{buildroot}%{fish_completions_dir}/btm.fish
 
-install -Dm0644 \
+install -Dpm 0644 \
     target/tmp/bottom/completion/_btm \
     %{buildroot}%{zsh_completions_dir}/_btm
 
-install -Dm0644 \
+install -Dpm 0644 \
     target/tmp/bottom/manpage/btm.1 \
     %{buildroot}%{_mandir}/man1/btm.1
 
-install -Dm0644 \
+install -Dpm 0644 \
     desktop/bottom.desktop \
     %{buildroot}%{_datadir}/applications/bottom.desktop
 desktop-file-validate %{buildroot}%{_datadir}/applications/bottom.desktop
 
-install -Dm0644 \
+install -Dpm 0644 \
     assets/icons/bottom-system-monitor.svg \
     %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/bottom-system-monitor.svg
 

@@ -91,15 +91,15 @@ target/rpm/starship completions zsh > _starship
 %install
 %cargo_install
 
-install -Dm0644 \
+install -Dpm 0644 \
     starship.bash \
     %{buildroot}%{bash_completions_dir}/starship
 
-install -Dm0644 \
+install -Dpm 0644 \
     starship.fish \
     %{buildroot}%{fish_completions_dir}/starship.fish
 
-install -Dm0644 \
+install -Dpm 0644 \
     _starship \
     %{buildroot}%{zsh_completions_dir}/_starship
 
