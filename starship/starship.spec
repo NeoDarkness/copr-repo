@@ -1,4 +1,4 @@
-%bcond check 0
+%bcond_without check
 
 %global cargo_install_lib 0
 
@@ -11,6 +11,8 @@ Version:        1.26.0
 Name:           starship
 Release:        %autorelease
 Summary:        Minimal, blazing-fast, and infinitely customizable prompt for any shell
+
+SourceLicense:  ISC
 
 # (Apache-2.0 OR MIT) AND BSD-3-Clause
 # (MIT OR Apache-2.0) AND Unicode-3.0
@@ -86,15 +88,15 @@ target/rpm/starship completions zsh > _starship
 %install
 %cargo_install
 
-install -Dpm0644 \
+install -Dm0644 \
     starship.bash \
     %{buildroot}%{bash_completions_dir}/starship
 
-install -Dpm0644 \
+install -Dm0644 \
     starship.fish \
     %{buildroot}%{fish_completions_dir}/starship.fish
 
-install -Dpm0644 \
+install -Dm0644 \
     _starship \
     %{buildroot}%{zsh_completions_dir}/_starship
 

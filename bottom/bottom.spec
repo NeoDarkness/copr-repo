@@ -1,4 +1,4 @@
-%bcond check 0
+%bcond_without check
 
 %global cargo_install_lib 0
 
@@ -13,6 +13,8 @@ Version:        0.14.4
 Name:           bottom
 Release:        %autorelease
 Summary:        Customizable cross-platform graphical process/system monitor for the terminal
+
+SourceLicense:  MIT
 
 # Apache-2.0 OR BSL-1.0
 # Apache-2.0 OR MIT
@@ -68,28 +70,28 @@ export BTM_GENERATE=1
 %install
 %cargo_install
 
-install -Dpm0644 \
+install -Dm0644 \
     target/tmp/bottom/completion/btm.bash \
     %{buildroot}%{bash_completions_dir}/btm
 
-install -Dpm0644 \
+install -Dm0644 \
     target/tmp/bottom/completion/btm.fish \
     %{buildroot}%{fish_completions_dir}/btm.fish
 
-install -Dpm0644 \
+install -Dm0644 \
     target/tmp/bottom/completion/_btm \
     %{buildroot}%{zsh_completions_dir}/_btm
 
-install -Dpm0644 \
+install -Dm0644 \
     target/tmp/bottom/manpage/btm.1 \
     %{buildroot}%{_mandir}/man1/btm.1
 
-install -Dpm0644 \
+install -Dm0644 \
     desktop/bottom.desktop \
     %{buildroot}%{_datadir}/applications/bottom.desktop
 desktop-file-validate %{buildroot}%{_datadir}/applications/bottom.desktop
 
-install -Dpm0644 \
+install -Dm0644 \
     assets/icons/bottom-system-monitor.svg \
     %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/bottom-system-monitor.svg
 
