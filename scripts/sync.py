@@ -342,7 +342,12 @@ def process_package(item):
 
     local_updates = 0
     raw_tag = get_postman_version() if item == "postman" else get_latest_tag_raw(url)
-    latest_rpm_version = sanitize_rpm_version(raw_tag)
+    
+    if is_snapshot:
+        latest_rpm_version = "0"
+    else:
+        latest_rpm_version = sanitize_rpm_version(raw_tag)
+        
     status_msg = "Up to date"
 
     if is_snapshot:
@@ -422,8 +427,7 @@ def process_package(item):
         "updates": local_updates,
         "version": current_version,
     }
-
-
+    
 def main():
     global task_order, max_len
     sys.stdout.write(
