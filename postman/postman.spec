@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 
 Name:           postman
-Version:        12.19.0
+Version:        12.19.3
 Release:        %autorelease
 Summary:        Postman API Platform
 
