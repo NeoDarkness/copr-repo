@@ -1,6 +1,3 @@
-%global debug_package %{nil}
-%global __strip /bin/true
-
 Name:           postman
 Version:        12.19.3
 Release:        %autorelease
@@ -27,7 +24,7 @@ install -d %{buildroot}/opt/postman
 cp -a . %{buildroot}/opt/postman/
 
 install -d %{buildroot}%{_bindir}
-ln -sf /opt/postman/Postman %{buildroot}%{_bindir}/postman
+ln -s ../../opt/Postman/Postman %{buildroot}%{_bindir}/postman
 
 install -Dpm 0644 %{SOURCE1} %{buildroot}%{_datadir}/applications/postman.desktop
 install -Dpm 0644 app/resources/app/assets/icon.png \
