@@ -48,6 +48,8 @@ Source1:        vendor.tar.gz
 Patch0:         bottom-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros
+BuildRequires:  desktop-file-utils
+Requires:       hicolor-icon-theme
 
 %description
 A customizable cross-platform graphical process/system monitor for the
@@ -74,7 +76,10 @@ install -Dpm 0644 target/tmp/bottom/completion/_btm %{buildroot}%{zsh_completion
 
 install -Dpm 0644 target/tmp/bottom/manpage/btm.1 %{buildroot}%{_mandir}/man1/btm.1
 
-install -Dpm 0644 desktop/bottom.desktop %{buildroot}%{_datadir}/applications/bottom.desktop
+desktop-file-install \
+    --dir=%{buildroot}%{_datadir}/applications \
+    desktop/bottom.desktop
+
 install -Dpm 0644 \
     assets/icons/bottom-system-monitor.svg \
     %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/bottom-system-monitor.svg

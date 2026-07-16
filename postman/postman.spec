@@ -1,3 +1,8 @@
+%global debug_package %{nil}
+
+%global __provides_exclude_from ^/opt/Postman/.*$
+%global __requires_exclude_from ^/opt/Postman/.*$
+
 Name:           postman
 Version:        12.19.3
 Release:        %autorelease
@@ -11,6 +16,9 @@ Source1:        postman.desktop
 
 ExclusiveArch:  x86_64
 
+BuildRequires:  desktop-file-utils
+Requires:       hicolor-icon-theme
+
 %description
 Postman is an API platform for building and using APIs.
 
@@ -20,20 +28,23 @@ Postman is an API platform for building and using APIs.
 %build
 
 %install
-install -d %{buildroot}/opt/postman
-cp -a . %{buildroot}/opt/postman/
+install -d %{buildroot}/opt/Postman
+cp -a . %{buildroot}/opt/Postman/
 
 install -d %{buildroot}%{_bindir}
 ln -s ../../opt/Postman/Postman %{buildroot}%{_bindir}/postman
 
-install -Dpm 0644 %{SOURCE1} %{buildroot}%{_datadir}/applications/postman.desktop
+desktop-file-install \
+    --dir=%{buildroot}%{_datadir}/applications \
+    %{SOURCE1}
+
 install -Dpm 0644 app/resources/app/assets/icon.png \
     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %check
 
 %files
-/opt/postman
+/opt/Postman
 %{_bindir}/postman
 %{_datadir}/applications/postman.desktop
 %{_datadir}/icons/hicolor/128x128/apps/postman.png
