@@ -54,7 +54,7 @@ Requires:       plymouth-system-theme
 Soothing pastel theme for Plymouth - Mocha.
 
 %prep
-%autosetup -n %{archivename} -p1
+%forgeautosetup -p1
 
 %build
 

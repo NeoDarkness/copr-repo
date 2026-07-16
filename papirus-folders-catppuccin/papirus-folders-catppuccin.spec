@@ -25,7 +25,7 @@ the papirus-folders utility, allowing you to bring the cozy
 Catppuccin aesthetic to your file manager.
 
 %prep
-%autosetup -n %{archivename} -p1
+%forgeautosetup -p1
 
 %build
 

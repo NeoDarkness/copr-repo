@@ -27,7 +27,7 @@ BuildRequires:  make
 C.A.V.A. is a bar spectrum analyzer for audio using ALSA for input.
 
 %prep
-%autosetup -n %{archivename} -p1
+%forgeautosetup -p1
 ./autogen.sh
 
 %build
