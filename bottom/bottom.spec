@@ -49,6 +49,7 @@ Patch0:         bottom-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros
 BuildRequires:  desktop-file-utils
+
 Requires:       hicolor-icon-theme
 
 %description

@@ -22,7 +22,7 @@ Requires:       papirus-icon-theme
 Utility for changing folder colors in Papirus icon themes.
 
 %prep
-%forgeautosetup
+%autosetup -n %{archivename} -p1
 
 %build
 

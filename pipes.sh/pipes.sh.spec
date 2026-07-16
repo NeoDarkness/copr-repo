@@ -23,7 +23,7 @@ the classic pipes screensaver.
 It renders colorful animated pipes directly in the terminal.
 
 %prep
-%forgeautosetup
+%autosetup -n %{archivename} -p1
 
 %build
 

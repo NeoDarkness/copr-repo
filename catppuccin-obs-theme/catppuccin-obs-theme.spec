@@ -14,11 +14,13 @@ Source0:        %{forgesource}
 
 BuildArch:      noarch
 
+Requires:       obs-studio
+
 %description
 Soothing pastel theme for OBS Studio.
 
 %prep
-%forgeautosetup
+%autosetup -n %{archivename} -p1
 
 %build
 
@@ -31,11 +33,7 @@ cp -a themes/. %{buildroot}%{_datadir}/obs/obs-studio/themes/
 %files
 %license LICENSE
 %doc README.md
-%{_datadir}/obs/obs-studio/themes/Catppuccin.obt
-%{_datadir}/obs/obs-studio/themes/Catppuccin_Frappe.ovt
-%{_datadir}/obs/obs-studio/themes/Catppuccin_Latte.ovt
-%{_datadir}/obs/obs-studio/themes/Catppuccin_Macchiato.ovt
-%{_datadir}/obs/obs-studio/themes/Catppuccin_Mocha.ovt
+%{_datadir}/obs/obs-studio/themes/Catppuccin*
 
 %changelog
 %autochangelog

@@ -50,7 +50,7 @@ Summary:        Soothing pastel mouse cursors - Mocha
 Soothing pastel mouse cursors - Mocha.
 
 %prep
-%forgeautosetup -p1
+%autosetup -n %{archivename} -p1
 
 %build
 just all

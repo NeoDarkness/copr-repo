@@ -52,7 +52,7 @@ Requires:       grub2-common
 Soothing pastel theme for GRUB2 - Mocha.
 
 %prep
-%forgeautosetup
+%autosetup -n %{archivename} -p1
 
 %build
 
