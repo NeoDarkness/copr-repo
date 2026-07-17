@@ -28,23 +28,24 @@ Postman is an API platform for building and using APIs.
 %build
 
 %install
-install -d %{buildroot}/opt/Postman
-cp -a . %{buildroot}/opt/Postman/
+install -d %{buildroot}/opt/postman
+cp -r * %{buildroot}/opt/postman/
 
 install -d %{buildroot}%{_bindir}
-ln -s ../../opt/Postman/Postman %{buildroot}%{_bindir}/postman
+ln -s /opt/postman/Postman %{buildroot}%{_bindir}/postman
 
 desktop-file-install \
     --dir=%{buildroot}%{_datadir}/applications \
     %{SOURCE1}
 
-install -Dpm 0644 app/resources/app/assets/icon.png \
+install -d %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
+ln -s /opt/postman/app/resources/app/assets/icon.png \
     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %check
 
 %files
-/opt/Postman
+/opt/postman
 %{_bindir}/postman
 %{_datadir}/applications/postman.desktop
 %{_datadir}/icons/hicolor/128x128/apps/postman.png

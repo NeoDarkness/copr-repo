@@ -1,6 +1,8 @@
 %global forgeurl https://github.com/catppuccin/plymouth
 %global commit 198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 
+%global _plymouththemedir %{_datadir}/plymouth/themes
+
 %forgemeta
 
 Name:           plymouth-theme-catppuccin
@@ -59,8 +61,8 @@ Soothing pastel theme for Plymouth - Mocha.
 %build
 
 %install
-install -d %{buildroot}%{_datadir}/plymouth/themes
-cp -a themes/. %{buildroot}%{_datadir}/plymouth/themes/
+install -d %{buildroot}%{_plymouththemedir}
+cp -r themes/* %{buildroot}%{_plymouththemedir}/
 
 %postun latte
 export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/
@@ -101,22 +103,22 @@ fi
 %files latte
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-latte
+%{_plymouththemedir}/catppuccin-latte
 
 %files frappe
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-frappe
+%{_plymouththemedir}/catppuccin-frappe
 
 %files macchiato
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-macchiato
+%{_plymouththemedir}/catppuccin-macchiato
 
 %files mocha
 %license LICENSE
 %doc README.md
-%{_datadir}/plymouth/themes/catppuccin-mocha
+%{_plymouththemedir}/catppuccin-mocha
 
 %changelog
 %autochangelog

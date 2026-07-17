@@ -31,7 +31,7 @@ Catppuccin aesthetic to your file manager.
 
 %install
 install -d %{buildroot}%{_datadir}/icons/Papirus
-cp -a src/. %{buildroot}%{_datadir}/icons/Papirus/
+cp -r src/* %{buildroot}%{_datadir}/icons/Papirus/
 
 %check
 

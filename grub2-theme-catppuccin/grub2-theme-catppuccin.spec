@@ -58,7 +58,7 @@ Soothing pastel theme for GRUB2 - Mocha.
 
 %install
 install -d %{buildroot}%{_grubthemedir}
-cp -a src/. %{buildroot}%{_grubthemedir}/
+cp -r src/* %{buildroot}%{_grubthemedir}/
 
 %check
 

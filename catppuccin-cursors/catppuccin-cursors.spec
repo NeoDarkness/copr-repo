@@ -57,7 +57,7 @@ just all
 
 %install
 install -d %{buildroot}%{_datadir}/icons
-cp -a dist/. %{buildroot}%{_datadir}/icons/
+cp -r dist/* %{buildroot}%{_datadir}/icons/
 
 %check
 
