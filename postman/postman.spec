@@ -16,9 +16,6 @@ Source1:        postman.desktop
 
 ExclusiveArch:  x86_64
 
-BuildRequires:  desktop-file-utils
-Requires:       hicolor-icon-theme
-
 %description
 Build, test, and document your APIs faster.
 
@@ -34,9 +31,7 @@ cp -r * %{buildroot}/opt/postman/
 install -d %{buildroot}%{_bindir}
 ln -s /opt/postman/Postman %{buildroot}%{_bindir}/postman
 
-desktop-file-install \
-    --dir=%{buildroot}%{_datadir}/applications \
-    %{SOURCE1}
+install -Dpm 0644 %{SOURCE1} %{buildroot}%{_datadir}/applications/postman.desktop
 
 install -d %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
 ln -s /opt/postman/app/resources/app/assets/icon.png \
