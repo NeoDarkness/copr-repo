@@ -1,12 +1,11 @@
 [Desktop Entry]
 Name=Postman
-GenericName=API Client
-Comment=API platform for building and using APIs
-Exec=postman %U
+Comment=Build, test, and document your APIs faster
+Path=/opt/postman
+Exec=/opt/postman/Postman %U
 Icon=postman
-Terminal=false
 Type=Application
-Categories=Development;Network;
 StartupNotify=true
-StartupWMClass=Postman
-MimeType=x-scheme-handler/postman;
+Categories=Development;Utility;
+StartupWMClass=postman
+MimeType=x-scheme-handler/postman

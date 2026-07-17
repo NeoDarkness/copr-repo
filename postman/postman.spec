@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 
-%global __provides_exclude_from ^/opt/Postman/.*$
-%global __requires_exclude_from ^/opt/Postman/.*$
+%global __provides_exclude_from ^/opt/postman/.*$
+%global __requires_exclude_from ^/opt/postman/.*$
 
 Name:           postman
 Version:        12.19.5
@@ -20,7 +20,7 @@ BuildRequires:  desktop-file-utils
 Requires:       hicolor-icon-theme
 
 %description
-Postman is an API platform for building and using APIs.
+Build, test, and document your APIs faster.
 
 %prep
 %autosetup -n Postman
