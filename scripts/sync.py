@@ -6,6 +6,7 @@ import json
 import shutil
 import subprocess
 import tempfile
+from datetime import datetime
 import difflib
 import threading
 from urllib.request import Request, urlopen
@@ -344,13 +345,6 @@ def process_package(item):
     raw_tag = get_postman_version() if item == "postman" else get_latest_tag_raw(url)
     
     if is_snapshot:
-        latest_rpm_version = "0"
-    else:
-        latest_rpm_version = sanitize_rpm_version(raw_tag)
-        
-    status_msg = "Up to date"
-
-    if is_snapshot:
         latest_commit = get_latest_commit(url)
         if not latest_commit:
             update_ui_status(item, f"{RED}API Fetch Failure{NC}")
@@ -361,6 +355,10 @@ def process_package(item):
                 "version": current_version,
             }
 
+        datestamp = datetime.now().strftime("%Y%m%d")
+        short_commit = latest_commit[:7]
+        latest_rpm_version = f"0^{datestamp}.g{short_commit}"
+        status_msg = "Up to date"
         if current_version != latest_rpm_version:
             update_spec_file(spec_path, "version", latest_rpm_version)
             local_updates += 1
@@ -396,6 +394,9 @@ def process_package(item):
             "updates": local_updates,
             "version": current_version,
         }
+
+    latest_rpm_version = sanitize_rpm_version(raw_tag)
+    status_msg = "Up to date"
 
     if current_version != latest_rpm_version:
         update_spec_file(spec_path, "version", latest_rpm_version)
