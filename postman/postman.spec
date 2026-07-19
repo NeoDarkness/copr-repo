@@ -29,9 +29,11 @@ install -d %{buildroot}/opt/postman
 cp -r * %{buildroot}/opt/postman/
 
 install -d %{buildroot}%{_bindir}
-ln -s /opt/postman/Postman %{buildroot}%{_bindir}/postman
+ln -s /opt/postman/Postman \
+    %{buildroot}%{_bindir}/postman
 
-install -Dpm 0644 %{SOURCE1} %{buildroot}%{_datadir}/applications/postman.desktop
+install -Dpm 0644 %{SOURCE1} \
+    -t %{buildroot}%{_datadir}/applications
 
 install -d %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
 ln -s /opt/postman/app/resources/app/assets/icon.png \

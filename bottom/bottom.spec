@@ -66,19 +66,25 @@ export BTM_GENERATE=true
 %{cargo_vendor_manifest}
 
 %install
-%cargo_install
+install -Dpm 0755 target/rpm/btm -t %{buildroot}%{_bindir}
 
-install -Dpm 0644 target/tmp/bottom/completion/btm.bash %{buildroot}%{bash_completions_dir}/btm
-install -Dpm 0644 target/tmp/bottom/completion/btm.fish %{buildroot}%{fish_completions_dir}/btm.fish
-install -Dpm 0644 target/tmp/bottom/completion/_btm %{buildroot}%{zsh_completions_dir}/_btm
+install -Dpm 0644 target/tmp/bottom/completion/btm.bash \
+    %{buildroot}%{bash_completions_dir}/btm
 
-install -Dpm 0644 target/tmp/bottom/manpage/btm.1 %{buildroot}%{_mandir}/man1/btm.1
+install -Dpm 0644 target/tmp/bottom/completion/btm.fish \
+    -t %{buildroot}%{fish_completions_dir}
 
-install -Dpm 0644 desktop/bottom.desktop %{buildroot}%{_datadir}/applications/bottom.desktop
+install -Dpm 0644 target/tmp/bottom/completion/_btm \
+    -t %{buildroot}%{zsh_completions_dir}
 
-install -Dpm 0644 \
-    assets/icons/bottom-system-monitor.svg \
-    %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/bottom-system-monitor.svg
+install -Dpm 0644 target/tmp/bottom/manpage/btm.1 \
+    -t %{buildroot}%{_mandir}/man1
+
+install -Dpm 0644 desktop/bottom.desktop \
+    -t %{buildroot}%{_datadir}/applications
+
+install -Dpm 0644 assets/icons/bottom-system-monitor.svg \
+    -t %{buildroot}%{_datadir}/icons/hicolor/scalable/apps
 
 %if %{with check}
 %check

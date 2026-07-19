@@ -68,7 +68,7 @@ Soothing port creation tool for the high-spirited.
 %{cargo_vendor_manifest}
 
 %install
-%cargo_install
+install -Dpm 0755 target/rpm/whiskers -t %{buildroot}%{_bindir}
 
 %if %{with check}
 %check

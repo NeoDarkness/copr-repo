@@ -84,16 +84,16 @@ shell.
 %{cargo_license} > LICENSE.dependencies
 %{cargo_vendor_manifest}
 
-target/rpm/starship completions bash > starship.bash
+target/rpm/starship completions bash > starship
 target/rpm/starship completions fish > starship.fish
 target/rpm/starship completions zsh > _starship
 
 %install
-%cargo_install
+install -Dpm 0755 target/rpm/starship -t %{buildroot}%{_bindir}
 
-install -Dpm 0644 starship.bash %{buildroot}%{bash_completions_dir}/starship
-install -Dpm 0644 starship.fish %{buildroot}%{fish_completions_dir}/starship.fish
-install -Dpm 0644 _starship %{buildroot}%{zsh_completions_dir}/_starship
+install -Dpm 0644 starship -t %{buildroot}%{bash_completions_dir}
+install -Dpm 0644 starship.fish -t %{buildroot}%{fish_completions_dir}
+install -Dpm 0644 _starship -t %{buildroot}%{zsh_completions_dir}
 
 %if %{with check}
 %check
