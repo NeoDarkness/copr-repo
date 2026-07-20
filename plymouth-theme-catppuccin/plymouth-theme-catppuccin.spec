@@ -6,7 +6,7 @@
 %forgemeta
 
 Name:           plymouth-theme-catppuccin
-Version:        0^20260719.g198eba2
+Version:        0^20260720.g198eba2
 Release:        %autorelease
 Summary:        Soothing pastel theme for Plymouth
 

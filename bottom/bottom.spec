@@ -4,7 +4,7 @@
 
 %global forgeurl https://github.com/ClementTsang/bottom
 
-Version:        0.14.5
+Version:        0.14.6
 
 %global tag %{version}
 
