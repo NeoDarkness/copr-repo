@@ -4,7 +4,7 @@
 %forgemeta
 
 Name:           catppuccin-obs-theme
-Version:        0^20260720.g054a297
+Version:        0^20260620.g054a297
 Release:        %autorelease
 Summary:        Soothing pastel theme for OBS Studio
 

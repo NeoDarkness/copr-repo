@@ -86,12 +86,15 @@ def github_repo_path(url):
     return url.replace("https://github.com/", "").strip("/")
 
 
-def get_latest_commit(url):
+def get_commit_info(url):
     repo = github_repo_path(url)
     data = fetch_json(f"https://api.github.com/repos/{repo}/commits/HEAD")
     if data and isinstance(data, dict):
-        return data.get("sha")
-    return None
+        sha = data.get("sha")
+        date_str = data.get("commit", {}).get("committer", {}).get("date", "")
+        datestamp = datetime.strptime(date_str[:10], "%Y-%m-%d").strftime("%Y%m%d")
+        return sha, datestamp
+    return None, None
 
 
 def get_latest_tag_raw(url):
@@ -237,10 +240,8 @@ def update_ui_status(pkg_name, status_text):
     global max_len
     with print_lock:
         active_tasks[pkg_name] = status_text
-
         if len(task_order) > 0:
             sys.stdout.write(CURSOR_UP * len(task_order))
-
         for pkg in task_order:
             sys.stdout.write(f"{CLEAR_LINE}  {pkg:<{max_len}} : {active_tasks[pkg]}\n")
         sys.stdout.flush()
@@ -250,10 +251,8 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
     pkg_name = os.path.basename(pkg_dir)
     vendor_tarball = os.path.join(pkg_dir, "vendor.tar.gz")
     patch_file = os.path.join(pkg_dir, file_name_auto_patch(pkg_name))
-
     if os.path.exists(vendor_tarball):
         return 0
-
     if not shutil.which("cargo") or not shutil.which("rust2rpm-helper"):
         return 0
 
@@ -266,28 +265,21 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
     try:
         if not download_file(tarball_url, tarball_path):
             return 0
-
         extract_dir = os.path.join(tmp_dir, "extract")
         os.makedirs(extract_dir, exist_ok=True)
-
-        res = subprocess.run(
+        subprocess.run(
             ["tar", "-xzf", tarball_path, "-C", extract_dir], capture_output=True
         )
-        if res.returncode != 0:
-            return 0
-
         subdirs = os.listdir(extract_dir)
         if not subdirs:
             return 0
         src_dir = os.path.join(extract_dir, subdirs[0])
-
         cargo_toml = os.path.join(src_dir, "Cargo.toml")
         updated_count = 0
 
         if os.path.exists(cargo_toml):
             with open(cargo_toml, "r", encoding="utf-8") as f:
                 original_contents = f.read()
-
             patched_contents = preprocess_cargo_toml_helper(original_contents)
             if patched_contents:
                 update_ui_status(
@@ -295,7 +287,6 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
                 )
                 with open(cargo_toml, "w", encoding="utf-8") as f:
                     f.write(patched_contents)
-
                 diff = difflib.unified_diff(
                     original_contents.splitlines(keepends=True),
                     patched_contents.splitlines(keepends=True),
@@ -319,7 +310,6 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
             capture_output=True,
             text=True,
         )
-
         if vendor_res.returncode == 0:
             subprocess.run(
                 ["tar", "-czf", vendor_tarball, "-C", tmp_dir, "vendor"], check=True
@@ -343,9 +333,9 @@ def process_package(item):
 
     local_updates = 0
     raw_tag = get_postman_version() if item == "postman" else get_latest_tag_raw(url)
-    
+
     if is_snapshot:
-        latest_commit = get_latest_commit(url)
+        latest_commit, datestamp = get_commit_info(url)
         if not latest_commit:
             update_ui_status(item, f"{RED}API Fetch Failure{NC}")
             return {
@@ -355,17 +345,11 @@ def process_package(item):
                 "version": current_version,
             }
 
-        datestamp = datetime.now().strftime("%Y%m%d")
-        short_commit = latest_commit[:7]
-        latest_rpm_version = f"0^{datestamp}.g{short_commit}"
+        latest_rpm_version = f"0^{datestamp}.g{latest_commit[:7]}"
         status_msg = "Up to date"
-        if current_version != latest_rpm_version:
-            update_spec_file(spec_path, "version", latest_rpm_version)
-            local_updates += 1
-            current_version = latest_rpm_version
-            status_msg = "Snapshot Updated"
 
-        if current_commit != latest_commit:
+        if current_version != latest_rpm_version or current_commit != latest_commit:
+            update_spec_file(spec_path, "version", latest_rpm_version)
             update_spec_file(spec_path, "commit", latest_commit)
             local_updates += 1
             status_msg = "Snapshot Updated"
@@ -392,12 +376,11 @@ def process_package(item):
             "name": item,
             "status": status_msg,
             "updates": local_updates,
-            "version": current_version,
+            "version": latest_rpm_version,
         }
 
     latest_rpm_version = sanitize_rpm_version(raw_tag)
     status_msg = "Up to date"
-
     if current_version != latest_rpm_version:
         update_spec_file(spec_path, "version", latest_rpm_version)
         local_updates += 1
@@ -428,7 +411,8 @@ def process_package(item):
         "updates": local_updates,
         "version": current_version,
     }
-    
+
+
 def main():
     global task_order, max_len
     sys.stdout.write(
@@ -438,16 +422,13 @@ def main():
 
     if not os.path.exists(REPO_ROOT):
         sys.exit(1)
-
     packages = [
         item
         for item in os.listdir(REPO_ROOT)
         if os.path.isdir(os.path.join(REPO_ROOT, item))
         and item not in [".git", "scripts", ".github"]
     ]
-
     task_order = sorted(packages)
-
     max_len = max(len(pkg) for pkg in task_order) if task_order else 20
 
     for pkg in task_order:
@@ -478,13 +459,11 @@ def main():
         )
         if "Failed" in res["status"] or "No Spec" in res["status"]:
             status_color = RED
-
         sys.stdout.write(
             f"  {res['name']:<{max_len}} {res['version']:<15} {status_color}{res['status']:<15}{NC} {res['updates']}\n"
         )
 
     sys.stdout.write(f"{BOLD}{CYAN}{'=' * matrix_width}{NC}\n\n")
-
     if total_updated > 0:
         sys.stdout.write(
             f"{GREEN}{BOLD} ✅ Success! Successfully updated {total_updated} target(s)/asset(s).{NC}\n"
