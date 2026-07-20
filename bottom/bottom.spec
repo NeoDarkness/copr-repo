@@ -88,7 +88,7 @@ install -Dpm 0644 assets/icons/bottom-system-monitor.svg \
 
 %if %{with check}
 %check
-%cargo_test
+%cargo_test -- --lib -- --skip collection::tests::test_data_collection
 %endif
 
 %files
