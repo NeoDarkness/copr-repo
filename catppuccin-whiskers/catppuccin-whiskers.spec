@@ -1,4 +1,4 @@
-%bcond_with check
+%bcond check 1
 
 %global cargo_install_lib 0
 
