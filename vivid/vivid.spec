@@ -8,7 +8,7 @@ Version:        0.11.1
 
 %forgemeta
 
-Name:           rust-vivid
+Name:           vivid
 Release:        %autorelease
 Summary:        LS_COLORS manager with multiple themes
 
