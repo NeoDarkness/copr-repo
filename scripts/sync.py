@@ -329,20 +329,26 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path, current_version, 
                 if os.path.exists(patch_file):
                     os.remove(patch_file)
 
-        update_ui_status(pkg_name, f"{YELLOW}Running cargo vendor...{NC}")
-        vendor_out_dir = os.path.join(tmp_dir, "vendor")
-        vendor_res = subprocess.run(
-            ["cargo", "vendor", vendor_out_dir],
+        update_ui_status(pkg_name, f"{YELLOW}Running cargo vendor with --versioned-dirs...{NC}")
+        
+        subprocess.run(
+            ["cargo", "vendor", "--versioned-dirs", "--manifest-path", cargo_toml, "vendor/"],
             cwd=src_dir,
             capture_output=True,
-            text=True,
+            check=True,
         )
-        if vendor_res.returncode == 0:
-            subprocess.run(
-                ["tar", "-cJf", vendor_tarball, "-C", tmp_dir, "vendor"], check=True
-            )
-            updated_count += 1
-            return updated_count
+        
+        update_ui_status(pkg_name, f"{YELLOW}Compressing vendor tarball...{NC}")
+        subprocess.run(
+            ["/usr/bin/tar", "-cJvf", vendor_tarball, "vendor/"],
+            cwd=src_dir,
+            capture_output=True,
+            check=True,
+        )
+        
+        updated_count += 1
+        return updated_count
+    except subprocess.CalledProcessError:
         return 0
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
