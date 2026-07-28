@@ -19,6 +19,7 @@ Source:         starship-1.26.0-vendor.tar.xz
 Patch:          starship-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros >= 26
+BuildRequires:  git-core
 
 %global _description %{expand:
 The minimal, blazing-fast, and infinitely customizable prompt for any
