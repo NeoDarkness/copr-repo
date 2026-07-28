@@ -63,6 +63,10 @@ License:        %{shrink:
 %doc AI_POLICY.md
 %doc README.md
 %{_bindir}/btm
+%{bash_completions_dir}/btm
+%{fish_completions_dir}/btm.fish
+%{zsh_completions_dir}/_btm
+%{_mandir}/man1/btm.1*
 
 %prep
 %autosetup -n %{crate}-%{version} -p1 -a1

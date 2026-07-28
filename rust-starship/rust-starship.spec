@@ -81,6 +81,9 @@ License:        %{shrink:
 %license cargo-vendor.txt
 %doc README.md
 %{_bindir}/starship
+%{bash_completions_dir}/starship
+%{fish_completions_dir}/starship.fish
+%{zsh_completions_dir}/_starship
 
 %prep
 %autosetup -n %{crate}-%{version} -p1 -a1
