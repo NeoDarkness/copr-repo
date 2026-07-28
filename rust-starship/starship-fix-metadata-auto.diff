@@ -1,0 +1,30 @@
+--- starship-1.26.0/Cargo.toml	2006-07-24T01:21:28+00:00
++++ starship-1.26.0/Cargo.toml	2026-07-28T22:57:07.109592+00:00
+@@ -267,22 +267,6 @@
+ ]
+ default-features = false
+ 
+-[target."cfg(windows)".dependencies.deelevate]
+-version = "0.2.0"
+-
+-[target."cfg(windows)".dependencies.windows]
+-version = "0.62.2"
+-features = [
+-    "Win32_Foundation",
+-    "Win32_UI_Shell",
+-    "Win32_Security",
+-    "Win32_System_Threading",
+-    "Win32_Storage_FileSystem",
+-]
+-
+-[target."cfg(windows)".build-dependencies.winres]
+-version = "0.1.12"
+-
+ [lints.clippy]
+ use_self = "warn"
+ 
+@@ -295,3 +279,4 @@
+ lto = true
+ codegen-units = 1
+ strip = true
++
