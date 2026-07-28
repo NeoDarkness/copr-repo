@@ -52,14 +52,17 @@ def get_gh_token():
     return None
 
 
-def fetch_json(url):
+def fetch_json(url, is_crates_io=False):
     req = Request(url)
-    req.add_header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36")
-    if "github.com" in url:
-        req.add_header("Accept", "application/vnd.github+json")
-        token = get_gh_token()
-        if token:
-            req.add_header("Authorization", f"Bearer {token}")
+    if is_crates_io:
+        req.add_header("User-Agent", "RPM-Package-Sync (contact@example.com)")
+    else:
+        req.add_header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36")
+        if "github.com" in url:
+            req.add_header("Accept", "application/vnd.github+json")
+            token = get_gh_token()
+            if token:
+                req.add_header("Authorization", f"Bearer {token}")
     try:
         with urlopen(req, timeout=TIMEOUT) as response:
             return json.loads(response.read().decode())
@@ -105,6 +108,17 @@ def get_latest_tag_raw(url):
     return "1.0.0"
 
 
+def get_crates_io_version(crate_name):
+    clean_name = crate_name[5:] if crate_name.startswith("rust-") else crate_name
+    data = fetch_json(f"https://crates.io/api/v1/crates/{clean_name}", is_crates_io=True)
+    if data and isinstance(data, dict):
+        crate_info = data.get("crate", {})
+        max_ver = crate_info.get("max_version")
+        if max_ver:
+            return max_ver
+    return "1.0.0"
+
+
 def get_postman_version():
     data = fetch_json("https://www.postman.com/mkapi/release.json")
     if data and "notes" in data and len(data["notes"]) > 0:
@@ -122,7 +136,7 @@ def sanitize_rpm_version(version):
 
 
 def parse_spec(spec_path):
-    version, url, commit = None, None, None
+    version, url, commit, crate_val = None, None, None, None
     with open(spec_path, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -149,10 +163,14 @@ def parse_spec(spec_path):
     if c_match:
         commit = c_match.group(1)
 
+    crate_match = re.search(r"^%global\s+crate\s+(\S+)", content, re.MULTILINE)
+    if crate_match:
+        crate_val = crate_match.group(1)
+
     is_snapshot = "%global commit" in content
     is_rust = bool(re.search(r"cargo|rust", content, re.IGNORECASE))
 
-    return version, url, commit, is_snapshot, is_rust
+    return version, url, commit, crate_val, is_snapshot, is_rust
 
 
 def update_spec_file(spec_path, key, new_value):
@@ -247,12 +265,20 @@ def update_ui_status(pkg_name, status_text):
         sys.stdout.flush()
 
 
-def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
-    pkg_name = os.path.basename(pkg_dir)
-    vendor_tarball = os.path.join(pkg_dir, "vendor.tar.gz")
-    patch_file = os.path.join(pkg_dir, file_name_auto_patch(pkg_name))
+def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path, current_version, crate_val, pkg_name):
+    base_name = crate_val if crate_val else pkg_name
+    expected_vendor_name = f"{base_name}-{current_version}-vendor.tar.xz"
+    vendor_tarball = os.path.join(pkg_dir, expected_vendor_name)
+    
     if os.path.exists(vendor_tarball):
         return 0
+        
+    for f in os.listdir(pkg_dir):
+        if f.endswith("-vendor.tar.xz") or f.endswith("-vendor.tar.gz"):
+            old_vendor = os.path.join(pkg_dir, f)
+            if os.path.exists(old_vendor):
+                os.remove(old_vendor)
+
     if not shutil.which("cargo") or not shutil.which("rust2rpm-helper"):
         return 0
 
@@ -261,6 +287,7 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
     tarball_path = os.path.join(tmp_dir, "source.tar.gz")
     repo = github_repo_path(url)
     tarball_url = f"https://api.github.com/repos/{repo}/tarball/{target_ref}"
+    patch_file = os.path.join(pkg_dir, file_name_auto_patch(pkg_name))
 
     try:
         if not download_file(tarball_url, tarball_path):
@@ -312,7 +339,7 @@ def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path):
         )
         if vendor_res.returncode == 0:
             subprocess.run(
-                ["tar", "-czf", vendor_tarball, "-C", tmp_dir, "vendor"], check=True
+                ["tar", "-cJf", vendor_tarball, "-C", tmp_dir, "vendor"], check=True
             )
             updated_count += 1
             return updated_count
@@ -329,10 +356,16 @@ def process_package(item):
         return {"name": item, "status": "No Spec", "updates": 0, "version": "-"}
 
     update_ui_status(item, f"{YELLOW}Checking metadata...{NC}")
-    current_version, url, current_commit, is_snapshot, is_rust = parse_spec(spec_path)
+    current_version, url, current_commit, crate_val, is_snapshot, is_rust = parse_spec(spec_path)
 
     local_updates = 0
-    raw_tag = get_postman_version() if item == "postman" else get_latest_tag_raw(url)
+    
+    if item.startswith("rust-"):
+        raw_tag = get_crates_io_version(item)
+    elif item == "postman":
+        raw_tag = get_postman_version()
+    else:
+        raw_tag = get_latest_tag_raw(url)
 
     if is_snapshot:
         latest_commit, datestamp = get_commit_info(url)
@@ -355,7 +388,6 @@ def process_package(item):
             status_msg = "Snapshot Updated"
             if is_rust:
                 for f_remove in [
-                    "vendor.tar.gz",
                     file_name_auto_patch(item),
                     f"{item}-cargo.diff",
                     f"{item}-remove-non-linux-deps.patch",
@@ -363,10 +395,16 @@ def process_package(item):
                     p = os.path.join(dir_path, f_remove)
                     if os.path.exists(p):
                         os.remove(p)
+                for f in os.listdir(dir_path):
+                    if f.endswith("-vendor.tar.xz") or f.endswith("-vendor.tar.gz"):
+                        p = os.path.join(dir_path, f)
+                        if os.path.exists(p):
+                            os.remove(p)
+            current_version = latest_rpm_version
 
         if is_rust:
             local_updates += generate_cargo_vendor(
-                dir_path, latest_commit, url, spec_path
+                dir_path, latest_commit, url, spec_path, current_version, crate_val, item
             )
             if local_updates > 0 and status_msg == "Up to date":
                 status_msg = "Vendor Created"
@@ -376,7 +414,7 @@ def process_package(item):
             "name": item,
             "status": status_msg,
             "updates": local_updates,
-            "version": latest_rpm_version,
+            "version": current_version,
         }
 
     latest_rpm_version = sanitize_rpm_version(raw_tag)
@@ -387,7 +425,6 @@ def process_package(item):
         status_msg = f"New Version ({latest_rpm_version})"
         if is_rust:
             for f_remove in [
-                "vendor.tar.gz",
                 file_name_auto_patch(item),
                 f"{item}-cargo.diff",
                 f"{item}-remove-non-linux-deps.patch",
@@ -395,11 +432,16 @@ def process_package(item):
                 p = os.path.join(dir_path, f_remove)
                 if os.path.exists(p):
                     os.remove(p)
+            for f in os.listdir(dir_path):
+                if f.endswith("-vendor.tar.xz") or f.endswith("-vendor.tar.gz"):
+                    p = os.path.join(dir_path, f)
+                    if os.path.exists(p):
+                        os.remove(p)
         current_version = latest_rpm_version
 
     if is_rust:
-        target_ref = raw_tag if raw_tag.startswith("v") else current_version
-        cargo_updates = generate_cargo_vendor(dir_path, target_ref, url, spec_path)
+        target_ref = raw_tag if raw_tag.startswith("v") else f"v{current_version}"
+        cargo_updates = generate_cargo_vendor(dir_path, target_ref, url, spec_path, current_version, crate_val, item)
         local_updates += cargo_updates
         if cargo_updates > 0 and status_msg == "Up to date":
             status_msg = "Vendor Created"
