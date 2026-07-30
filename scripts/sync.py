@@ -5,10 +5,8 @@ import re
 import json
 import shutil
 import subprocess
-import tempfile
-from datetime import datetime
-import difflib
 import threading
+from datetime import datetime
 from urllib.request import Request, urlopen
 from urllib.error import URLError
 from concurrent.futures import ThreadPoolExecutor
@@ -32,10 +30,6 @@ print_lock = threading.Lock()
 active_tasks = {}
 task_order = []
 max_len = 20
-
-
-def file_name_auto_patch(name: str) -> str:
-    return f"{name}-fix-metadata-auto.diff"
 
 
 def get_gh_token():
@@ -68,21 +62,6 @@ def fetch_json(url, is_crates_io=False):
             return json.loads(response.read().decode())
     except Exception:
         return None
-
-
-def download_file(url, dest_path):
-    req = Request(url)
-    token = get_gh_token()
-    if token and "github.com" in url:
-        req.add_header("Authorization", f"Bearer {token}")
-    try:
-        with urlopen(req, timeout=TIMEOUT) as response, open(
-            dest_path, "wb"
-        ) as out_file:
-            shutil.copyfileobj(response, out_file)
-        return True
-    except URLError:
-        return False
 
 
 def github_repo_path(url):
@@ -204,56 +183,6 @@ def update_spec_file(spec_path, key, new_value):
         f.write(content)
 
 
-def inject_patch_into_spec(spec_path, pkg_name):
-    with open(spec_path, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-
-    patch_filename = file_name_auto_patch(pkg_name)
-    patch_line = f"Patch0:         {patch_filename}\n"
-
-    if any(re.match(r"^Patch0:\s*", line) for line in lines):
-        return False
-
-    last_source_idx = -1
-    for idx, line in enumerate(lines):
-        if re.match(r"^Source\d*:\s*", line):
-            last_source_idx = idx
-
-    if last_source_idx != -1:
-        lines.insert(last_source_idx + 1, patch_line)
-        with open(spec_path, "w", encoding="utf-8") as f:
-            f.writelines(lines)
-        return True
-    return False
-
-
-def preprocess_cargo_toml_helper(contents: str) -> str | None:
-    try:
-        ret1 = subprocess.run(
-            ["rust2rpm-helper", "normalize-version", "-"],
-            input=contents,
-            text=True,
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        patched1 = ret1.stdout or contents
-
-        ret2 = subprocess.run(
-            ["rust2rpm-helper", "strip-foreign", "-"],
-            input=patched1,
-            text=True,
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        patched2 = ret2.stdout or patched1
-
-        return None if patched2 == contents else patched2
-    except subprocess.CalledProcessError:
-        return None
-
-
 def update_ui_status(pkg_name, status_text):
     global max_len
     with print_lock:
@@ -265,93 +194,24 @@ def update_ui_status(pkg_name, status_text):
         sys.stdout.flush()
 
 
-def generate_cargo_vendor(pkg_dir, target_ref, url, spec_path, current_version, crate_val, pkg_name):
-    base_name = crate_val if crate_val else pkg_name
-    expected_vendor_name = f"{base_name}-{current_version}-vendor.tar.xz"
-    vendor_tarball = os.path.join(pkg_dir, expected_vendor_name)
+def run_rust2rpm_command(pkg_dir, pkg_name, crate_val):
+    if not shutil.which("rust2rpm"):
+        return 0
+
+    update_ui_status(pkg_name, f"{YELLOW}Running rust2rpm automation...{NC}")
+    toml_path = os.path.join(pkg_dir, "rust2rpm.toml")
     
-    if os.path.exists(vendor_tarball):
-        return 0
-        
-    for f in os.listdir(pkg_dir):
-        if f.endswith("-vendor.tar.xz") or f.endswith("-vendor.tar.gz"):
-            old_vendor = os.path.join(pkg_dir, f)
-            if os.path.exists(old_vendor):
-                os.remove(old_vendor)
-
-    if not shutil.which("cargo") or not shutil.which("rust2rpm-helper"):
-        return 0
-
-    update_ui_status(pkg_name, f"{BLUE}Downloading upstream tarball...{NC}")
-    tmp_dir = tempfile.mkdtemp()
-    tarball_path = os.path.join(tmp_dir, "source.tar.gz")
-    repo = github_repo_path(url)
-    tarball_url = f"https://api.github.com/repos/{repo}/tarball/{target_ref}"
-    patch_file = os.path.join(pkg_dir, file_name_auto_patch(pkg_name))
+    target_name = crate_val if crate_val else (pkg_name[5:] if pkg_name.startswith("rust-") else pkg_name)
+    
+    cmd = ["rust2rpm", "-a", "-V", "auto", target_name, "-o", pkg_dir]
+    if os.path.exists(toml_path):
+        cmd.extend(["-C", toml_path])
 
     try:
-        if not download_file(tarball_url, tarball_path):
-            return 0
-        extract_dir = os.path.join(tmp_dir, "extract")
-        os.makedirs(extract_dir, exist_ok=True)
-        subprocess.run(
-            ["tar", "-xzf", tarball_path, "-C", extract_dir], capture_output=True
-        )
-        subdirs = os.listdir(extract_dir)
-        if not subdirs:
-            return 0
-        src_dir = os.path.join(extract_dir, subdirs[0])
-        cargo_toml = os.path.join(src_dir, "Cargo.toml")
-        updated_count = 0
-
-        if os.path.exists(cargo_toml):
-            with open(cargo_toml, "r", encoding="utf-8") as f:
-                original_contents = f.read()
-            patched_contents = preprocess_cargo_toml_helper(original_contents)
-            if patched_contents:
-                update_ui_status(
-                    pkg_name, f"{CYAN}Stripping foreign dependencies...{NC}"
-                )
-                with open(cargo_toml, "w", encoding="utf-8") as f:
-                    f.write(patched_contents)
-                diff = difflib.unified_diff(
-                    original_contents.splitlines(keepends=True),
-                    patched_contents.splitlines(keepends=True),
-                    fromfile="a/Cargo.toml",
-                    tofile="b/Cargo.toml",
-                )
-                with open(patch_file, "w", encoding="utf-8") as pf:
-                    pf.writelines(diff)
-                updated_count += 1
-                if inject_patch_into_spec(spec_path, pkg_name):
-                    updated_count += 1
-            else:
-                if os.path.exists(patch_file):
-                    os.remove(patch_file)
-
-        update_ui_status(pkg_name, f"{YELLOW}Running cargo vendor with --versioned-dirs...{NC}")
-        
-        subprocess.run(
-            ["cargo", "vendor", "--versioned-dirs", "--manifest-path", cargo_toml, "vendor/"],
-            cwd=src_dir,
-            capture_output=True,
-            check=True,
-        )
-        
-        update_ui_status(pkg_name, f"{YELLOW}Compressing vendor tarball...{NC}")
-        subprocess.run(
-            ["/usr/bin/tar", "-cJvf", vendor_tarball, "vendor/"],
-            cwd=src_dir,
-            capture_output=True,
-            check=True,
-        )
-        
-        updated_count += 1
-        return updated_count
+        subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return 1
     except subprocess.CalledProcessError:
         return 0
-    finally:
-        shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
 def process_package(item):
@@ -392,28 +252,12 @@ def process_package(item):
             update_spec_file(spec_path, "commit", latest_commit)
             local_updates += 1
             status_msg = "Snapshot Updated"
-            if is_rust:
-                for f_remove in [
-                    file_name_auto_patch(item),
-                    f"{item}-cargo.diff",
-                    f"{item}-remove-non-linux-deps.patch",
-                ]:
-                    p = os.path.join(dir_path, f_remove)
-                    if os.path.exists(p):
-                        os.remove(p)
-                for f in os.listdir(dir_path):
-                    if f.endswith("-vendor.tar.xz") or f.endswith("-vendor.tar.gz"):
-                        p = os.path.join(dir_path, f)
-                        if os.path.exists(p):
-                            os.remove(p)
             current_version = latest_rpm_version
 
         if is_rust:
-            local_updates += generate_cargo_vendor(
-                dir_path, latest_commit, url, spec_path, current_version, crate_val, item
-            )
+            local_updates += run_rust2rpm_command(dir_path, item, crate_val)
             if local_updates > 0 and status_msg == "Up to date":
-                status_msg = "Vendor Created"
+                status_msg = "Rust2rpm Generated"
 
         update_ui_status(item, f"{GREEN}Finished{NC}")
         return {
@@ -429,28 +273,13 @@ def process_package(item):
         update_spec_file(spec_path, "version", latest_rpm_version)
         local_updates += 1
         status_msg = f"New Version ({latest_rpm_version})"
-        if is_rust:
-            for f_remove in [
-                file_name_auto_patch(item),
-                f"{item}-cargo.diff",
-                f"{item}-remove-non-linux-deps.patch",
-            ]:
-                p = os.path.join(dir_path, f_remove)
-                if os.path.exists(p):
-                    os.remove(p)
-            for f in os.listdir(dir_path):
-                if f.endswith("-vendor.tar.xz") or f.endswith("-vendor.tar.gz"):
-                    p = os.path.join(dir_path, f)
-                    if os.path.exists(p):
-                        os.remove(p)
         current_version = latest_rpm_version
 
     if is_rust:
-        target_ref = raw_tag if raw_tag.startswith("v") else f"v{current_version}"
-        cargo_updates = generate_cargo_vendor(dir_path, target_ref, url, spec_path, current_version, crate_val, item)
-        local_updates += cargo_updates
-        if cargo_updates > 0 and status_msg == "Up to date":
-            status_msg = "Vendor Created"
+        rust_updates = run_rust2rpm_command(dir_path, item, crate_val)
+        local_updates += rust_updates
+        if rust_updates > 0 and status_msg == "Up to date":
+            status_msg = "Rust2rpm Generated"
 
     update_ui_status(item, f"{GREEN}Finished{NC}")
     return {

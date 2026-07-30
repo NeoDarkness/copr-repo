@@ -81,14 +81,10 @@ export BTM_GENERATE=true
 
 %install
 %cargo_install
-install -Dpm 0644 target/tmp/bottom/completion/btm.bash \
-    %{buildroot}%{bash_completions_dir}/btm
-install -Dpm 0644 target/tmp/bottom/completion/btm.fish \
-    -t %{buildroot}%{fish_completions_dir}
-install -Dpm 0644 target/tmp/bottom/completion/_btm \
-    -t %{buildroot}%{zsh_completions_dir}
-install -Dpm 0644 target/tmp/bottom/manpage/btm.1 \
-    -t %{buildroot}%{_mandir}/man1
+install -Dpm 0644 target/tmp/bottom/completion/btm.bash %{buildroot}%{bash_completions_dir}/btm
+install -Dpm 0644 target/tmp/bottom/completion/btm.fish -t %{buildroot}%{fish_completions_dir}
+install -Dpm 0644 target/tmp/bottom/completion/_btm -t %{buildroot}%{zsh_completions_dir}
+install -Dpm 0644 target/tmp/bottom/manpage/btm.1 -t %{buildroot}%{_mandir}/man1
 
 %if %{with check}
 %check
