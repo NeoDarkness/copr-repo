@@ -194,9 +194,29 @@ def update_ui_status(pkg_name, status_text):
         sys.stdout.flush()
 
 
+def extract_dynamic_license(spec_path):
+    if not os.path.exists(spec_path):
+        return None
+    
+    with open(spec_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    pattern = r"(%package\s+-n\s+%{crate}.*?# LICENSE\.dependencies contains a full license breakdown)"
+    match = re.search(pattern, content, re.DOTALL)
+    if match:
+        return match.group(1).strip()
+        
+    return None
+
+
 def run_rust2rpm_command(pkg_dir, pkg_name, crate_val):
     if not shutil.which("rust2rpm"):
         return 0
+
+    spec_path = os.path.join(pkg_dir, f"{pkg_name}.spec")
+    dynamic_license = None
+    if os.path.exists(spec_path):
+        dynamic_license = extract_dynamic_license(spec_path)
 
     update_ui_status(pkg_name, f"{YELLOW}Running rust2rpm automation...{NC}")
     toml_path = os.path.join(pkg_dir, "rust2rpm.toml")
@@ -209,6 +229,18 @@ def run_rust2rpm_command(pkg_dir, pkg_name, crate_val):
 
     try:
         subprocess.run(cmd, capture_output=True, text=True, check=True)
+        
+        if dynamic_license and os.path.exists(spec_path):
+            with open(spec_path, "r", encoding="utf-8") as f:
+                new_content = f.read()
+            
+            target_pattern = r"(%package\s+-n\s+%{crate}.*?# LICENSE\.dependencies contains a full license breakdown)"
+            updated_content, count = re.subn(target_pattern, dynamic_license, new_content, flags=re.DOTALL)
+            
+            if count > 0:
+                with open(spec_path, "w", encoding="utf-8") as f:
+                    f.write(updated_content)
+
         return 1
     except subprocess.CalledProcessError:
         return 0
