@@ -5,6 +5,9 @@ extra-files = [
 	"%{zsh_completions_dir}/_zellij",
 ]
 
+[requires]
+build = ["perl"]
+
 [scripts.build]
 post = [
 	"target/rpm/zellij setup --generate-completion bash > zellij",
