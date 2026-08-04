@@ -19,6 +19,7 @@ Source:         zellij-0.44.3-vendor.tar.xz
 Patch:          zellij-fix-metadata-auto.diff
 
 BuildRequires:  cargo-rpm-macros >= 26
+BuildRequires:  perl
 
 %global _description %{expand:
 A terminal workspace with batteries included.}
@@ -28,7 +29,7 @@ A terminal workspace with batteries included.}
 %package     -n %{crate}
 Summary:        %{summary}
 # FIXME: paste output of %%cargo_license_summary here
-License:        MIT
+License:        # FIXME
 # LICENSE.dependencies contains a full license breakdown
 
 %description -n %{crate} %{_description}
