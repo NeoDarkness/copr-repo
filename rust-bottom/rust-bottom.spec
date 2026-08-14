@@ -7,14 +7,14 @@
 %global crate bottom
 
 Name:           rust-bottom
-Version:        0.14.7
+Version:        0.14.8
 Release:        %autorelease
 Summary:        Customizable cross-platform graphical process/system monitor for the terminal
 
 License:        MIT
 URL:            https://crates.io/crates/bottom
 Source:         %{crates_source}
-Source:         bottom-0.14.7-vendor.tar.xz
+Source:         bottom-0.14.8-vendor.tar.xz
 # Automatically generated patch to strip dependencies and normalize metadata
 Patch:          bottom-fix-metadata-auto.diff
 
