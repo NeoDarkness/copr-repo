@@ -8,19 +8,18 @@ Version:        1.0.0
 
 Name:           cava
 Release:        %autorelease
-Summary:        Console-based Audio Visualizer for ALSA
+Summary:        Console-based Audio Visualizer for Alsa
 
 License:        MIT
 URL:            %{forgeurl}
 Source0:        %{forgesource}
 
-BuildRequires:  alsa-lib-devel
-BuildRequires:  fftw-devel
-BuildRequires:  pulseaudio-libs-devel
+BuildRequires:  pkgconfig(alsa)
+BuildRequires:  pkgconfig(fftw3)
+BuildRequires:  pkgconfig(libpulse)
+BuildRequires:  pkgconfig(ncursesw)
+BuildRequires:  pkgconfig(iniparser)
 BuildRequires:  libtool
-BuildRequires:  ncurses-devel
-BuildRequires:  pipewire-devel
-BuildRequires:  iniparser-devel
 BuildRequires:  make
 
 %description
