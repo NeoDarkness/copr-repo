@@ -62,7 +62,7 @@ Soothing pastel theme for Plymouth - Mocha.
 
 %install
 install -d %{buildroot}%{_plymouththemedir}
-cp -r themes/* %{buildroot}%{_plymouththemedir}/
+cp -a themes/* %{buildroot}%{_plymouththemedir}/
 
 %postun latte
 export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/

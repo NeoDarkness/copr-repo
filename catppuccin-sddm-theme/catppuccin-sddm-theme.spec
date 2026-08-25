@@ -62,7 +62,7 @@ just build
 
 %install
 install -d %{buildroot}%{_sddmthemedir}
-cp -r themes/* %{buildroot}%{_sddmthemedir}/
+cp -a themes/* %{buildroot}%{_sddmthemedir}/
 
 %check
 
