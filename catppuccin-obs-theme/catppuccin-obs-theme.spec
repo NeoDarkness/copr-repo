@@ -1,6 +1,8 @@
 %global forgeurl https://github.com/catppuccin/obs
 %global commit 054a297d303a5bac4f1652a13b17d78a13201c0e
 
+%global _obsthemedir %{_datadir}/obs/obs-studio/themes
+
 %forgemeta
 
 Name:           catppuccin-obs-theme
@@ -25,15 +27,15 @@ Soothing pastel theme for OBS Studio.
 %build
 
 %install
-install -d %{buildroot}%{_datadir}/obs/obs-studio/themes
-cp -r themes/* %{buildroot}%{_datadir}/obs/obs-studio/themes/
+install -d %{buildroot}%{_obsthemedir}
+cp -r themes/* %{buildroot}%{_datadir}/
 
 %check
 
 %files
 %license LICENSE
 %doc README.md
-%{_datadir}/obs/obs-studio/themes/Catppuccin*
+%{_obsthemedir}/Catppuccin*
 
 %changelog
 %autochangelog
