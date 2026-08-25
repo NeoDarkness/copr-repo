@@ -28,7 +28,7 @@ Soothing pastel theme for OBS Studio.
 
 %install
 install -d %{buildroot}%{_obsthemedir}
-cp -r themes/* %{buildroot}%{_datadir}/
+cp -r themes/* %{buildroot}%{_obsthemedir}/
 
 %check
 
