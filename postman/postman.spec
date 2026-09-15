@@ -1,14 +1,9 @@
-%global debug_package %{nil}
-
-%global __provides_exclude_from ^/opt/postman/.*$
-%global __requires_exclude_from ^/opt/postman/.*$
-
 Name:           postman
 Version:        12.28.1
 Release:        %autorelease
 Summary:        Postman API Platform
 
-License:        LicenseRef-postman-eula
+License:        Proprietary
 URL:            https://www.postman.com/
 
 Source0:        https://dl.pstmn.io/download/version/%{version}/linux64
@@ -31,8 +26,8 @@ cp -a * %{buildroot}/opt/postman/
 install -d %{buildroot}%{_bindir}
 ln -sr %{buildroot}/opt/postman/Postman %{buildroot}%{_bindir}/postman
 install -Dpm 0644 %{SOURCE1} -t %{buildroot}%{_datadir}/applications
-install -d %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
-ln -sr %{buildroot}/opt/postman/app/resources/app/assets/icon.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
+install -d %{buildroot}%{_datadir}/pixmaps
+ln -sr %{buildroot}/opt/postman/app/resources/app/assets/icon.png %{buildroot}%{_datadir}/pixmaps/postman.png
 
 %check
 
@@ -40,7 +35,7 @@ ln -sr %{buildroot}/opt/postman/app/resources/app/assets/icon.png %{buildroot}%{
 /opt/postman
 %{_bindir}/postman
 %{_datadir}/applications/postman.desktop
-%{_datadir}/icons/hicolor/128x128/apps/postman.png
+%{_datadir}/pixmaps/postman.png
 
 %changelog
 %autochangelog
