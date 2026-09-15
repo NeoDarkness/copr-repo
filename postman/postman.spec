@@ -1,5 +1,8 @@
 %global debug_package %{nil}
 
+%global __provides_exclude libEGL\.so.*|libGLESv2\.so.*|libffmpeg\.so.*|libvk_swiftshader\.so.*|libvulkan\.so.*
+%global __requires_exclude libEGL\.so.*|libGLESv2\.so.*|libffmpeg\.so.*|libvk_swiftshader\.so.*|libvulkan\.so.*
+
 Name:           postman
 Version:        12.28.1
 Release:        %autorelease
