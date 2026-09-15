@@ -1,3 +1,5 @@
+%global debug_package %{nil}
+
 Name:           postman
 Version:        12.28.1
 Release:        %autorelease
