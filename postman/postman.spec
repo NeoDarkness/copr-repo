@@ -16,6 +16,10 @@ Source1:        postman.desktop
 
 ExclusiveArch:  x86_64
 
+Provides:       bundled(electron)
+Provides:       bundled(ffmpeg)
+Provides:       bundled(vulkan-loader)
+
 %description
 Build, test, and document your APIs faster.
 
