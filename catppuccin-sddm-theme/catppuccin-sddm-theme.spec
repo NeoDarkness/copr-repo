@@ -1,11 +1,11 @@
 %global commit 28699090372cce33c12a923cf8fc297a9cae2cd4
-%global shortcommit %(printf '%.7s' %{commit})
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global commitdate 20250908
 
 %global _sddmthemedir %{_datadir}/sddm/themes
 
 Name:           catppuccin-sddm-theme
-Version:        0^%{commitdate}git%{shortcommit}
+Version:        0^%{commitdate}git.%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel theme for SDDM
 

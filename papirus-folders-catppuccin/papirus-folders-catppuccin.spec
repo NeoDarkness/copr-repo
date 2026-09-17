@@ -1,9 +1,9 @@
 %global commit f83671d17ea67e335b34f8028a7e6d78bca735d7
-%global shortcommit %(printf '%.7s' %{commit})
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global commitdate 20240608
 
 Name:           papirus-folders-catppuccin
-Version:        0^%{commitdate}git%{shortcommit}
+Version:        0^%{commitdate}git.%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel folder colors for Papirus icon themes
 

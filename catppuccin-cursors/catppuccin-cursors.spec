@@ -1,9 +1,9 @@
 %global commit a7eb08527dcce01010fa0ec46fa2bc4c3154f0d4
-%global shortcommit %(printf '%.7s' %{commit})
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global commitdate 20250222
 
 Name:           catppuccin-cursors
-Version:        0^%{commitdate}git%{shortcommit}
+Version:        0^%{commitdate}git.%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel mouse cursors
 

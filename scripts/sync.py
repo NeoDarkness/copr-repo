@@ -118,7 +118,7 @@ def get_upstream_version(item, url, is_snapshot):
                 )
                 return None, None, None
 
-            version = f"0^{date}git{sha[:7]}"
+            version = f"0^{date}git.{sha[:7]}"
             log_verbose(item, f"Found upstream snapshot version: {version}")
             return version, sha, date
 
@@ -405,7 +405,7 @@ def process_package(item):
                 update_spec_file(spec_path, "commitdate", latest_date, item)
 
             updates += 1
-            status = f"Updated ({latest_date}git{latest_commit[:7]})"
+            status = f"Updated ({latest_date}git.{latest_commit[:7]})"
 
     else:
         if meta["version"] != latest_ver:

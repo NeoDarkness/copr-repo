@@ -1,11 +1,11 @@
 %global commit 0a37ab19f654e77129b409fed371891c01ffd0b9
-%global shortcommit %(printf '%.7s' %{commit})
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global commitdate 20250711
 
 %global _grubthemedir /boot/grub2/themes
 
 Name:           grub2-catppuccin-theme
-Version:        0^%{commitdate}git%{shortcommit}
+Version:        0^%{commitdate}git.%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel theme for GRUB2
 
