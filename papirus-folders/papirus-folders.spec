@@ -1,16 +1,11 @@
-%global forgeurl https://github.com/PapirusDevelopmentTeam/papirus-folders
-
-Version:        1.14.0
-
-%forgemeta
-
 Name:           papirus-folders
+Version:        1.14.0
 Release:        %autorelease
 Summary:        Folder color switching utility for Papirus icon themes
 
 License:        MIT
-URL:            %{forgeurl}
-Source0:        %{forgesource}
+URL:            https://github.com/PapirusDevelopmentTeam/papirus-folders
+Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -22,14 +17,10 @@ Requires:       papirus-icon-theme
 Utility for changing folder colors in Papirus icon themes.
 
 %prep
-%forgeautosetup -p1
-
-%build
+%autosetup -p1
 
 %install
 %make_install PREFIX=%{_prefix} ZSHCOMPDIR=%{zsh_completions_dir}
-
-%check
 
 %files
 %license LICENSE

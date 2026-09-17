@@ -1,9 +1,6 @@
-%global forgeurl https://github.com/catppuccin/sddm
 %global commit 28699090372cce33c12a923cf8fc297a9cae2cd4
 
 %global _sddmthemedir %{_datadir}/sddm/themes
-
-%forgemeta
 
 Name:           catppuccin-sddm-theme
 Version:        0^20250908.g2869909
@@ -11,8 +8,8 @@ Release:        %autorelease
 Summary:        Soothing pastel theme for SDDM
 
 License:        MIT
-URL:            %{forgeurl}
-Source0:        %{forgesource}
+URL:            https://github.com/catppuccin/sddm
+Source0:        %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 
 BuildArch:      noarch
 
@@ -55,7 +52,7 @@ Requires:       sddm
 Soothing pastel theme for SDDM - Mocha.
 
 %prep
-%forgeautosetup -p1
+%autosetup -n sddm-%{commit} -p1
 
 %build
 just build
@@ -63,8 +60,6 @@ just build
 %install
 install -d %{buildroot}%{_sddmthemedir}
 cp -a themes/* %{buildroot}%{_sddmthemedir}/
-
-%check
 
 %files
 

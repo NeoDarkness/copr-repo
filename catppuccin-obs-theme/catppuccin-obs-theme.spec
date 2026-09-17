@@ -1,9 +1,6 @@
-%global forgeurl https://github.com/catppuccin/obs
 %global commit 054a297d303a5bac4f1652a13b17d78a13201c0e
 
 %global _obsthemedir %{_datadir}/obs/obs-studio/themes
-
-%forgemeta
 
 Name:           catppuccin-obs-theme
 Version:        0^20260620.g054a297
@@ -11,8 +8,8 @@ Release:        %autorelease
 Summary:        Soothing pastel theme for OBS Studio
 
 License:        MIT
-URL:            %{forgeurl}
-Source0:        %{forgesource}
+URL:            https://github.com/catppuccin/obs
+Source0:        %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 
 BuildArch:      noarch
 
@@ -22,15 +19,11 @@ Requires:       obs-studio
 Soothing pastel theme for OBS Studio.
 
 %prep
-%forgeautosetup -p1
-
-%build
+%autosetup -n obs-%{commit} -p1
 
 %install
 install -d %{buildroot}%{_obsthemedir}
 cp -a themes/* %{buildroot}%{_obsthemedir}/
-
-%check
 
 %files
 %license LICENSE

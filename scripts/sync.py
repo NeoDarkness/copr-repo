@@ -76,14 +76,12 @@ def parse_spec(spec_path):
         content = f.read()
 
     v_match = re.search(r"^(?:%global\s+version|Version:)\s+(\S+)", content, re.MULTILINE)
-    f_match = re.search(r"^%global\s+forgeurl\s+(\S+)", content, re.MULTILINE)
     u_match = re.search(r"^URL:\s*(\S+)", content, re.MULTILINE)
     c_match = re.search(r"^%global\s+commit\s+(\S+)", content, re.MULTILINE)
     crate_match = re.search(r"^%global\s+crate\s+(\S+)", content, re.MULTILINE)
 
     version = v_match.group(1) if v_match else None
-    forgeurl = f_match.group(1) if f_match else None
-    url = forgeurl if (u_match and u_match.group(1) == "%{forgeurl}") or not u_match else u_match.group(1)
+    url = u_match.group(1) if u_match else None
     commit = c_match.group(1) if c_match else None
     crate_val = crate_match.group(1) if crate_match else None
 

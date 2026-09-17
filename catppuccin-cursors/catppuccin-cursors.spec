@@ -1,16 +1,11 @@
-%global forgeurl https://github.com/catppuccin/cursors
-
-Version:        2.0.0
-
-%forgemeta
-
 Name:           catppuccin-cursors
+Version:        2.0.0
 Release:        %autorelease
 Summary:        Soothing pastel mouse cursors
 
 License:        GPL-2.0-only
-URL:            %{forgeurl}
-Source0:        %{forgesource}
+URL:            https://github.com/catppuccin/cursors
+Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch0:         remove-bundled-license-and-authors-files.diff
 
 BuildArch:      noarch
@@ -49,7 +44,7 @@ Summary:        Soothing pastel mouse cursors - Mocha
 Soothing pastel mouse cursors - Mocha.
 
 %prep
-%forgeautosetup -p1
+%autosetup -n cursors-%{version} -p1
 
 %build
 just all
@@ -57,8 +52,6 @@ just all
 %install
 install -d %{buildroot}%{_datadir}/icons
 cp -a dist/* %{buildroot}%{_datadir}/icons/
-
-%check
 
 %files
 

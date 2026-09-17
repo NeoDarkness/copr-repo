@@ -1,9 +1,6 @@
-%global forgeurl https://github.com/catppuccin/plymouth
 %global commit 198eba2071d80e4a23b8f51a5859e8f4acf8de6c
 
 %global _plymouththemedir %{_datadir}/plymouth/themes
-
-%forgemeta
 
 Name:           plymouth-theme-catppuccin
 Version:        0^20260428.g198eba2
@@ -11,8 +8,8 @@ Release:        %autorelease
 Summary:        Soothing pastel theme for Plymouth
 
 License:        MIT
-URL:            %{forgeurl}
-Source0:        %{forgesource}
+URL:            https://github.com/catppuccin/plymouth
+Source0:        %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 
 BuildArch:      noarch
 
@@ -56,9 +53,7 @@ Requires:       plymouth-system-theme
 Soothing pastel theme for Plymouth - Mocha.
 
 %prep
-%forgeautosetup -p1
-
-%build
+%autosetup -n plymouth-%{commit} -p1
 
 %install
 install -d %{buildroot}%{_plymouththemedir}

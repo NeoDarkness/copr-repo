@@ -1,7 +1,4 @@
-%global forgeurl https://github.com/catppuccin/papirus-folders
 %global commit f83671d17ea67e335b34f8028a7e6d78bca735d7
-
-%forgemeta
 
 Name:           papirus-folders-catppuccin
 Version:        0^20240608.gf83671d
@@ -9,8 +6,8 @@ Release:        %autorelease
 Summary:        Soothing pastel folder colors for Papirus icon themes
 
 License:        MIT
-URL:            %{forgeurl}
-Source0:        %{forgesource}
+URL:            https://github.com/catppuccin/papirus-folders
+Source0:        %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 
 BuildArch:      noarch
 
@@ -25,15 +22,11 @@ the papirus-folders utility, allowing you to bring the cozy
 Catppuccin aesthetic to your file manager.
 
 %prep
-%forgeautosetup -p1
-
-%build
+%autosetup -n papirus-folders-%{commit} -p1
 
 %install
 install -d %{buildroot}%{_datadir}/icons/Papirus
 cp -a src/* %{buildroot}%{_datadir}/icons/Papirus/
-
-%check
 
 %files
 %license LICENSE
