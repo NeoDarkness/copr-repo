@@ -25,7 +25,7 @@ jobs:
           dnf install -y git python3 python3-pip rust2rpm
 
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Run Sync Script
         env:
