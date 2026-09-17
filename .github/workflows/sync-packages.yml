@@ -2,7 +2,8 @@ name: Sync Package Versions
 
 on:
   schedule:
-    - cron: '0 */1 * * *'
+    # Runs every hour at minute 0
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 concurrency:
@@ -12,23 +13,19 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
 
     permissions:
       contents: write
 
     steps:
+      - name: Install System Dependencies
+        run: |
+          dnf install -y git python3 python3-pip rust2rpm
+
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install rust2rpm
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends rust2rpm || true
 
       - name: Run Sync Script
         env:
@@ -38,6 +35,7 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
