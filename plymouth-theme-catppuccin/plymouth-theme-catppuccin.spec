@@ -1,9 +1,11 @@
 %global commit 198eba2071d80e4a23b8f51a5859e8f4acf8de6c
+%global shortcommit %(printf '%.7s' %{commit})
+%global commitdate 20260428
 
 %global _plymouththemedir %{_datadir}/plymouth/themes
 
 Name:           plymouth-theme-catppuccin
-Version:        0^20260428.g198eba2
+Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel theme for Plymouth
 
@@ -13,8 +15,12 @@ Source0:        %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 
 BuildArch:      noarch
 
+Requires:       plymouth-plugin-two-step
+Requires:       plymouth-system-theme
+Provides:       %{name}-mocha = %{version}-%{release}
+
 %description
-Soothing pastel theme for Plymouth.
+Soothing pastel theme for Plymouth (Mocha flavor by default).
 
 %package latte
 Summary:        Soothing pastel theme for Plymouth - Latte
@@ -43,21 +49,20 @@ Requires:       plymouth-system-theme
 %description macchiato
 Soothing pastel theme for Plymouth - Macchiato.
 
-%package mocha
-Summary:        Soothing pastel theme for Plymouth - Mocha
-
-Requires:       plymouth-plugin-two-step
-Requires:       plymouth-system-theme
-
-%description mocha
-Soothing pastel theme for Plymouth - Mocha.
-
 %prep
 %autosetup -n plymouth-%{commit} -p1
 
 %install
 install -d %{buildroot}%{_plymouththemedir}
 cp -a themes/* %{buildroot}%{_plymouththemedir}/
+
+%postun
+export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/
+if [ $1 -eq 0 ]; then
+    if [ "$(%{_sbindir}/plymouth-set-default-theme)" = "catppuccin-mocha" ]; then
+        %{_sbindir}/plymouth-set-default-theme --reset
+    fi
+fi
 
 %postun latte
 export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/
@@ -83,17 +88,10 @@ if [ $1 -eq 0 ]; then
     fi
 fi
 
-%postun mocha
-export PLYMOUTH_PLUGIN_PATH=%{_libdir}/plymouth/
-if [ $1 -eq 0 ]; then
-    if [ "$(%{_sbindir}/plymouth-set-default-theme)" = "catppuccin-mocha" ]; then
-        %{_sbindir}/plymouth-set-default-theme --reset
-    fi
-fi
-
-%check
-
 %files
+%license LICENSE
+%doc README.md
+%{_plymouththemedir}/catppuccin-mocha
 
 %files latte
 %license LICENSE
@@ -109,11 +107,6 @@ fi
 %license LICENSE
 %doc README.md
 %{_plymouththemedir}/catppuccin-macchiato
-
-%files mocha
-%license LICENSE
-%doc README.md
-%{_plymouththemedir}/catppuccin-mocha
 
 %changelog
 %autochangelog

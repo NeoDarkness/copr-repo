@@ -1,11 +1,15 @@
+%global commit a7eb08527dcce01010fa0ec46fa2bc4c3154f0d4
+%global shortcommit %(printf '%.7s' %{commit})
+%global commitdate 20250222
+
 Name:           catppuccin-cursors
-Version:        2.0.0
+Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel mouse cursors
 
 License:        GPL-2.0-only
 URL:            https://github.com/catppuccin/cursors
-Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 Patch0:         remove-bundled-license-and-authors-files.diff
 
 BuildArch:      noarch
@@ -16,8 +20,10 @@ BuildRequires:  just
 BuildRequires:  python3-pyside6
 BuildRequires:  xcursorgen
 
+Provides:       %{name}-mocha = %{version}-%{release}
+
 %description
-Soothing pastel mouse cursors.
+Soothing pastel mouse cursors (Mocha flavor by default).
 
 %package latte
 Summary:        Soothing pastel mouse cursors - Latte
@@ -37,14 +43,8 @@ Summary:        Soothing pastel mouse cursors - Macchiato
 %description macchiato
 Soothing pastel mouse cursors - Macchiato.
 
-%package mocha
-Summary:        Soothing pastel mouse cursors - Mocha
-
-%description mocha
-Soothing pastel mouse cursors - Mocha.
-
 %prep
-%autosetup -n cursors-%{version} -p1
+%autosetup -n cursors-%{commit} -p1
 
 %build
 just all
@@ -54,6 +54,10 @@ install -d %{buildroot}%{_datadir}/icons
 cp -a dist/* %{buildroot}%{_datadir}/icons/
 
 %files
+%license LICENSE
+%doc README.md
+%doc CHANGELOG.md
+%{_datadir}/icons/catppuccin-mocha-*-cursors
 
 %files latte
 %license LICENSE
@@ -72,12 +76,6 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 %doc README.md
 %doc CHANGELOG.md
 %{_datadir}/icons/catppuccin-macchiato-*-cursors
-
-%files mocha
-%license LICENSE
-%doc README.md
-%doc CHANGELOG.md
-%{_datadir}/icons/catppuccin-mocha-*-cursors
 
 %changelog
 %autochangelog

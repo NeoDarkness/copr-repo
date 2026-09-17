@@ -1,9 +1,11 @@
 %global commit 0a37ab19f654e77129b409fed371891c01ffd0b9
+%global shortcommit %(printf '%.7s' %{commit})
+%global commitdate 20250711
 
 %global _grubthemedir /boot/grub2/themes
 
 Name:           grub2-theme-catppuccin
-Version:        0^20250711.g0a37ab1
+Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel theme for GRUB2
 
@@ -13,8 +15,11 @@ Source0:        %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 
 BuildArch:      noarch
 
+Requires:       grub2-common
+Provides:       %{name}-mocha = %{version}-%{release}
+
 %description
-Soothing pastel theme for GRUB2.
+Soothing pastel theme for GRUB2 (Mocha flavor by default).
 
 %package latte
 Summary:        Soothing pastel theme for GRUB2 - Latte
@@ -40,14 +45,6 @@ Requires:       grub2-common
 %description macchiato
 Soothing pastel theme for GRUB2 - Macchiato.
 
-%package mocha
-Summary:        Soothing pastel theme for GRUB2 - Mocha
-
-Requires:       grub2-common
-
-%description mocha
-Soothing pastel theme for GRUB2 - Mocha.
-
 %prep
 %autosetup -n grub-%{commit} -p1
 
@@ -56,6 +53,9 @@ install -d %{buildroot}%{_grubthemedir}
 cp -a src/* %{buildroot}%{_grubthemedir}/
 
 %files
+%license LICENSE
+%doc README.md
+%{_grubthemedir}/catppuccin-mocha-grub-theme
 
 %files latte
 %license LICENSE
@@ -71,11 +71,6 @@ cp -a src/* %{buildroot}%{_grubthemedir}/
 %license LICENSE
 %doc README.md
 %{_grubthemedir}/catppuccin-macchiato-grub-theme
-
-%files mocha
-%license LICENSE
-%doc README.md
-%{_grubthemedir}/catppuccin-mocha-grub-theme
 
 %changelog
 %autochangelog

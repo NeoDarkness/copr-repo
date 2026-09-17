@@ -1,9 +1,11 @@
 %global commit 054a297d303a5bac4f1652a13b17d78a13201c0e
+%global shortcommit %(printf '%.7s' %{commit})
+%global commitdate 20260620
 
 %global _obsthemedir %{_datadir}/obs/obs-studio/themes
 
 Name:           catppuccin-obs-theme
-Version:        0^20260620.g054a297
+Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel theme for OBS Studio
 
