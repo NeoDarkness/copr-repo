@@ -13,6 +13,7 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     container:
       image: fedora:latest
 
@@ -22,7 +23,7 @@ jobs:
     steps:
       - name: Install System Dependencies
         run: |
-          dnf install -y git python3 python3-pip rust2rpm
+          dnf install -y git python3 rust2rpm
 
       - name: Checkout Repository
         uses: actions/checkout@v7
@@ -41,9 +42,10 @@ jobs:
 
           if [ -n "$(git status --porcelain)" ]; then
             echo "Changes detected, creating commit..."
+
             git add .
             git commit -m "chore(sync): auto-update package versions and spec files [skip ci]"
-            
+
             git pull --rebase origin main
             git push
           else
