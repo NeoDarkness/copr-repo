@@ -264,7 +264,7 @@ def update_spec_file(spec_path, key, value, item):
 def run_rust2rpm(pkg_dir, pkg_name, crate_val, spec_path):
     if not shutil.which("rust2rpm"):
         log_verbose(pkg_name, "rust2rpm not found in system (skipping)", level="WARN")
-        return 0
+        return False
 
     target = crate_val or (pkg_name[5:] if pkg_name.startswith("rust-") else pkg_name)
     toml_path = os.path.join(pkg_dir, "rust2rpm.toml")
@@ -312,11 +312,16 @@ def run_rust2rpm(pkg_dir, pkg_name, crate_val, spec_path):
                 f.truncate()
 
         log_verbose(pkg_name, "Successfully regenerated Rust spec file")
-        return 1
+        return True
 
     except subprocess.CalledProcessError as e:
-        log_verbose(pkg_name, f"rust2rpm execution failed: {e}", level="WARN")
-        return 0
+        err_msg = e.stderr.strip() if e.stderr else str(e)
+        log_verbose(
+            pkg_name,
+            f"rust2rpm execution failed:\n{err_msg}",
+            level="WARN",
+        )
+        return False
 
 
 def process_package(item):
@@ -394,17 +399,20 @@ def process_package(item):
             status = f"Updated ({latest_ver})"
 
     if meta["is_rust"]:
-        r_updates = run_rust2rpm(
+        rust_success = run_rust2rpm(
             dir_path,
             item,
             meta["crate"],
             spec_path,
         )
 
-        updates += r_updates
-
-        if r_updates > 0 and status == "Up to date":
-            status = "Rust2rpm Re-generated"
+        if rust_success:
+            updates += 1
+            if status == "Up to date":
+                status = "Rust2rpm Re-generated"
+        else:
+            if status == "Up to date":
+                status = "Rust2rpm Failed"
 
     log_verbose(item, f"Processing complete. Final status: {status}")
     return {
@@ -465,7 +473,7 @@ def main():
 
         color = (
             GREEN
-            if "Up to date" in res["status"]
+            if "Up to date" in res["status"] or "Re-generated" in res["status"]
             else (
                 RED
                 if (
@@ -488,7 +496,7 @@ def main():
     if total_updated > 0:
         print(
             f"{GREEN}{BOLD}"
-            f"✅ Finished! Updated "
+            f"✅ Finished! Updated/regenerated "
             f"{total_updated} package(s)."
             f"{NC}"
         )
