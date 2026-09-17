@@ -19,34 +19,9 @@ BuildRequires:  catppuccin-whiskers
 BuildRequires:  just
 
 Requires:       sddm
-Provides:       %{name}-mocha = %{version}-%{release}
 
 %description
-Soothing pastel theme for SDDM (Mocha flavor by default).
-
-%package latte
-Summary:        Soothing pastel theme for SDDM - Latte
-
-Requires:       sddm
-
-%description latte
-Soothing pastel theme for SDDM - Latte.
-
-%package frappe
-Summary:        Soothing pastel theme for SDDM - Frappe
-
-Requires:       sddm
-
-%description frappe
-Soothing pastel theme for SDDM - Frappe.
-
-%package macchiato
-Summary:        Soothing pastel theme for SDDM - Macchiato
-
-Requires:       sddm
-
-%description macchiato
-Soothing pastel theme for SDDM - Macchiato.
+Soothing pastel theme for SDDM.
 
 %prep
 %autosetup -n sddm-%{commit} -p1
@@ -62,25 +37,7 @@ cp -a themes/* %{buildroot}%{_sddmthemedir}/
 %license LICENSE
 %doc README.md
 %doc CHANGELOG.md
-%{_sddmthemedir}/catppuccin-mocha-*
-
-%files latte
-%license LICENSE
-%doc README.md
-%doc CHANGELOG.md
-%{_sddmthemedir}/catppuccin-latte-*
-
-%files frappe
-%license LICENSE
-%doc README.md
-%doc CHANGELOG.md
-%{_sddmthemedir}/catppuccin-frappe-*
-
-%files macchiato
-%license LICENSE
-%doc README.md
-%doc CHANGELOG.md
-%{_sddmthemedir}/catppuccin-macchiato-*
+%{_sddmthemedir}/catppuccin-*
 
 %changelog
 %autochangelog

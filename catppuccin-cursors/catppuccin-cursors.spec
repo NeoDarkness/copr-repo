@@ -20,28 +20,8 @@ BuildRequires:  just
 BuildRequires:  python3-pyside6
 BuildRequires:  xcursorgen
 
-Provides:       %{name}-mocha = %{version}-%{release}
-
 %description
-Soothing pastel mouse cursors (Mocha flavor by default).
-
-%package latte
-Summary:        Soothing pastel mouse cursors - Latte
-
-%description latte
-Soothing pastel mouse cursors - Latte.
-
-%package frappe
-Summary:        Soothing pastel mouse cursors - Frappe
-
-%description frappe
-Soothing pastel mouse cursors - Frappe.
-
-%package macchiato
-Summary:        Soothing pastel mouse cursors - Macchiato
-
-%description macchiato
-Soothing pastel mouse cursors - Macchiato.
+Soothing pastel mouse cursors.
 
 %prep
 %autosetup -n cursors-%{commit} -p1
@@ -57,25 +37,7 @@ cp -a dist/* %{buildroot}%{_datadir}/icons/
 %license LICENSE
 %doc README.md
 %doc CHANGELOG.md
-%{_datadir}/icons/catppuccin-mocha-*-cursors
-
-%files latte
-%license LICENSE
-%doc README.md
-%doc CHANGELOG.md
-%{_datadir}/icons/catppuccin-latte-*-cursors
-
-%files frappe
-%license LICENSE
-%doc README.md
-%doc CHANGELOG.md
-%{_datadir}/icons/catppuccin-frappe-*-cursors
-
-%files macchiato
-%license LICENSE
-%doc README.md
-%doc CHANGELOG.md
-%{_datadir}/icons/catppuccin-macchiato-*-cursors
+%{_datadir}/icons/catppuccin-*-cursors
 
 %changelog
 %autochangelog

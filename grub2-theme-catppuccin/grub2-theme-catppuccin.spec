@@ -16,34 +16,9 @@ Source0:        %{url}/archive/%{commit}/%{name}-%{commit}.tar.gz
 BuildArch:      noarch
 
 Requires:       grub2-common
-Provides:       %{name}-mocha = %{version}-%{release}
 
 %description
-Soothing pastel theme for GRUB2 (Mocha flavor by default).
-
-%package latte
-Summary:        Soothing pastel theme for GRUB2 - Latte
-
-Requires:       grub2-common
-
-%description latte
-Soothing pastel theme for GRUB2 - Latte.
-
-%package frappe
-Summary:        Soothing pastel theme for GRUB2 - Frappe
-
-Requires:       grub2-common
-
-%description frappe
-Soothing pastel theme for GRUB2 - Frappe.
-
-%package macchiato
-Summary:        Soothing pastel theme for GRUB2 - Macchiato
-
-Requires:       grub2-common
-
-%description macchiato
-Soothing pastel theme for GRUB2 - Macchiato.
+Soothing pastel theme for GRUB2.
 
 %prep
 %autosetup -n grub-%{commit} -p1
@@ -55,22 +30,7 @@ cp -a src/* %{buildroot}%{_grubthemedir}/
 %files
 %license LICENSE
 %doc README.md
-%{_grubthemedir}/catppuccin-mocha-grub-theme
-
-%files latte
-%license LICENSE
-%doc README.md
-%{_grubthemedir}/catppuccin-latte-grub-theme
-
-%files frappe
-%license LICENSE
-%doc README.md
-%{_grubthemedir}/catppuccin-frappe-grub-theme
-
-%files macchiato
-%license LICENSE
-%doc README.md
-%{_grubthemedir}/catppuccin-macchiato-grub-theme
+%{_grubthemedir}/catppuccin-*-grub-theme
 
 %changelog
 %autochangelog
