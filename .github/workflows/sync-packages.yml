@@ -32,6 +32,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
+      - name: Configure Git Identity
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
       - name: Run Sync Script
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,10 +46,6 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
           if [ -n "$(git status --porcelain)" ]; then
             echo "Changes detected, creating commit..."
 

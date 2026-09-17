@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-import os
-import sys
-import re
 import json
+import os
+import re
 import shutil
 import subprocess
+import sys
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from urllib.request import Request, urlopen
-from concurrent.futures import ThreadPoolExecutor
 
 TIMEOUT = 15
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -287,12 +287,24 @@ def run_rust2rpm(pkg_dir, pkg_name, crate_val, spec_path):
             if match:
                 license_block = match.group(1).strip()
 
+    # Pass Git identity variables directly to rust2rpm process as fallback
+    env = os.environ.copy()
+    env["GIT_AUTHOR_NAME"] = env.get("GIT_AUTHOR_NAME", "github-actions[bot]")
+    env["GIT_AUTHOR_EMAIL"] = env.get(
+        "GIT_AUTHOR_EMAIL", "41898282+github-actions[bot]@users.noreply.github.com"
+    )
+    env["GIT_COMMITTER_NAME"] = env.get("GIT_COMMITTER_NAME", "github-actions[bot]")
+    env["GIT_COMMITTER_EMAIL"] = env.get(
+        "GIT_COMMITTER_EMAIL", "41898282+github-actions[bot]@users.noreply.github.com"
+    )
+
     try:
         subprocess.run(
             cmd,
             capture_output=True,
             text=True,
             check=True,
+            env=env,
         )
 
         if license_block and os.path.exists(spec_path):
@@ -336,6 +348,7 @@ def process_package(item):
             "status": "No Spec",
             "updates": 0,
             "version": "-",
+            "failed": True,
         }
 
     meta = parse_spec(spec_path)
@@ -351,6 +364,7 @@ def process_package(item):
             "status": "No URL",
             "updates": 0,
             "version": meta["version"] or "-",
+            "failed": True,
         }
 
     latest_ver, latest_commit, latest_date = get_upstream_version(
@@ -366,10 +380,12 @@ def process_package(item):
             "status": "Failed API",
             "updates": 0,
             "version": meta["version"],
+            "failed": True,
         }
 
     updates = 0
     status = "Up to date"
+    failed = False
 
     if meta["is_snapshot"]:
         commit_changed = meta["commit"] != latest_commit
@@ -411,6 +427,7 @@ def process_package(item):
             if status == "Up to date":
                 status = "Rust2rpm Re-generated"
         else:
+            failed = True
             if status == "Up to date":
                 status = "Rust2rpm Failed"
 
@@ -420,6 +437,7 @@ def process_package(item):
         "status": status,
         "updates": updates,
         "version": latest_ver,
+        "failed": failed,
     }
 
 
@@ -467,9 +485,12 @@ def main():
     print("-" * (max_len + 52))
 
     total_updated = 0
+    total_failed = 0
 
     for res in results:
         total_updated += res["updates"]
+        if res.get("failed"):
+            total_failed += 1
 
         color = (
             GREEN
@@ -493,15 +514,17 @@ def main():
 
     print("\n" + "=" * (max_len + 52))
 
-    if total_updated > 0:
+    if total_failed > 0:
         print(
-            f"{GREEN}{BOLD}"
-            f"✅ Finished! Updated/regenerated "
-            f"{total_updated} package(s)."
-            f"{NC}"
+            f"{RED}{BOLD}❌ Finished with errors! {total_failed} package(s) failed.{NC}"
+        )
+        sys.exit(1)
+    elif total_updated > 0:
+        print(
+            f"{GREEN}{BOLD}✅ Finished! Updated/regenerated {total_updated} package(s).{NC}"
         )
     else:
-        print(f"{GREEN}{BOLD}" f"✅ All packages are up to date." f"{NC}")
+        print(f"{GREEN}{BOLD}✅ All packages are up to date.{NC}")
 
 
 if __name__ == "__main__":
