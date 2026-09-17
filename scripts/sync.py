@@ -13,14 +13,21 @@ from concurrent.futures import ThreadPoolExecutor
 TIMEOUT = 15
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-# Terminal Colors
-GREEN, YELLOW, RED, BOLD, NC = (
+# Terminal Colors & Indicators
+GREEN, YELLOW, RED, BLUE, BOLD, NC = (
     "\033[0;32m",
     "\033[1;33m",
     "\033[0;31m",
+    "\033[0;34m",
     "\033[1m",
     "\033[0m",
 )
+
+
+def log_verbose(pkg_name, message, level="INFO"):
+    """Helper to print formatted verbose logs."""
+    color = BLUE if level == "INFO" else (YELLOW if level == "WARN" else RED)
+    print(f"[{color}{level:<4}{NC}] [{BOLD}{pkg_name:<15}{NC}] {message}")
 
 
 def get_gh_token():
@@ -39,7 +46,8 @@ def get_gh_token():
     return None
 
 
-def fetch_json(url, is_crates_io=False):
+def fetch_json(url, item="SYSTEM", is_crates_io=False):
+    log_verbose(item, f"Fetching API: {url}")
     req = Request(url)
 
     if is_crates_io:
@@ -70,7 +78,8 @@ def fetch_json(url, is_crates_io=False):
     try:
         with urlopen(req, timeout=TIMEOUT) as resp:
             return json.loads(resp.read().decode())
-    except Exception:
+    except Exception as e:
+        log_verbose(item, f"HTTP/API Error on {url}: {e}", level="WARN")
         return None
 
 
@@ -81,14 +90,21 @@ def get_upstream_version(item, url, is_snapshot):
             "",
         ).strip("/")
 
-        data = fetch_json(f"https://api.github.com/repos/{repo}/commits/HEAD")
+        log_verbose(item, f"Fetching snapshot commit data from GitHub: {repo}")
+        data = fetch_json(
+            f"https://api.github.com/repos/{repo}/commits/HEAD", item=item
+        )
 
         if data and isinstance(data, dict):
             sha = data.get("sha")
-
             date_str = data.get("commit", {}).get("committer", {}).get("date", "")
 
             if not sha or not date_str:
+                log_verbose(
+                    item,
+                    "Failed to retrieve SHA or Date from GitHub response",
+                    level="WARN",
+                )
                 return None, None, None
 
             try:
@@ -97,26 +113,32 @@ def get_upstream_version(item, url, is_snapshot):
                     "%Y-%m-%d",
                 ).strftime("%Y%m%d")
             except ValueError:
+                log_verbose(
+                    item, f"Failed to parse date format: {date_str}", level="WARN"
+                )
                 return None, None, None
 
             version = f"0^{date}git{sha[:7]}"
-
+            log_verbose(item, f"Found upstream snapshot version: {version}")
             return version, sha, date
 
         return None, None, None
 
     if item.startswith("rust-"):
         crate_name = item[5:]
+        log_verbose(item, f"Fetching latest version from Crates.io: {crate_name}")
 
         data = fetch_json(
             f"https://crates.io/api/v1/crates/{crate_name}",
+            item=item,
             is_crates_io=True,
         )
 
         tag = data.get("crate", {}).get("max_version", "1.0.0") if data else "1.0.0"
 
     elif item == "postman":
-        data = fetch_json("https://www.postman.com/mkapi/release.json")
+        log_verbose(item, "Fetching latest version from Postman API")
+        data = fetch_json("https://www.postman.com/mkapi/release.json", item=item)
 
         tag = (
             data["notes"][0].get("version", "1.0.0")
@@ -130,7 +152,10 @@ def get_upstream_version(item, url, is_snapshot):
             "",
         ).strip("/")
 
-        data = fetch_json(f"https://api.github.com/repos/{repo}/releases/latest")
+        log_verbose(item, f"Fetching latest release from GitHub: {repo}")
+        data = fetch_json(
+            f"https://api.github.com/repos/{repo}/releases/latest", item=item
+        )
 
         tag = (
             data.get("tag_name", "1.0.0")
@@ -139,6 +164,7 @@ def get_upstream_version(item, url, is_snapshot):
         )
 
     clean_ver = tag.lstrip("v").replace("-", ".").replace("_", ".")
+    log_verbose(item, f"Found upstream release version: {clean_ver}")
 
     return clean_ver, None, None
 
@@ -200,7 +226,8 @@ def parse_spec(spec_path):
     }
 
 
-def update_spec_file(spec_path, key, value):
+def update_spec_file(spec_path, key, value, item):
+    log_verbose(item, f"Updating .spec file -> Changing {key} to '{value}'")
     with open(spec_path, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -236,31 +263,20 @@ def update_spec_file(spec_path, key, value):
 
 def run_rust2rpm(pkg_dir, pkg_name, crate_val, spec_path):
     if not shutil.which("rust2rpm"):
+        log_verbose(pkg_name, "rust2rpm not found in system (skipping)", level="WARN")
         return 0
 
     target = crate_val or (pkg_name[5:] if pkg_name.startswith("rust-") else pkg_name)
+    toml_path = os.path.join(pkg_dir, "rust2rpm.toml")
 
-    toml_path = os.path.join(
-        pkg_dir,
-        "rust2rpm.toml",
-    )
-
-    cmd = [
-        "rust2rpm",
-        "-a",
-        "-V",
-        "auto",
-        target,
-        "-o",
-        pkg_dir,
-    ]
+    cmd = ["rust2rpm", "-a", "-V", "auto", target, "-o", pkg_dir]
 
     if os.path.exists(toml_path):
         cmd += ["-C", toml_path]
 
-    # Preserve dynamic license block if present
-    license_block = None
+    log_verbose(pkg_name, f"Executing rust2rpm: {' '.join(cmd)}")
 
+    license_block = None
     if os.path.exists(spec_path):
         with open(spec_path, "r", encoding="utf-8") as f:
             match = re.search(
@@ -268,7 +284,6 @@ def run_rust2rpm(pkg_dir, pkg_name, crate_val, spec_path):
                 f.read(),
                 re.DOTALL,
             )
-
             if match:
                 license_block = match.group(1).strip()
 
@@ -281,6 +296,7 @@ def run_rust2rpm(pkg_dir, pkg_name, crate_val, spec_path):
         )
 
         if license_block and os.path.exists(spec_path):
+            log_verbose(pkg_name, "Restoring custom license block in .spec file")
             with open(spec_path, "r+", encoding="utf-8") as f:
                 content = f.read()
 
@@ -295,24 +311,21 @@ def run_rust2rpm(pkg_dir, pkg_name, crate_val, spec_path):
                 f.write(content)
                 f.truncate()
 
+        log_verbose(pkg_name, "Successfully regenerated Rust spec file")
         return 1
 
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
+        log_verbose(pkg_name, f"rust2rpm execution failed: {e}", level="WARN")
         return 0
 
 
 def process_package(item):
-    dir_path = os.path.join(
-        REPO_ROOT,
-        item,
-    )
-
-    spec_path = os.path.join(
-        dir_path,
-        f"{item}.spec",
-    )
+    log_verbose(item, "Starting package processing...")
+    dir_path = os.path.join(REPO_ROOT, item)
+    spec_path = os.path.join(dir_path, f"{item}.spec")
 
     if not os.path.exists(spec_path):
+        log_verbose(item, ".spec file not found!", level="WARN")
         return {
             "name": item,
             "status": "No Spec",
@@ -321,8 +334,13 @@ def process_package(item):
         }
 
     meta = parse_spec(spec_path)
+    log_verbose(
+        item,
+        f"Local Spec details -> Version: {meta['version']}, Snapshot: {meta['is_snapshot']}, Rust: {meta['is_rust']}",
+    )
 
     if not meta["url"]:
+        log_verbose(item, "URL not found in .spec file!", level="WARN")
         return {
             "name": item,
             "status": "No URL",
@@ -337,6 +355,7 @@ def process_package(item):
     )
 
     if not latest_ver:
+        log_verbose(item, "Failed to retrieve upstream version data", level="WARN")
         return {
             "name": item,
             "status": "Failed API",
@@ -353,30 +372,24 @@ def process_package(item):
 
         if commit_changed or date_changed:
             if commit_changed:
-                update_spec_file(
-                    spec_path,
-                    "commit",
-                    latest_commit,
+                log_verbose(
+                    item, f"Commit changed ({meta['commit']} -> {latest_commit})"
                 )
+                update_spec_file(spec_path, "commit", latest_commit, item)
 
             if date_changed:
-                update_spec_file(
-                    spec_path,
-                    "commitdate",
-                    latest_date,
+                log_verbose(
+                    item, f"Commitdate changed ({meta['commitdate']} -> {latest_date})"
                 )
+                update_spec_file(spec_path, "commitdate", latest_date, item)
 
             updates += 1
             status = f"Updated ({latest_date}git{latest_commit[:7]})"
 
     else:
         if meta["version"] != latest_ver:
-            update_spec_file(
-                spec_path,
-                "version",
-                latest_ver,
-            )
-
+            log_verbose(item, f"Version changed ({meta['version']} -> {latest_ver})")
+            update_spec_file(spec_path, "version", latest_ver, item)
             updates += 1
             status = f"Updated ({latest_ver})"
 
@@ -393,6 +406,7 @@ def process_package(item):
         if r_updates > 0 and status == "Up to date":
             status = "Rust2rpm Re-generated"
 
+    log_verbose(item, f"Processing complete. Final status: {status}")
     return {
         "name": item,
         "status": status,
@@ -424,7 +438,7 @@ def main():
         default=20,
     )
 
-    print(f"{BOLD}🔍 Syncing package versions...{NC}\n")
+    print(f"{BOLD}🔍 Syncing package versions (Verbose Mode Enabled)...{NC}\n")
 
     with ThreadPoolExecutor() as executor:
         results = list(
