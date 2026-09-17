@@ -4,7 +4,7 @@
 
 %global _grubthemedir /boot/grub2/themes
 
-Name:           grub2-theme-catppuccin
+Name:           grub2-catppuccin-theme
 Version:        0^%{commitdate}git%{shortcommit}
 Release:        %autorelease
 Summary:        Soothing pastel theme for GRUB2
