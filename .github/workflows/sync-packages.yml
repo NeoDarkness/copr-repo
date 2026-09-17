@@ -6,6 +6,10 @@ on:
     - cron: '*/5 * * * *'
   workflow_dispatch:
 
+# Run actions under Node24 to prevent Node20 deprecation warnings
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 concurrency:
   group: sync-packages
   cancel-in-progress: true
