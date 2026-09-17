@@ -25,6 +25,18 @@ jobs:
         run: |
           dnf install -y git python3 rust2rpm
 
+      - name: Check Environment & Dependencies
+        run: |
+          echo "=== Checking PATH ==="
+          echo "PATH: $PATH"
+
+          echo "=== Checking rust2rpm binary ==="
+          which rust2rpm || echo "WARNING: rust2rpm not found in PATH"
+          whereis rust2rpm
+
+          echo "=== Checking rust2rpm version ==="
+          rust2rpm --version || python3 -m rust2rpm --version || echo "WARNING: rust2rpm execution failed"
+
       - name: Checkout Repository
         uses: actions/checkout@v7
 
