@@ -51,7 +51,7 @@ jobs:
             git add .
             git commit -m "chore(sync): auto-update package versions and spec files [skip ci]"
 
-            git pull --rebase origin main
+            git pull --rebase origin master
             git push
           else
             echo "No package updates found. Repository is up to date."
