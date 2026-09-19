@@ -1,10 +1,10 @@
 [Desktop Entry]
 Name=Postman
 Comment=Build, test, and document your APIs faster
-Exec=postman %U
+Exec=/usr/bin/postman %U
 Icon=postman
 Type=Application
-StartupNotify=true
 Categories=Development;
-StartupWMClass=postman
+Terminal=false
+StartupWMClass=Postman
 MimeType=x-scheme-handler/postman;

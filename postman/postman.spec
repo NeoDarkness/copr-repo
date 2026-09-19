@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 
-%global __provides_exclude libEGL\.so.*|libGLESv2\.so.*|libffmpeg\.so.*|libvk_swiftshader\.so.*|libvulkan\.so.*
-%global __requires_exclude libEGL\.so.*|libGLESv2\.so.*|libffmpeg\.so.*|libvk_swiftshader\.so.*|libvulkan\.so.*
+%global __provides_exclude_from ^/opt/Postman/.*$
+%global __requires_exclude_from ^/opt/Postman/.*$
 
 Name:           postman
 Version:        12.28.6
@@ -29,22 +29,26 @@ Build, test, and document your APIs faster.
 %build
 
 %install
-install -d %{buildroot}/opt/postman
-cp -a * %{buildroot}/opt/postman/
+install -d %{buildroot}/opt/Postman
+cp -a * %{buildroot}/opt/Postman/
 
 install -d %{buildroot}%{_bindir}
-ln -sr %{buildroot}/opt/postman/Postman %{buildroot}%{_bindir}/postman
-install -Dpm 0644 %{SOURCE1} -t %{buildroot}%{_datadir}/applications
-install -d %{buildroot}%{_datadir}/pixmaps
-ln -sr %{buildroot}/opt/postman/app/resources/app/assets/icon.png %{buildroot}%{_datadir}/pixmaps/postman.png
+ln -sr %{buildroot}/opt/Postman/Postman %{buildroot}%{_bindir}/postman
+
+install -Dpm 0644 %{SOURCE1} \
+    %{buildroot}%{_datadir}/applications/postman.desktop
+
+install -Dpm 0644 \
+    %{buildroot}/opt/Postman/app/resources/app/assets/icon.png \
+    %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %check
 
 %files
-/opt/postman
+/opt/Postman
 %{_bindir}/postman
 %{_datadir}/applications/postman.desktop
-%{_datadir}/pixmaps/postman.png
+%{_datadir}/icons/hicolor/128x128/apps/postman.png
 
 %changelog
 %autochangelog
