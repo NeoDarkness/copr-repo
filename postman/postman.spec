@@ -4,7 +4,7 @@
 %global __requires_exclude_from ^/opt/Postman/.*$
 
 Name:           postman
-Version:        12.34.3
+Version:        12.34.4
 Release:        %autorelease
 Summary:        Postman API Platform
 
