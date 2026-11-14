@@ -7,14 +7,14 @@
 %global crate catppuccin-whiskers
 
 Name:           rust-catppuccin-whiskers
-Version:        2.9.0
+Version:        2.10.0
 Release:        %autorelease
 Summary:        😾 Soothing port creation tool for the high-spirited!
 
 License:        MIT
 URL:            https://crates.io/crates/catppuccin-whiskers
 Source:         %{crates_source}
-Source:         catppuccin-whiskers-2.9.0-vendor.tar.xz
+Source:         catppuccin-whiskers-2.10.0-vendor.tar.xz
 
 BuildRequires:  cargo-rpm-macros >= 26
 
